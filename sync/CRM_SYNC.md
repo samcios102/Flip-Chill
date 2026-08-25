@@ -47,3 +47,11 @@ Po zmianie:
 - Utworzono maszynowy manifest `sync/CRM_SOURCE_OF_TRUTH.json`.
 - Ustalono repozytorium jako kanał synchronizacji między OpenCode, CRM Baza mieszkań i audytami.
 - Ustalono zasadę: reguły biznesowe mają jedno źródło prawdy i nie są kopiowane niezależnie między modułami.
+
+### 2026-08-25 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 9
+
+- Potwierdzono na aktualnym kandydacie realny P0 migracji schema 11→12: ręczna `preliminaryDate` nie może być czyszczona.
+- Bezpieczny kandydat audytowy zachowuje `preliminaryDate` i wyprowadza status z istniejących dat (`finalDate` → `closed`, `preliminaryDate` → `preliminary`).
+- Walidacja kandydata: 9/9 bloków JavaScript PASS, 766 unikalnych ID DOM, 0 duplikatów, 38/38 referencji DOM poprawnych.
+- `tests/check_app.py` został dostosowany do aktualnego UX BEST56: Daty otwierają się z jednego przycisku wybranej transakcji `#fac-portfolio-dates-selected`, zamiast wymagać usuniętego przycisku per-row `data-open-pf-dates=`.
+- P0 #7 pozostaje otwarte do czasu umieszczenia kanonicznego `app/FlippChill_Kalkulator.html`; polityka wersji pozostaje BEST56 + dopisek `AUDYT`.
