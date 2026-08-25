@@ -19,5 +19,7 @@ jobs:
           python-version: '3.12'
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
+      - name: Verify frozen BEST40 checksum
+        run: python tests/check_release_baseline.py versions/FlippChill_Kalkulator_BEST40.html c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708
       - name: Verify frozen stable version
         run: python tests/check_app.py versions/FlippChill_Kalkulator_BEST40.html
