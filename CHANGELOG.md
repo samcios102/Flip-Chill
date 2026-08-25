@@ -2,6 +2,20 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST41 — 2026-08-25
+
+### UI / czytelność
+- Skorygowano zbyt agresywne zagęszczenie BEST40.
+- Wysokość głównego wiersza Bazy ustawiona na ok. 60 px zamiast 46 px.
+- Powiększono pola, symbole statusu, kafelki płatności, prognozę i przyciski akcji bez powrotu do rozlanego układu.
+- Oś czasu otrzymała ten sam poziom czytelności: większe statusy, nazwy i przyciski.
+
+### Test
+- Pełna Baza mieszkań: 28/28 rekordów.
+- Zmierzona wysokość głównego wiersza: 60 px przy widoku 1536×900.
+- Symbole statusu: 22×22 px; przyciski akcji: 27 px wysokości; kafelki płatności: 24 px.
+- 0 błędów JavaScript w teście przeglądarkowym.
+
 ## BEST40 — 2026-08-25
 
 ### Stabilizacja
