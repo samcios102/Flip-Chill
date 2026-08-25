@@ -1,30 +1,54 @@
-# Flip-Chill
-System to BUY/ EXCHANGE / SELL - 1/10 share of apartment for 10k EUR - diversified on 25 countries, then 125 counteries... Tax Free :3
+# FlippChill — Kalkulator / CRM
 
+Główne repozytorium rozwoju narzędzi operacyjnych Flipp&Chill.
 
-Flip Token - Best diversified Tokenon all apartments in our portfolio 25 apartments first year, 125 second year prognose
-prognose
+## Cel
 
+Rozwijać aplikację szybko, ale stabilnie: każda zmiana ma przejść przez audyt, testy i wersjonowanie. Priorytetem jest poprawność danych i brak regresji przed tempem dodawania funkcji.
 
+## Aktualna baza
 
+- Stabilna wersja startowa projektu: **BEST40**.
+- `main` — ostatnia wersja uznana za stabilną.
+- `develop` — bieżący rozwój następnej wersji.
+- `versions/` — zamrożone punkty przywracania BEST.
+- `app/FlippChill_Kalkulator.html` — aktualna stabilna aplikacja.
+- `BACKLOG.md` — jedna lista błędów, funkcji, optymalizacji i pomysłów.
+- `CHANGELOG.md` — historia zmian wersja po wersji.
+- `docs/` — architektura, zasady rozwoju i materiały historyczne.
 
+## Pętla rozwoju
 
+1. Pobierz najnowszy kod.
+2. Uruchom testy automatyczne i test interfejsu.
+3. Sprawdź backlog i wcześniejsze wymagania.
+4. Wybierz mały pakiet zmian o najwyższej wartości.
+5. Wprowadź zmianę na `develop`.
+6. Ponownie wykonaj testy i audyt regresji.
+7. Jeśli wynik jest stabilny — nadaj kolejny numer BEST, zaktualizuj changelog i scal do `main`.
+8. Dopiero potem przejdź do kolejnego pakietu.
 
+## Zasada jakości
 
+**Najpierw poprawność → potem szybkość → potem liczba funkcji.**
 
+Nie dokładamy kilku ryzykownych zmian naraz. Duże funkcje dzielimy na małe, testowalne kroki. Każdy wykryty błąd trafia do backlogu, a krytyczne regresje blokują wydanie.
 
+## Najważniejsze obszary
 
-1 Chill Coin = 1 weekend free vacation yearly
+- Baza mieszkań jako centrum transakcji.
+- Płatności klientów i wypłaty agentów.
+- Rozliczenia, prowizje, VAT/CIT/PIT.
+- Daty i statusy transakcji.
+- Prognozy portfela i osi czasu.
+- Role użytkowników, logowanie i trwałość danych.
+- CRM / follow-up / poszukujący.
+- Integracje i automatyzacje.
 
+## Uruchomienie
 
+Aplikacja jest obecnie samodzielnym plikiem HTML. Otwórz `app/FlippChill_Kalkulator.html` w aktualnym Chrome/Edge.
 
+## Historia
 
-
-1 apartment = 10 Chill Coin
-
-value of apartment x20 of coin value
-values of coins: 10,15,20,40,80 k EUR
-
-
-
-
+Pierwotna zawartość repo sprzed uruchomienia projektu aplikacji została zachowana w `docs/legacy/`.
