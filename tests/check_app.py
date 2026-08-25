@@ -2,8 +2,9 @@
 """Fast static quality gate for the single-file FlippChill build."""
 from __future__ import annotations
 
-import re
 import sys
+from collections import Counter
+from html.parser import HTMLParser
 from pathlib import Path
 
 APP = Path(sys.argv[1] if len(sys.argv) > 1 else "app/FlippChill_Kalkulator.html")
@@ -16,6 +17,19 @@ def fail(message: str) -> None:
 
 def ok(message: str) -> None:
     print(f"OK: {message}")
+
+
+class StaticIdCollector(HTMLParser):
+    """Collect IDs from actual HTML tags, ignoring id= text inside JS/CSS strings."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.ids: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        for name, value in attrs:
+            if name == "id" and value:
+                self.ids.append(value)
 
 
 if not APP.exists():
@@ -45,16 +59,13 @@ for obsolete in ['data-tab="payments"', 'data-tab="ledger"']:
         fail(f"obsolete top-level navigation returned: {obsolete}")
 ok("obsolete Payments/Settlement top-level tabs absent")
 
-ids = re.findall(r'\bid=["\']([^"\']+)["\']', text)
-seen: set[str] = set()
-duplicates: set[str] = set()
-for item in ids:
-    if item in seen:
-        duplicates.add(item)
-    seen.add(item)
+parser = StaticIdCollector()
+parser.feed(text)
+counts = Counter(parser.ids)
+duplicates = sorted(item for item, count in counts.items() if count > 1)
 if duplicates:
-    fail("duplicate DOM ids: " + ", ".join(sorted(duplicates)[:20]))
-ok(f"DOM ids unique ({len(ids)} ids)")
+    fail("duplicate static DOM ids: " + ", ".join(duplicates[:20]))
+ok(f"static DOM ids unique ({len(parser.ids)} ids)")
 
 if "CIT 9%" not in text:
     fail("CIT 9% marker missing")
