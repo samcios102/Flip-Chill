@@ -19,17 +19,34 @@ def ok(message: str) -> None:
     print(f"OK: {message}")
 
 
-class StaticIdCollector(HTMLParser):
-    """Collect IDs from actual HTML tags, ignoring id= text inside JS/CSS strings."""
+class StaticDomCollector(HTMLParser):
+    """Collect real static DOM IDs and ID references, ignoring JS/CSS strings."""
+
+    REFERENCE_ATTRS = ("for", "aria-labelledby", "aria-describedby", "aria-controls")
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.ids: list[str] = []
+        self.references: list[tuple[str, str, str, str]] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attrs_dict = dict(attrs)
+        element_id = attrs_dict.get("id") or ""
+
         for name, value in attrs:
             if name == "id" and value:
                 self.ids.append(value)
+
+        for attr in self.REFERENCE_ATTRS:
+            value = attrs_dict.get(attr)
+            if not value:
+                continue
+            for target in value.split():
+                self.references.append((attr, target, tag, element_id))
+
+        href = attrs_dict.get("href")
+        if href and href.startswith("#") and len(href) > 1:
+            self.references.append(("href", href[1:], tag, element_id))
 
 
 if not APP.exists():
@@ -59,13 +76,23 @@ for obsolete in ['data-tab="payments"', 'data-tab="ledger"']:
         fail(f"obsolete top-level navigation returned: {obsolete}")
 ok("obsolete Payments/Settlement top-level tabs absent")
 
-parser = StaticIdCollector()
+parser = StaticDomCollector()
 parser.feed(text)
 counts = Counter(parser.ids)
 duplicates = sorted(item for item, count in counts.items() if count > 1)
 if duplicates:
     fail("duplicate static DOM ids: " + ", ".join(duplicates[:20]))
 ok(f"static DOM ids unique ({len(parser.ids)} ids)")
+
+static_ids = set(parser.ids)
+broken_references = [item for item in parser.references if item[1] not in static_ids]
+if broken_references:
+    sample = "; ".join(
+        f'{attr}="{target}" on <{tag} id="{element_id or "-"}">' 
+        for attr, target, tag, element_id in broken_references[:20]
+    )
+    fail(f"broken static DOM references ({len(broken_references)}): {sample}")
+ok(f"static DOM references resolve ({len(parser.references)} references)")
 
 if "CIT 9%" not in text:
     fail("CIT 9% marker missing")
