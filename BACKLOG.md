@@ -5,7 +5,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 ## P0 — krytyczne błędy
 
 - [ ] Przywrócić odtwarzalny build `app/FlippChill_Kalkulator.html` — aktualne CI na `develop` kończy się błędem `missing app file`; śledzone w #7.
-- [ ] Usunąć 28 zduplikowanych ID DOM wykrytych w lokalnym artefakcie BEST44 i zachować poprawne powiązania ARIA; śledzone w #8.
+- [x] Zweryfikować raport 28 zduplikowanych ID DOM — audyt wykazał false positive testu: regex liczył `id=` wewnątrz stringów JavaScript renderujących SVG. Parser realnych tagów HTML potwierdza 0 statycznych duplikatów (BEST40: 739/739, BEST45: 743/743); test poprawiony w `tests/check_app.py`; śledzone w #8.
 - [ ] Każda nowa regresja blokująca logowanie, zapis danych, otwieranie Bazy mieszkań, Rozliczenia lub Dat.
 - [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT oraz podział prowizji muszą być kontrolowane testami liczbowymi.
 - [ ] Utrata danych lokalnych albo niezgodność danych między kolejnymi wersjami BEST.
@@ -17,6 +17,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
 - [ ] Sprawdzić responsywność Bazy mieszkań na iPhone 15 Pro i małych ekranach Android/Chrome.
 - [ ] Zweryfikować, czy wszystkie 4 części płatności klienta i 4 stany wypłaty agentowi zachowują się spójnie po duplikowaniu rekordu.
+- [ ] Dodać test i regułę biznesową: mieszkania / transakcje ze źródła `Slack / Marketing` mają zasilać miesięczny obrót liczony do progów 50 000 PLN i 100 000 PLN tak samo jak pozostałe źródła; odrębna stawka wynagrodzenia Slack nie może wyłączać ich z progu.
 
 ## P1 — brakujące / niedokończone funkcje
 
