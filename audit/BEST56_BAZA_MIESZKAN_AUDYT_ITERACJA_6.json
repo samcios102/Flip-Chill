@@ -1,0 +1,48 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 6,
+  "date": "2026-08-25",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "change": {
+    "type": "test-gate",
+    "file": "tests/check_best56_audit_manifest.py",
+    "commit": "6ae23f7e852b3fdd4f82c87c086310df82787ace",
+    "purpose": "enforce schema 11→12 data-preservation contract for P0 #11"
+  },
+  "migration_gate": {
+    "schema_from": 11,
+    "schema_to": 12,
+    "required_preservation": [
+      "manual_preliminaryDate",
+      "id",
+      "startDate",
+      "maxDealDate",
+      "paymentParts"
+    ],
+    "status_must_be_derived_from_dates": true,
+    "issue": 11,
+    "ci_step": "Verify BEST56 Baza Mieszkań audit manifest",
+    "ci_result": "PASS"
+  },
+  "ci": {
+    "workflow_run": 40,
+    "head_sha": "6ae23f7e852b3fdd4f82c87c086310df82787ace",
+    "audit_gate": "PASS",
+    "overall": "FAIL",
+    "remaining_failure_step": "Static application checks"
+  },
+  "source_of_truth": {
+    "pr": 9,
+    "state": "OPEN",
+    "mergeable": true,
+    "develop_contains_sync_files": false
+  },
+  "main_unchanged": true,
+  "release_state": "AUDIT ONLY",
+  "release_policy": "keep BEST56 and AUDYT suffix; do not create BEST57",
+  "remaining_priorities": [
+    "P0 #7 canonical app/FlippChill_Kalkulator.html / reproducible baseline",
+    "P0 #11 runtime localStorage migration against canonical repository artifact",
+    "merge or otherwise establish Source of Truth files directly on develop"
+  ]
+}
