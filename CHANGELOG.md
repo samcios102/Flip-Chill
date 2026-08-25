@@ -2,6 +2,17 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## Unreleased — QA / integralność testów — 2026-08-25
+
+### Quality gate
+- Naprawiono false positive kontroli zduplikowanych DOM ID: wcześniejszy regex liczył również `id=` zapisane wewnątrz stringów JavaScript służących do ponownego renderowania `<title>/<desc>` w SVG.
+- `tests/check_app.py` zbiera teraz ID wyłącznie z realnych statycznych tagów HTML przez `html.parser.HTMLParser` i nadal blokuje rzeczywiste duplikaty DOM.
+- Weryfikacja lokalnych artefaktów: BEST40 = 739/739 unikalnych statycznych ID; BEST45 = 743/743.
+- Do backlogu dodano wymaganie finansowe: transakcje ze źródła `Slack / Marketing` muszą zasilać obrót do progów 50 000 / 100 000 PLN niezależnie od odrębnej stawki wynagrodzenia Slack.
+
+### Status wydania
+- Bez nowego numeru BEST: repo nadal wymaga odtwarzalnego `app/FlippChill_Kalkulator.html` i zamrożonego artefaktu BEST40 w CI (#7).
+
 ## BEST45 — 2026-08-25
 
 ### Baza mieszkań — prawa strona i gęstość
