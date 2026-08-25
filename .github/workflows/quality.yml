@@ -17,6 +17,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Verify BEST56 Baza Mieszkań audit manifest
+        run: python tests/check_best56_audit_manifest.py audit/BEST56_BAZA_MIESZKAN_AUDYT.json
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
       - name: Verify frozen BEST40 checksum
