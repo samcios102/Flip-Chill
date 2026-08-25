@@ -2,6 +2,23 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST45 — 2026-08-25
+
+### Baza mieszkań — prawa strona i gęstość
+- Usunięto zbędną legendę `↻ w toku / ◆ przedwstępna / ✓ sprzedana` nad tabelą; status pozostaje wyłącznie przy każdym mieszkaniu.
+- Wysokość głównego wiersza zwiększona do ok. 72 px, aby tabela była mniej agresywnie skompaktowana.
+- Przebalansowano szerokości kolumn: więcej miejsca dla `Akcje`, mniej dla `Prognoza`, `Cena` i `Agent`.
+- `Akcje` mają własne 19–21% szerokości zależnie od ekranu i nie nachodzą już na `Prognozę`.
+- Powiększono nieznacznie pola, statusy, kafelki płatności i przyciski.
+
+### Test 1366×768
+- Tabela: 1322 px przy kontenerze 1324 px — brak poziomego overflow.
+- Główny wiersz: 72 px.
+- Kolumna `Akcje`: 251 px; zawartość przycisków: 240 px.
+- Kolumna `Prognoza`: 112 px.
+- Pełna baza: 28/28 rekordów.
+- 0 błędów JavaScript podczas renderu testowego.
+
 ## BEST44 — 2026-08-25
 
 ### Baza mieszkań — uproszczenie Prognozy
