@@ -62,8 +62,9 @@ required = [
     'id="fac-pf-payment-filters"',
     'id="fac-inline-pay-dialog"',
     'id="fac-pf-dates-dialog"',
+    'id="fac-portfolio-dates-selected"',
     'data-open-client-payments=',
-    'data-open-pf-dates=',
+    'function openPortfolioDates(',
     'fac-timeline-status-dots',
 ]
 for token in required:
