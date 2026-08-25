@@ -2,6 +2,14 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## Unreleased — QA / integralność DOM — 2026-08-25
+
+### Quality gate
+- `tests/check_app.py` sprawdza teraz nie tylko unikalność realnych statycznych ID DOM, ale też poprawność referencji `for`, `aria-labelledby`, `aria-describedby`, `aria-controls` oraz lokalnych `href="#..."`.
+- Test lokalny na odzyskanych artefaktach: BEST40 = 739 unikalnych ID i 38/38 poprawnych referencji; BEST49 = 748 ID i 38/38 referencji.
+- Issue #8 zamknięte jako zakończone; wcześniejszy raport 28 duplikatów był false positive regexu liczącego `id=` wewnątrz stringów JavaScript.
+- CI całego repo nadal pozostaje blokowane przez osobne P0 #7: brak kanonicznego `app/FlippChill_Kalkulator.html` i zamrożonego artefaktu BEST40 w repo.
+
 ## BEST49 — 2026-08-25
 
 ### Statusy, filtry i szybkie płatności
@@ -111,7 +119,7 @@ Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wers
 ### UI / czytelność
 - Skorygowano zbyt agresywne zagęszczenie BEST40.
 - Wysokość głównego wiersza Bazy ustawiona na ok. 60 px zamiast 46 px.
-- Powiększono pola, symbole statusu, kafelki płatności, prognozę i przyciski bez powrotu do rozlanego układu.
+- Powiększono pola, symbole statusu, kafelki płatności, prognozę i przyciski akcji bez powrotu do rozlanego układu.
 - Oś czasu otrzymała ten sam poziom czytelności: większe statusy, nazwy i przyciski.
 
 ### Test
