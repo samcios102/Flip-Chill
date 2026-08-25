@@ -1,0 +1,24 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 4,
+  "date": "2026-08-25",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "source_input_sha256": "d9c19b868cfd3301f72fb6b160b0a7ef5296802021e948d81d287c562fd561f5",
+  "patched_candidate_sha256": "6481565d821b86a980ce44acff5cb5811ded857376981e1c5085e9cb174b7fee",
+  "p0": {
+    "issue": 11,
+    "problem": "schema 11->12 cleared preliminaryDate when status was ongoing",
+    "safe_rule": "preserve dates; derive status from finalDate/preliminaryDate instead of deleting preliminaryDate",
+    "patch_applied_to_audit_candidate": true
+  },
+  "validation": {
+    "javascript_blocks": 9,
+    "javascript_node_check_passed": 9,
+    "dom_ids": 766,
+    "duplicate_dom_ids": 0,
+    "dom_references": 38,
+    "missing_dom_references": 0
+  },
+  "release_policy": "audit automation keeps version 56; no BEST57 promotion",
+  "ci_repository_blocker": "existing static application checks / canonical app baseline remains unresolved"
+}
