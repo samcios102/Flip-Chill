@@ -1,0 +1,1 @@
+przetłumacz w markdown 
