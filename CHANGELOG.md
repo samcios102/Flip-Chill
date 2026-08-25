@@ -2,6 +2,22 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST42 — 2026-08-25
+
+### Baza mieszkań — czytelność i wykorzystanie szerokości
+- Wysokość głównego wiersza zwiększona z ok. 60 px do 66 px.
+- Zwężono kolumny `Cena` i `Agent` oraz delikatnie `Nieruchomość`.
+- Odzyskaną szerokość przekazano głównie `Płatnościom`, finansom i akcjom.
+- Nagłówki tabeli mają teraz nazwę główną i krótki opis znaczenia kolumny.
+- Powiększono statusy, pola, kafelki płatności, prognozę oraz przyciski bez powrotu do wysokich wierszy sprzed BEST40.
+
+### Test
+- Widok testowy 1366×768: tabela 1322 px, bez poziomego overflow.
+- Pełna Baza mieszkań: 28/28 rekordów.
+- Filtr `Otrzymane`: 15 rekordów, po wyczyszczeniu ponownie 28/28.
+- Modal Rozliczenia i modal Dat otwierają się poprawnie.
+- 0 błędów JavaScript; 0 zduplikowanych ID DOM.
+
 ## BEST41 — 2026-08-25
 
 ### UI / czytelność
