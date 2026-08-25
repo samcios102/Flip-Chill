@@ -2,6 +2,22 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST49 — 2026-08-25
+
+### Statusy, filtry i szybkie płatności
+- Żółty status `Przedwstępna` używa symbolu otwartej skrzyni zamiast rombu.
+- `Sprzedana` ma własną ikonę zamknięcia/sprzedaży.
+- Pierwszy filtr u góry Bazy zmieniono z `Otrzymane` na `Sprzedane`; filtr faktycznie wybiera transakcje o statusie `closed`.
+- Kafelki płatności klienta zmieniają status bez otwierania modala: `Prognoza → Pewna → Faktura → Otrzymane → Prognoza`.
+- Kafelki agenta są bezpośrednio klikalne: `oczekuje → do wypłaty → wypłacone`; po wypłacie kolejny klik wraca do `do wypłaty`.
+- `Moje` stało się niezależnym filtrem nakładanym na filtr główny, więc działa równocześnie z `Wszystkie`, `Aktywne`, `W toku`, `Przedwstępne`, `Sprzedane` i `Termin ≤30 dni`.
+
+### Kontrola
+- 8/8 bloków JavaScript przechodzi `node --check`.
+- 748/748 statycznych DOM ID jest unikalnych.
+- BEST49 i stały `FlippChill_Kalkulator.html` mają identyczny SHA-256.
+- Runtime Chromium w środowisku testowym nadal blokuje localhost polityką administratora (`ERR_BLOCKED_BY_ADMINISTRATOR`), więc wykonano kontrolę składniową i strukturalną.
+
 ## BEST48 — 2026-08-25
 
 ### Baza mieszkań — główny widok operacyjny
@@ -95,7 +111,7 @@ Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wers
 ### UI / czytelność
 - Skorygowano zbyt agresywne zagęszczenie BEST40.
 - Wysokość głównego wiersza Bazy ustawiona na ok. 60 px zamiast 46 px.
-- Powiększono pola, symbole statusu, kafelki płatności, prognozę i przyciski akcji bez powrotu do rozlanego układu.
+- Powiększono pola, symbole statusu, kafelki płatności, prognozę i przyciski bez powrotu do rozlanego układu.
 - Oś czasu otrzymała ten sam poziom czytelności: większe statusy, nazwy i przyciski.
 
 ### Test
