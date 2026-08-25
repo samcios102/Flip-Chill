@@ -20,6 +20,7 @@
     "status_derived_as_preliminary": true,
     "id_preserved": true,
     "startDate_preserved": true,
+    "finalDate_preserved": true,
     "maxDealDate_preserved": true,
     "paymentParts_preserved": true,
     "result": "PASS"
