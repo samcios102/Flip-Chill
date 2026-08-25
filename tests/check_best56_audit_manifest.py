@@ -10,6 +10,7 @@ EXPECTED_ARTIFACT = "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html"
 EXPECTED_SHA256 = "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
 EXPECTED_SIZE = 857840
 EXPECTED_LINES = 5799
+EXPECTED_MIGRATION_ITERATION = "audit/BEST56_BAZA_MIESZKAN_AUDYT_ITERACJA_5.json"
 REQUIRED_FINANCE = {
     "vat": ("PASS", "23%"),
     "cit": ("PASS", "0.09"),
@@ -18,6 +19,14 @@ REQUIRED_FINANCE = {
     "threshold_100000": ("PASS", "+10%"),
     "slack_marketing_thresholds": ("PASS", "source"),
 }
+REQUIRED_MIGRATION_PRESERVATION = (
+    "manual_preliminaryDate_preserved",
+    "status_derived_as_preliminary",
+    "id_preserved",
+    "startDate_preserved",
+    "maxDealDate_preserved",
+    "paymentParts_preserved",
+)
 
 
 def fail(message: str) -> None:
@@ -25,12 +34,50 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def load_json(path: Path) -> dict:
+    if not path.is_file():
+        fail(f"missing manifest: {path}")
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        fail(f"cannot read JSON manifest {path}: {exc}")
+
+
+def check_migration_contract(path: Path) -> None:
+    data = load_json(path)
+    if data.get("artifact") != EXPECTED_NAME:
+        fail("migration audit artifact must remain BEST56 BAZA MIESZKAŃ AUDYT")
+    if data.get("baseline") != "BEST56 BAZA MIESZKAŃ":
+        fail("migration audit baseline changed")
+    if data.get("release_state") != "AUDIT CANDIDATE ONLY":
+        fail("migration result must remain audit-only until canonical runtime validation")
+
+    policy = str(data.get("release_policy", ""))
+    if "version 56" not in policy or "no BEST57 promotion" not in policy:
+        fail("migration audit release policy must keep BEST56 and prohibit BEST57 promotion")
+
+    finding = data.get("finding", {})
+    if finding.get("priority") != "P0" or finding.get("issue") != 11:
+        fail("migration preservation finding must remain linked to P0 #11")
+    if finding.get("source_candidate_contains_unsafe_clear") is not True:
+        fail("audit must record the unsafe source migration expression")
+    if "preliminaryDate" not in str(finding.get("unsafe_expression", "")):
+        fail("unsafe migration expression fingerprint changed")
+
+    contract = data.get("migration_contract_test", {})
+    if contract.get("schema_from") != 11 or contract.get("schema_to") != 12:
+        fail("unexpected migration schema contract")
+    for key in REQUIRED_MIGRATION_PRESERVATION:
+        if contract.get(key) is not True:
+            fail(f"migration contract lost required preservation assertion: {key}")
+    if contract.get("result") != "PASS":
+        fail("schema 11→12 migration preservation contract is not PASS")
+
+
 def main() -> None:
     manifest_path = Path(sys.argv[1] if len(sys.argv) > 1 else "audit/BEST56_BAZA_MIESZKAN_AUDYT.json")
-    if not manifest_path.is_file():
-        fail(f"missing manifest: {manifest_path}")
-
-    data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    migration_path = Path(sys.argv[2] if len(sys.argv) > 2 else EXPECTED_MIGRATION_ITERATION)
+    data = load_json(manifest_path)
 
     if data.get("audit_name") != EXPECTED_NAME:
         fail("audit_name must remain BEST56 BAZA MIESZKAŃ AUDYT")
@@ -66,7 +113,8 @@ def main() -> None:
     if data.get("status") != "AUDITED_STATICALLY":
         fail("unexpected BEST56 audit status")
 
-    print("PASS: BEST56 BAZA MIESZKAŃ AUDYT manifest is internally consistent")
+    check_migration_contract(migration_path)
+    print("PASS: BEST56 BAZA MIESZKAŃ AUDYT manifest and schema 11→12 preservation contract are consistent")
 
 
 if __name__ == "__main__":
