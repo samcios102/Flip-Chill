@@ -24,6 +24,7 @@ REQUIRED_MIGRATION_PRESERVATION = (
     "status_derived_as_preliminary",
     "id_preserved",
     "startDate_preserved",
+    "finalDate_preserved",
     "maxDealDate_preserved",
     "paymentParts_preserved",
 )
