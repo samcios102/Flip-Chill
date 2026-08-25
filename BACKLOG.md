@@ -35,7 +35,8 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [x] Daty w modalu: Start / Przedwstępna / Końcowa / Maks. termin.
 - [x] Spójne symbole statusu ↻ / ◆ / ✓.
 - [x] Mocno skompaktowane główne wiersze Bazy (~46 px w BEST40).
-- [ ] Dalszy audyt gęstości na ekranie 1366×768 i telefonie bez utraty czytelności.
+- [x] Skorygować zbyt dużą kompresję desktopową — BEST41: ok. 60 px / rekord, większe statusy i przyciski przy zachowaniu zwartego układu.
+- [ ] Audyt gęstości i responsywności na iPhone 15 Pro oraz małym Androidzie.
 - [ ] Skróty klawiaturowe dla częstych operacji (wyszukaj, nowa transakcja, rozlicz, daty).
 - [ ] Szybki panel „wymaga uwagi”: po terminie, faktura bez wpłaty, klient zapłacił / agent niewypłacony.
 
@@ -73,3 +74,4 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [x] Multi-select płatności i podsumowania w Bazie.
 - [x] Rozdzielenie „klient zapłacił” od „agent wypłacony”.
 - [x] Oś czasu ze spójnymi symbolami statusu.
+- [x] BEST41: zbalansowana gęstość desktopowa, 60 px / rekord przy teście 1536×900, 28/28 rekordów, 0 błędów JS.
