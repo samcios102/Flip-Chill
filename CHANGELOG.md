@@ -2,6 +2,25 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST48 — 2026-08-25
+
+### Baza mieszkań — główny widok operacyjny
+- `Baza mieszkań · wszystkie transakcje` jest teraz sekcją 1 i znajduje się przed panelem Portfel/Wynik/Wypłaty.
+- Baza jest otwarta domyślnie po wejściu do widoku Portfolio.
+- `Portfel · wynik, wypłaty i prognoza` jest sekcją 2 i pozostaje zwinięty domyślnie.
+- Usunięto powtarzane w każdym wierszu przyciski `Rozlicz X/4` oraz `Daty`.
+- Nad tabelą dodano jeden panel wybranej transakcji z przyciskami `Rozliczenie` i `Daty`.
+- Kliknięcie wiersza wybiera mieszkanie; `Edytuj` nadal rozwija szczegóły rekordu.
+- Kolumna Akcje zawiera teraz tylko `Edytuj`, `Duplikuj`, `Usuń`.
+- Tabela została lekko powiększona: ok. 76 px / rekord, większe pola, statusy, wartości finansowe i płatności.
+- Odzyskana szerokość po usunięciu dwóch przycisków z każdego wiersza została przekazana kluczowym kolumnom danych.
+
+### Kontrola
+- 4 lokalne bloki JavaScript przechodzą `node --check`.
+- 747/747 statycznych DOM ID jest unikalnych.
+- Baza ma `open`, a panel Portfel/Wynik/Wypłaty nie ma `open` i jest zamykany także w `setTab("portfolio")`.
+- Test Chromium runtime nie został wykonany, ponieważ środowisko sesji blokuje nawigację do lokalnego pliku i localhost polityką administratora.
+
 ## Unreleased — QA / integralność testów — 2026-08-25
 
 ### Quality gate
@@ -11,7 +30,7 @@ Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wers
 - Do backlogu dodano wymaganie finansowe: transakcje ze źródła `Slack / Marketing` muszą zasilać obrót do progów 50 000 / 100 000 PLN niezależnie od odrębnej stawki wynagrodzenia Slack.
 
 ### Status wydania
-- Bez nowego numeru BEST: repo nadal wymaga odtwarzalnego `app/FlippChill_Kalkulator.html` i zamrożonego artefaktu BEST40 w CI (#7).
+- Repo nadal wymaga odtwarzalnego `app/FlippChill_Kalkulator.html` i zamrożonego artefaktu BEST40 w CI (#7).
 
 ## BEST45 — 2026-08-25
 
