@@ -2,6 +2,18 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST44 — 2026-08-25
+
+### Baza mieszkań — uproszczenie Prognozy
+- Usunięto drugi, powtórzony status transakcji z kolumny `Prognoza`.
+- Status `↻ / ◆ / ✓` pozostaje tylko po lewej stronie przy nieruchomości.
+- `Prognoza` pokazuje teraz wyłącznie kwotę oczekiwanego przychodu.
+- Prawa część tabeli jest dzięki temu czytelniejsza i mniej przeładowana.
+
+### Test
+- Wszystkie 4 bloki JavaScript przechodzą `node --check`.
+- Renderer Prognozy nie zawiera już etykiet `W toku / Przedwstępna / Zrealizowane` ani ich ikon.
+
 ## BEST43 — 2026-08-25
 
 ### Baza mieszkań — finanse i prognoza
