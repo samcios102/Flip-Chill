@@ -6,6 +6,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 - [ ] Przywrócić odtwarzalny build `app/FlippChill_Kalkulator.html` — aktualne CI na `develop` kończy się błędem `missing app file`; śledzone w #7.
 - [x] Zweryfikować raport 28 zduplikowanych ID DOM — audyt wykazał false positive testu: regex liczył `id=` wewnątrz stringów JavaScript renderujących SVG. Parser realnych tagów HTML potwierdza 0 statycznych duplikatów; test sprawdza teraz również statyczne referencje `for`, `aria-labelledby`, `aria-describedby`, `aria-controls` i lokalne `href="#..."`. Lokalnie: BEST40 = 739 ID / 38 poprawnych referencji, BEST49 = 748 / 38. Issue #8 zamknięte.
+- [ ] P0 #11 — migracja schema 11→12 musi zachować ręczne `preliminaryDate`, `maxDealDate`, `paymentParts`, `id`, `startDate` i `finalDate`; status należy wyprowadzać z istniejących dat zamiast kasować dane. Kandydat AUDYT przechodzi test zachowania danych, ale issue pozostaje otwarte do czasu testu na kanonicznym artefakcie repo i realnym `localStorage`.
 - [ ] Każda nowa regresja blokująca logowanie, zapis danych, otwieranie Bazy mieszkań, Rozliczenia lub Dat.
 - [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT oraz podział prowizji muszą być kontrolowane testami liczbowymi.
 - [ ] Utrata danych lokalnych albo niezgodność danych między kolejnymi wersjami BEST.
