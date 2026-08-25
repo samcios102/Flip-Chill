@@ -1,0 +1,20 @@
+{
+  "audit": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 9,
+  "candidate_sha256": "bfd6197d56d355e0cb1389f844c07773b1e38ba3ddad2ddeafab55f2da51309a",
+  "migration_11_to_12": {
+    "preliminaryDate_preserved": true,
+    "status_derived_from_dates": true
+  },
+  "static_validation": {
+    "javascript": "9/9 PASS",
+    "dom_ids": 766,
+    "duplicate_ids": 0,
+    "dom_references": "38/38 PASS"
+  },
+  "ci": {
+    "best56_audit_manifest": "PASS",
+    "static_application_checks": "BLOCKED_MISSING_CANONICAL_APP"
+  },
+  "version_policy": "KEEP_BEST56_AND_APPEND_AUDYT"
+}
