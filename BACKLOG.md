@@ -4,6 +4,8 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P0 — krytyczne błędy
 
+- [ ] Przywrócić odtwarzalny build `app/FlippChill_Kalkulator.html` — aktualne CI na `develop` kończy się błędem `missing app file`; śledzone w #7.
+- [ ] Usunąć 28 zduplikowanych ID DOM wykrytych w lokalnym artefakcie BEST44 i zachować poprawne powiązania ARIA; śledzone w #8.
 - [ ] Każda nowa regresja blokująca logowanie, zapis danych, otwieranie Bazy mieszkań, Rozliczenia lub Dat.
 - [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT oraz podział prowizji muszą być kontrolowane testami liczbowymi.
 - [ ] Utrata danych lokalnych albo niezgodność danych między kolejnymi wersjami BEST.
