@@ -1,0 +1,28 @@
+{
+  "artifact": "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html",
+  "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "version_policy": "audit-only; keep BEST56; never increment to BEST57 automatically",
+  "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "size_bytes": 857840,
+  "lines": 5799,
+  "static_checks": {
+    "script_blocks": 9,
+    "script_blocks_node_check_passed": 9,
+    "style_blocks": 39,
+    "static_dom_ids": 763,
+    "unique_static_dom_ids": 763,
+    "duplicate_static_dom_ids": 0,
+    "missing_static_references": 0
+  },
+  "finance_checks": {
+    "vat": "PASS: gross commission converted to net with /1.23 (23% VAT)",
+    "cit": "PASS: positive company tax base multiplied by 0.09",
+    "pit": "PASS: default tier PIT rates are 12%",
+    "threshold_50000": "PASS: +5% when monthly net revenue >= 50000",
+    "threshold_100000": "PASS: +10% when monthly net revenue >= 100000",
+    "slack_marketing_thresholds": "PASS static logic: threshold calculation uses revenue independent of source; marketing/slack compensation adjustment is applied separately"
+  },
+  "known_repo_blocker": "P0 #7: repository CI still expects canonical app/FlippChill_Kalkulator.html / frozen historical baseline",
+  "issue": 10,
+  "status": "AUDITED_STATICALLY"
+}
