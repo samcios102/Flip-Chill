@@ -1,0 +1,23 @@
+name: FlippChill Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  static-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static application checks
+        run: python tests/check_app.py app/FlippChill_Kalkulator.html
+      - name: Verify frozen stable version
+        run: python tests/check_app.py versions/FlippChill_Kalkulator_BEST40.html
