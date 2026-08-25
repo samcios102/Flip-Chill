@@ -2,6 +2,19 @@
 
 Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wersji.
 
+## BEST43 — 2026-08-25
+
+### Baza mieszkań — finanse i prognoza
+- Usunięto techniczne skróty `B` i `N` z głównego wiersza.
+- Finanse pokazują teraz cztery czytelne pozycje: `Brutto`, `Netto`, `Po CIT`, `Agent`.
+- Prognoza ma opis nagłówka `oczekiwany przychód` oraz czytelny status modelu: `↻ 80% W toku`, `◆ 100% Przedwstępna` albo `✓ 100% Zrealizowane`.
+- Uporządkowano opisy nagłówków: Cena = wartość, Finanse = przychód/wynik/agent, Płatności = 4 etapy klient/agent.
+
+### Test
+- Wszystkie 8 bloków JavaScript przechodzą `node --check`.
+- Liczba istniejących powtórzonych identyfikatorów w źródle nie wzrosła względem BEST42.
+- Struktura `<script>` i `<style>` pozostaje zbilansowana.
+
 ## BEST42 — 2026-08-25
 
 ### Baza mieszkań — czytelność i wykorzystanie szerokości
