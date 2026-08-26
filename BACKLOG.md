@@ -13,6 +13,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P1 — do naprawy / twarde testy
 
+- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → claim → wykonanie → test → handoff`; statyczna spójność `AI_SYNC` jest chroniona gate'em CI.
 - [ ] Zbudować test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage`.
 - [ ] Zbudować automatyczny test: logowanie → Baza mieszkań → filtr → Rozlicz → Daty → status → zapis → ponowne otwarcie.
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
