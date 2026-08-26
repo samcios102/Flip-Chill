@@ -1,19 +1,20 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T09:15:00+02:00",
+  "updated_at": "2026-08-26T10:16:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 17,
-  "reason": "Highest-priority unblocked P0 remains canonical app artifact / frozen BEST40 release gate; AI_SYNC protocol gate now passes CI.",
+  "source_iteration": 18,
+  "reason": "Highest-priority unblocked P0 remains canonical app + exact frozen BEST40. PRIMARY must discover the local artifact and verify the required SHA before import; if unavailable, mark BLOCKED instead of substituting another BEST.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
     "require_tests_before_done": true,
     "require_ci_before_release": true,
+    "require_claim_before_subprocess": true,
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
