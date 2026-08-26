@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-26T17:17:00+02:00",
+  "updated_at": "2026-08-26T17:28:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -70,7 +70,7 @@
       "id": 12,
       "priority": "P1",
       "title": "Agent handoff + self-dispatch protocol for 3 bots",
-      "status": "DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PENDING_LOCAL_RUNTIME"
+      "status": "DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PASS_PENDING_LOCAL_RUNTIME"
     }
   ],
   "sync_contract": {
