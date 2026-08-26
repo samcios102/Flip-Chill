@@ -11,27 +11,32 @@
 
 ## Nowa zmiana
 
-Wykryto drift protokołu 3 botów: `AI_SYNC/PROTOCOL.md` pomijał `sync/CRM_SYNC.md` w obowiązkowej kolejności odczytu, mimo że automat i wspólny stan wymagają tego pliku przed BACKLOG.
+Wykryto drift protokołu 3 botów: `AI_SYNC/PROTOCOL.md` pomijał `sync/CRM_SYNC.md` w obowiązkowej kolejności odczytu.
 
 Naprawa:
-- `sync/CRM_SOURCE_OF_TRUTH.json` ma teraz kanoniczne `sync_contract.required_read_order`;
+- `sync/CRM_SOURCE_OF_TRUTH.json` ma kanoniczne `sync_contract.required_read_order`;
 - `AI_SYNC/PROTOCOL.md` odtwarza tę kolejność 1:1;
 - `tests/check_ai_sync_protocol.py` blokuje przyszły drift manifestu i kolejności w Markdown.
 
-Brak zmian zachowania aplikacji, danych i finansów.
-
 ## Testy / CI
 
-- poprzedni workflow #249 na `f6ca0dbd...`: wszystkie gate'y przed aplikacją = `PASS`;
-- nowy kontrakt read-order = `COMMITTED / CI PENDING`;
-- `Static application checks` pozostaje P0 #7 do czasu canonical app;
-- BEST40 checksum/stable pozostaje osobnym downstream gate 7B.
+Workflow #257 na `4d4c1f7a...` potwierdził:
+- BEST56 manifest = PASS,
+- Source of Truth = PASS,
+- schema 11→12 = PASS,
+- AI sync dispatch protocol + nowy read-order contract = PASS,
+- handoff freshness = PASS,
+- dispatcher/runtime gates = PASS,
+- `Static application checks` = FAIL wyłącznie przez aktywny P0-7A,
+- BEST40 checksum/stable = SKIPPED downstream.
+
+Brak zmian zachowania aplikacji, danych i finansów.
 
 ## P0 / P1
 
 - P0 #7 — aktywny: 7A READY; 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
-- P1 #12 — read-order contract dodany; pełny lokalny bot runtime pozostaje otwarty.
+- P1 #12 — canonical read order jest CI-verified; pełny lokalny bot runtime pozostaje otwarty.
 
 ## Handoff dla 3 botów
 
