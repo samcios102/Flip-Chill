@@ -4,31 +4,61 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 16,
-  "generated_at": "2026-08-26T08:40:00+02:00",
+  "iteration": 17,
+  "generated_at": "2026-08-26T09:15:00+02:00",
   "branch": "develop",
+  "tested_commit": "275bbf757cddba406b2d1e1c99ab04cd4797770a",
   "version_policy": "automatic audit never increments BEST number",
+  "findings": [
+    {
+      "priority": "P1",
+      "area": "AI_SYNC integrity",
+      "result": "Static handoff/queue/trigger consistency previously had no dedicated CI gate; deterministic validation is now installed and passing."
+    },
+    {
+      "priority": "P0",
+      "area": "release gate",
+      "result": "Static application checks still fail at P0 #7 because canonical app artifact is unavailable; frozen BEST40 checks remain downstream."
+    }
+  ],
+  "business_decisions": [],
+  "p0_p1": {
+    "active_p0": [7, 11],
+    "active_p1": [12],
+    "source_of_truth_update_required": true,
+    "source_of_truth_update": "Issue #12 advanced to CI_GUARDED_PENDING_LOCAL_RUNTIME_DISPATCH_CHECK; local end-to-end dispatcher execution is still required."
+  },
+  "tests": {
+    "workflow_run": 73,
+    "best56_audit_manifest_gate": "PASS",
+    "source_of_truth_consistency_gate": "PASS",
+    "schema_11_12_contract_gate": "PASS",
+    "ai_sync_dispatch_protocol_gate": "PASS",
+    "static_application_checks": "FAIL_BLOCKED_BY_P0_7",
+    "best40_checksum": "SKIPPED_AFTER_P0_7",
+    "ci_overall": "FAIL_UNTIL_P0_7"
+  },
+  "impact": {
+    "baza_mieszkan": "No application/business-rule change. Safer coordination: malformed or inconsistent bot handoff now fails CI before bot work is trusted.",
+    "finance": "No financial rule change.",
+    "data_integrity": "P0 #11 remains blocked until canonical app enables real localStorage runtime migration verification."
+  },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
     "active_p0": [7, 11],
     "ready_tasks": ["P0-7-CANONICAL-APP"],
-    "blocked_tasks": ["P0-11-RUNTIME-MIGRATION", "P1-UI-RESPONSIVE-AUDIT"],
+    "blocked_tasks": ["P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
     "dispatch": "READY_TO_FIX"
   },
-  "known_evidence": {
-    "best56_audit_manifest_gate": "PASS",
-    "schema_11_12_contract_gate": "PASS",
-    "source_of_truth_consistency_gate": "PASS",
-    "static_application_checks": "BLOCKED_BY_P0_7",
-    "ci_overall": "FAIL_UNTIL_P0_7"
-  },
-  "business_rules_changed": false,
-  "source_of_truth_update_required": false,
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP and restore deterministic canonical app + verified frozen BEST40 without touching main.",
-    "second_audit": "After P0-7 is green, execute runtime localStorage migration verification for issue #11.",
-    "third_ui": "After canonical app is available, execute responsive/accessibility audit without changing financial semantics."
+    "primary": "Claim P0-7-CANONICAL-APP. AI_SYNC protocol gate is green; restore deterministic canonical app + verified frozen BEST40 without touching main.",
+    "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
+    "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
+  "ready_tasks": ["P0-7-CANONICAL-APP"],
+  "blocked_tasks": ["P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
+  "next_action": "RUN_FIX",
+  "target_agent": "PRIMARY",
   "machine_action": {
     "trigger_file": "AI_SYNC/TRIGGER.json",
     "queue_file": "AI_SYNC/BOT_QUEUE.json",
