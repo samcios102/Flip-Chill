@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T22:23:00+02:00",
+  "updated_at": "2026-08-26T23:21:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 32,
-  "reason": "Exact BEST56 stager runtime verification passed in iteration 32. PRIMARY should now persist the already-verified canonical app on develop and run Static application checks.",
+  "source_iteration": 33,
+  "reason": "Canonical BEST56 auto-discovery is CI-verified. PRIMARY should run the repository-native --auto stager, persist exact BEST56 as canonical app on develop, then run Static application checks.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -21,8 +21,10 @@
     "runtime_handoff_guard": "scripts/handoff_runtime_guard.py",
     "runtime_handoff_guard_dispatcher_integration": "CI_PASS_BEFORE_CLAIM",
     "canonical_app_stager": "scripts/stage_canonical_app.py",
+    "canonical_app_command": "python scripts/stage_canonical_app.py --auto",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
     "canonical_app_stager_runtime_verified": true,
+    "canonical_app_auto_discovery_ci_verified": true,
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
