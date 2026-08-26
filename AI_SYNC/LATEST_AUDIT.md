@@ -4,26 +4,24 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `26`
+- Iteracja: `27`
 - Branch roboczy: `develop`
-- Integracja runtime guardu w dispatcherze: `WDROŻONA`
+- Integracja runtime guardu w dispatcherze: `CI PASS`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-`agent_dispatch.py` wywołuje teraz `validate_repository_state()` z `handoff_runtime_guard.py` wewnątrz serializowanej ścieżki claimu, gdy lokalny mutex jest już zdobyty i aktualny READY state został ponownie odczytany. Błąd guardu kończy ścieżkę przed `CLAIMED`, więc realny subprocess nie może wystartować na starym lub niespójnym handoffie.
-
-Dodano `tests/check_agent_dispatch_runtime_guard_integration.py` i krok CI `Verify dispatcher runtime guard integration`.
+Workflow #176 na commicie `9293c8766dd047bb233c5808391e282c6d5f5ac4` potwierdził, że kodowy łańcuch bezpieczeństwa dispatchera działa: BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC, freshness, runtime guard, integracja guardu w dispatcherze, claim/failure/mutex/stale-mutex/dependencies i artifact preflight = PASS.
 
 ## Testy / CI
 
-Nowy workflow po wdrożeniu został uruchomiony, ale podczas tej iteracji pozostawał w kolejce. Dlatego nowego gate NIE oznaczono jeszcze jako PASS. Poprzedni workflow #168 kończył się na istniejącym P0 #7 po przejściu wcześniejszych gate'ów.
+`Static application checks` nadal = FAIL przez P0 #7. BEST40 checksum/stable pozostają downstream. To oznacza: P1 #12 ma już CI PASS dla części kodowej, a do pełnego zamknięcia pozostaje wyłącznie lokalny smoke z realnym `FLIPPCHILL_BOT_COMMAND`.
 
 ## P0 / P1
 
 - P0 #7 — aktywny i READY dla PRIMARY.
 - P0 #11 — aktywny, BLOCKED przez #7.
-- P1 #12 — część kodowa integracji runtime guardu jest wdrożona; pozostał wynik bieżącego CI oraz pełny lokalny smoke z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
+- P1 #12 — `DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PASS_PENDING_LOCAL_RUNTIME`.
 - THIRD_UI czeka na canonical app.
 
 ## Handoff dla 3 botów
@@ -46,7 +44,7 @@ Po canonical app wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibil
 - `status = READY`
 - `task_id = P0-7-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 26`
-- Runtime guard integration = `INTEGRATED_BEFORE_CLAIM`.
+- `source_iteration = 27`
+- Runtime guard integration = `CI_PASS_BEFORE_CLAIM`.
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
