@@ -25,6 +25,8 @@ jobs:
         run: python tests/check_schema_11_12_contract.py
       - name: Verify AI sync dispatch protocol
         run: python tests/check_ai_sync_protocol.py
+      - name: Verify AI sync handoff freshness
+        run: python tests/check_ai_sync_freshness.py
       - name: Verify local dispatcher claim contract
         run: python tests/check_agent_dispatch_claim.py
       - name: Verify local dispatcher failure recovery
