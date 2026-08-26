@@ -7,18 +7,18 @@
   "iteration": 21,
   "generated_at": "2026-08-26T13:11:23+02:00",
   "branch": "develop",
-  "tested_commit": "2bf529b7148c28b550d4427be6862a381da168b8",
+  "tested_commit": "d98dfacd5af264c1380ebf66ce54ce59389c21b6",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {
       "priority": "P1",
       "area": "AI_SYNC blocker semantics",
-      "result": "check_ai_sync_protocol.py treated only literal status OPEN as an active P0, while Source of Truth legitimately uses staged non-terminal statuses such as PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT. This could create a false active-P0 drift failure."
+      "result": "Two CI checkers treated only literal status OPEN as active. Staged non-terminal P0 states such as PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT were therefore at risk of false drift failures. Both checkers now treat every P0 outside explicit terminal states as active."
     },
     {
       "priority": "P0",
       "area": "canonical app",
-      "result": "P0 #7 remains active; app/FlippChill_Kalkulator.html is still absent and frozen BEST40 import still requires local exact-hash preflight."
+      "result": "P0 #7 remains the first real CI blocker: Static application checks fail because app/FlippChill_Kalkulator.html is absent; BEST40 checksum remains downstream."
     }
   ],
   "business_decisions": [],
@@ -26,26 +26,26 @@
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": false,
-    "source_of_truth_update": "No blocker status changed. The CI checker was corrected to preserve staged non-terminal P0 states as active."
+    "source_of_truth_update": "No blocker status or business rule changed; only CI interpretation of staged blocker statuses was corrected."
   },
   "tests": {
-    "workflow_run": 114,
-    "best56_audit_manifest_gate": "PENDING_AT_AUDIT_WRITE",
-    "source_of_truth_consistency_gate": "PENDING_AT_AUDIT_WRITE",
-    "schema_11_12_contract_gate": "PENDING_AT_AUDIT_WRITE",
-    "ai_sync_dispatch_protocol_gate": "PENDING_AT_AUDIT_WRITE",
-    "dispatcher_claim_contract_gate": "PENDING_AT_AUDIT_WRITE",
-    "dispatcher_failure_recovery_gate": "PENDING_AT_AUDIT_WRITE",
-    "artifact_preflight_safety_gate": "PENDING_AT_AUDIT_WRITE",
-    "static_application_checks": "EXPECTED_FAIL_UNTIL_P0_7",
-    "best40_checksum": "BLOCKED_BY_P0_7",
-    "ci_overall": "PENDING"
+    "workflow_run": 120,
+    "best56_audit_manifest_gate": "PASS",
+    "source_of_truth_consistency_gate": "PASS",
+    "schema_11_12_contract_gate": "PASS",
+    "ai_sync_dispatch_protocol_gate": "PASS",
+    "dispatcher_claim_contract_gate": "PASS",
+    "dispatcher_failure_recovery_gate": "PASS",
+    "artifact_preflight_safety_gate": "PASS",
+    "static_application_checks": "FAIL_BLOCKED_BY_P0_7",
+    "best40_checksum": "SKIPPED_AFTER_P0_7",
+    "ci_overall": "FAIL_UNTIL_P0_7"
   },
   "impact": {
     "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
     "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
-    "automation": "AI_SYNC now recognizes staged non-terminal blocker statuses as active P0 instead of requiring the literal OPEN token."
+    "automation": "AI_SYNC and Source-of-Truth gates now remain consistent when blockers advance through meaningful non-terminal status names instead of the literal OPEN token."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
