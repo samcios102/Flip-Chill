@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "project": "Flipp&Chill CRM / Kalkulator",
+  "updated_at": "2026-08-25T18:11:44+02:00",
+  "source_branch": "develop",
+  "release_target": "BEST56 BAZA MIESZKAŃ",
+  "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "audit_version_policy": "automation keeps BEST56 and adds AUDYT; it never increments to BEST57",
+  "audit_baseline": {
+    "artifact": "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html",
+    "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "status": "AUDITED_STATICALLY"
+  },
+  "modules": {
+    "baza_mieszkan": {
+      "default_open": true,
+      "scope": "wszystkie transakcje",
+      "priority": "P0/P1",
+      "requirements": [
+        "Baza mieszkań / Wszystkie transakcje ma być otwarta po wejściu",
+        "Portfel, Wynik i Wypłaty mają być domyślnie zwinięte",
+        "Przycisk + Dodaj transakcję ma pozostać w górnym prawym obszarze",
+        "Daty i rozliczenie nie mają dublować się w zbędnych miejscach",
+        "Tabela ma być większa, czytelniejsza i estetyczna",
+        "Filtr globalny ma obejmować wszystkie statusy i nakładać się na filtry szczegółowe"
+      ]
+    },
+    "statusy": {
+      "transaction": ["W toku", "Przedwstępna", "Sprzedana"],
+      "payment": ["Oczekiwane", "Opłacone"],
+      "settlement": ["Nierozliczona", "Rozliczona"],
+      "interaction": "statusy mają być możliwe do zmiany kliknięciem tam, gdzie UI na to pozwala"
+    },
+    "financial_rules": {
+      "cit": 0.09,
+      "vat": 0.23,
+      "agent_pit_default": 0.12,
+      "monthly_bonus_thresholds": [
+        {"threshold": 50000, "bonus": 0.05},
+        {"threshold": 100000, "bonus": 0.10}
+      ],
+      "slack_marketing_counts_toward_thresholds": true,
+      "search_bonus": 0.10
+    }
+  },
+  "release_gates": {
+    "canonical_app_path": "app/FlippChill_Kalkulator.html",
+    "duplicate_dom_ids": 0,
+    "broken_aria_refs": 0,
+    "console_errors": 0,
+    "ci_required": true
+  },
+  "current_blockers": [
+    {
+      "id": 7,
+      "priority": "P0",
+      "title": "Reprodukowalny build app/FlippChill_Kalkulator.html",
+      "status": "OPEN"
+    },
+    {
+      "id": 10,
+      "priority": "P1",
+      "title": "AUDYT BEST56 BAZA MIESZKAŃ: freeze audit baseline and validate finance/data integrity",
+      "status": "OPEN"
+    },
+    {
+      "id": 11,
+      "priority": "P0",
+      "title": "schema 11→12 must preserve manual preliminaryDate and business data",
+      "status": "OPEN"
+    }
+  ],
+  "sync_contract": {
+    "read_before_work": true,
+    "update_after_change": true,
+    "never_duplicate_business_rules": true,
+    "backlog_file": "BACKLOG.md",
+    "human_sync_file": "sync/CRM_SYNC.md"
+  }
+}
