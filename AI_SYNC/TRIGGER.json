@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T20:19:00+02:00",
+  "updated_at": "2026-08-26T21:22:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 30,
-  "reason": "P0 #7 canonical BEST56 subtask remains the highest-priority unblocked work. Dependency partition is CI-verified; after 7A completes, SECOND_AUDIT may start #11 without waiting for BEST40.",
+  "source_iteration": 31,
+  "reason": "P0 #7 canonical BEST56 subtask remains the highest-priority unblocked work. Iteration 31 reconciled stale #13 documentation; queue priority and dependencies are unchanged.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
