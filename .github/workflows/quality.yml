@@ -33,6 +33,8 @@ jobs:
         run: python tests/check_agent_dispatch_mutex.py
       - name: Verify stale dispatcher mutex recovery
         run: python tests/check_agent_dispatch_stale_mutex.py
+      - name: Verify dispatcher dependency guard
+        run: python tests/check_agent_dispatch_dependencies.py
       - name: Verify artifact discovery preflight safety
         run: python tests/check_artifact_preflight.py
       - name: Static application checks
