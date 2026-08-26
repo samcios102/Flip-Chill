@@ -6,18 +6,32 @@
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
 - Iteracja: `21`
 - Branch roboczy: `develop`
-- Testowany commit: `2bf529b7148c28b550d4427be6862a381da168b8`
+- Testowany commit: `d98dfacd5af264c1380ebf66ce54ce59389c21b6`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Naprawiono semantykę aktywnych blockerów w `tests/check_ai_sync_protocol.py`. P0 pozostaje aktywny także przy etapowym, nie-terminalnym statusie typu `PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT`; checker nie wymaga już literalnego `OPEN`.
+Naprawiono dwa gate’y CI, które błędnie uznawały P0 za aktywne tylko przy literalnym `status=OPEN`. Etapowe nie-terminalne statusy, np. `PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT`, są teraz poprawnie traktowane jako aktywne. Jawne terminalne stany (`DONE`, `CLOSED`, `RESOLVED`, `COMPLETED`, `SUPERSEDED`, `REJECTED`) wyłączają blocker.
+
+## Dowody
+
+Workflow dla `d98dfacd...`:
+
+- BEST56 audit manifest: PASS
+- Source of Truth consistency: PASS
+- schema 11→12 contract: PASS
+- AI sync dispatch protocol: PASS
+- local dispatcher claim contract: PASS
+- local dispatcher failure recovery: PASS
+- artifact discovery preflight safety: PASS
+- Static application checks: FAIL przez aktywny P0 #7
+- BEST40 checksum/stable: pominięte po P0 #7
 
 ## P0 / P1
 
-- P0 #7 — nadal aktywny i READY dla PRIMARY.
-- P0 #11 — nadal aktywny, BLOCKED przez #7.
-- P1 #12 — lokalny runtime dispatch nadal czeka na rzeczywistą komendę bota.
+- P0 #7 — aktywny i READY dla PRIMARY.
+- P0 #11 — aktywny, BLOCKED przez #7.
+- P1 #12 — lokalny runtime dispatch czeka na rzeczywistą komendę bota.
 - THIRD_UI czeka na canonical app.
 
 ## Handoff dla 3 botów
@@ -41,4 +55,4 @@ Po canonical app wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibil
 - `task_id = P0-7-CANONICAL-APP`
 - `target_agent = PRIMARY`
 
-Workflow dla poprawki został uruchomiony; wynik CI jest sprawdzany osobno. Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
+Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
