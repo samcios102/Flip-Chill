@@ -31,6 +31,8 @@ jobs:
         run: python tests/check_agent_dispatch_failure_recovery.py
       - name: Verify local dispatcher mutex contract
         run: python tests/check_agent_dispatch_mutex.py
+      - name: Verify stale dispatcher mutex recovery
+        run: python tests/check_agent_dispatch_stale_mutex.py
       - name: Verify artifact discovery preflight safety
         run: python tests/check_artifact_preflight.py
       - name: Static application checks
