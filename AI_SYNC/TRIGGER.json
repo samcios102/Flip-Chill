@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T11:17:00+02:00",
+  "updated_at": "2026-08-26T12:18:15+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 19,
-  "reason": "Highest-priority unblocked P0 remains canonical app + exact frozen BEST40. PRIMARY must verify the required SHA before import; dispatcher claim and failure-recovery guards are CI-verified.",
+  "source_iteration": 20,
+  "reason": "Highest-priority unblocked P0 remains canonical app + exact frozen BEST40. Artifact discovery preflight is now CI-verified; PRIMARY must run it locally and import BEST40 only on EXACT_MATCH.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
