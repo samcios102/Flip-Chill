@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-26T10:16:00+02:00",
+  "updated_at": "2026-08-26T11:17:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -23,7 +23,7 @@
         "BEST56 audit naming policy remains unchanged",
         "main is not modified"
       ],
-      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "dispatcher claim contract", "Static application checks", "BEST40 checksum"],
+      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "dispatcher claim contract", "dispatcher failure recovery", "Static application checks", "BEST40 checksum"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
@@ -59,11 +59,12 @@
       "acceptance": [
         "watcher detects RUN_FIX+READY",
         "task is atomically claimed and locked before bot subprocess",
+        "failed subprocess releases stale claim and records BLOCKED unless bot already advanced state",
         "BOT_INBOX is generated from repository queue",
         "configured local bot command runs",
         "result returns to queue/audit handoff without touching main"
       ],
-      "required_checks": ["AI sync dispatch protocol", "dispatcher claim contract PASS", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
+      "required_checks": ["AI sync dispatch protocol", "dispatcher claim contract PASS", "dispatcher failure recovery PASS", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
