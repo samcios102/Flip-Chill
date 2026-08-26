@@ -8,7 +8,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
 - P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
-- P1 #12: statyczna spójność AI_SYNC jest chroniona CI; pełny lokalny dispatcher czeka na runtime smoke z rzeczywistą komendą bota
+- P1 #12: statyczna spójność AI_SYNC i claim/lock przed subprocess są chronione CI; pełny lokalny dispatcher czeka wyłącznie na runtime smoke z rzeczywistą komendą bota
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -94,4 +94,13 @@ Po zmianie:
 - Workflow #73: BEST56 manifest = PASS, Source of Truth consistency = PASS, schema 11→12 = PASS, AI sync dispatch protocol = PASS; workflow nadal zatrzymuje się wyłącznie na P0 #7 przy `Static application checks`.
 - P1 #12 przeszedł do stanu `CI_GUARDED_PENDING_LOCAL_RUNTIME_DISPATCH_CHECK`; pozostał lokalny pełny test watcher → claim → bot → test → handoff z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
 - Kolejka nadal wystawia `P0-7-CANONICAL-APP` jako jedyny READY task dla PRIMARY; P0 #11, runtime dispatch #12 i THIRD_UI pozostają poprawnie zablokowane zależnościami.
+- Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 18
+
+- Wykryto i naprawiono lukę runtime dispatch: `scripts/agent_dispatch.py` wcześniej mógł uruchomić realną komendę bota bez wcześniejszego zapisania `CLAIMED` i locka, co tworzyło ryzyko równoległego startu tego samego taska przez dwa watchery.
+- Dispatcher teraz zapisuje `task.status=CLAIMED`, `lock.owner`, `lock.claimed_at` oraz `TRIGGER.status=CLAIMED` bezpośrednio przed subprocess; bez `FLIPPCHILL_BOT_COMMAND` stan pozostaje READY.
+- Dodano `tests/check_agent_dispatch_claim.py` i gate `Verify local dispatcher claim contract`; workflow #83 potwierdził PASS dla BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC protocol i dispatcher claim. CI nadal zatrzymuje się dopiero na P0 #7 `Static application checks`.
+- Potwierdzono istnienie dokładnego historycznego `FlippChill_Kalkulator_BEST40.html` w ChatGPT File Library. Repo nadal go nie zawiera; PRIMARY ma importować lokalny artefakt wyłącznie po exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`, a przy braku takiego pliku oznaczyć task BLOCKED.
+- P1 #12 ma teraz stan `CLAIM_GUARDED_CI_PASS_PENDING_LOCAL_BOT_RUNTIME`; pozostał pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
 - Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
