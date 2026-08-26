@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-26T15:31:00+02:00",
+  "updated_at": "2026-08-26T16:22:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -23,7 +23,7 @@
         "BEST56 audit naming policy remains unchanged",
         "main is not modified"
       ],
-      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "AI sync handoff freshness", "dispatcher claim contract", "dispatcher failure recovery", "dispatcher mutex contract", "dispatcher stale mutex recovery", "dispatcher dependency guard", "artifact discovery preflight safety", "Static application checks", "BEST40 checksum"],
+      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher claim contract", "dispatcher failure recovery", "dispatcher mutex contract", "dispatcher stale mutex recovery", "dispatcher dependency guard", "artifact discovery preflight safety", "Static application checks", "BEST40 checksum"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
@@ -43,13 +43,13 @@
       "id": "P1-12-LOCAL-DISPATCH-RUNTIME",
       "issue": 12,
       "priority": "P1",
-      "title": "Verify full local dispatcher RUN_FIX cycle with real bot command",
+      "title": "Integrate runtime handoff guard and verify full local dispatcher RUN_FIX cycle",
       "status": "BLOCKED",
       "blocked_by": ["LOCAL_FLIPPCHILL_BOT_COMMAND"],
       "owner": "PRIMARY",
-      "scope": ["scripts/agent_dispatch.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
-      "acceptance": ["watcher detects RUN_FIX+READY", "handoff report/trigger are not older than shared Source of Truth/BOT_QUEUE state", "trigger source_iteration and machine action match LATEST_AUDIT", "local atomic mutex serializes READY-to-CLAIMED across watchers in one checkout", "stale mutex is recovered only when old and recorded PID is dead", "fresh or live-process mutex is never stolen", "unresolved blocked_by dependencies prevent claim", "task is atomically claimed and locked before bot subprocess", "failed subprocess releases stale claim and records BLOCKED unless bot already advanced state", "BOT_INBOX is generated from repository queue", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
-      "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness PASS", "dispatcher claim contract PASS", "dispatcher failure recovery PASS", "dispatcher mutex contract PASS", "dispatcher stale mutex recovery PASS", "dispatcher dependency guard PASS", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
+      "scope": ["scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
+      "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard is invoked immediately before real subprocess", "stale timestamps block dispatch", "source_iteration mismatch blocks dispatch", "machine_action mismatch blocks dispatch", "handoff report/trigger are not older than shared Source of Truth/BOT_QUEUE state", "local atomic mutex serializes READY-to-CLAIMED across watchers in one checkout", "stale mutex is recovered only when old and recorded PID is dead", "fresh or live-process mutex is never stolen", "unresolved blocked_by dependencies prevent claim", "task is atomically claimed and locked before bot subprocess", "failed subprocess releases stale claim and records BLOCKED unless bot already advanced state", "BOT_INBOX is generated from repository queue", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
+      "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness PASS", "runtime handoff guard contract PASS", "dispatcher runtime integration test PASS", "dispatcher claim contract PASS", "dispatcher failure recovery PASS", "dispatcher mutex contract PASS", "dispatcher stale mutex recovery PASS", "dispatcher dependency guard PASS", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
