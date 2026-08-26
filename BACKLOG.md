@@ -13,7 +13,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P1 — do naprawy / twarde testy
 
-- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → claim → wykonanie → test → handoff`. Claim/lock przed subprocess jest już deterministycznie wymuszony przez `tests/check_agent_dispatch_claim.py` i przechodzi CI; pozostał pełny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
+- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → claim → wykonanie → test → handoff`. Claim/lock przed subprocess oraz failure recovery po niezerowym exit code są deterministycznie wymuszane przez CI; pozostał pełny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
 - [ ] Zbudować test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage`.
 - [ ] Zbudować automatyczny test: logowanie → Baza mieszkań → filtr → Rozlicz → Daty → status → zapis → ponowne otwarcie.
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
