@@ -4,38 +4,39 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 21,
-  "generated_at": "2026-08-26T13:11:23+02:00",
+  "iteration": 22,
+  "generated_at": "2026-08-26T14:16:00+02:00",
   "branch": "develop",
-  "tested_commit": "d98dfacd5af264c1380ebf66ce54ce59389c21b6",
+  "tested_commit": "5bbe358ad344b6ea98e43a0f1b059c3875f37bb8",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {
       "priority": "P1",
-      "area": "AI_SYNC blocker semantics",
-      "result": "Two CI checkers treated only literal status OPEN as active. Staged non-terminal P0 states such as PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT were therefore at risk of false drift failures. Both checkers now treat every P0 outside explicit terminal states as active."
+      "area": "local dispatcher concurrency",
+      "result": "Two watchers could read RUN_FIX+READY before either persisted CLAIMED. claim_task validated process-local stale state, so the same task could theoretically launch twice. Dispatcher now serializes the READY-to-CLAIMED critical section with a cross-platform O_CREAT|O_EXCL mutex and reloads trigger+queue while holding it."
     },
     {
       "priority": "P0",
       "area": "canonical app",
-      "result": "P0 #7 remains the first real CI blocker: Static application checks fail because app/FlippChill_Kalkulator.html is absent; BEST40 checksum remains downstream."
+      "result": "P0 #7 remains the first application CI blocker: Static application checks fail because app/FlippChill_Kalkulator.html is absent; exact BEST40 import remains downstream."
     }
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
-    "source_of_truth_update_required": false,
-    "source_of_truth_update": "No blocker status or business rule changed; only CI interpretation of staged blocker statuses was corrected."
+    "source_of_truth_update_required": true,
+    "source_of_truth_update": "P1 #12 advanced to MUTEX_CI_PASS_PENDING_LOCAL_BOT_RUNTIME; dispatcher mutex path added to sync contract."
   },
   "tests": {
-    "workflow_run": 120,
+    "workflow_run": 125,
     "best56_audit_manifest_gate": "PASS",
     "source_of_truth_consistency_gate": "PASS",
     "schema_11_12_contract_gate": "PASS",
     "ai_sync_dispatch_protocol_gate": "PASS",
     "dispatcher_claim_contract_gate": "PASS",
     "dispatcher_failure_recovery_gate": "PASS",
+    "dispatcher_mutex_contract_gate": "PASS",
     "artifact_preflight_safety_gate": "PASS",
     "static_application_checks": "FAIL_BLOCKED_BY_P0_7",
     "best40_checksum": "SKIPPED_AFTER_P0_7",
@@ -45,7 +46,7 @@
     "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
     "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
-    "automation": "AI_SYNC and Source-of-Truth gates now remain consistent when blockers advance through meaningful non-terminal status names instead of the literal OPEN token."
+    "automation": "Local duplicate-dispatch risk in one checkout is now guarded by a mutex + reload-before-claim contract; full real-bot runtime remains pending."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
@@ -55,7 +56,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main.",
+    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main. Dispatcher now serializes READY-to-CLAIMED locally.",
     "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
     "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
