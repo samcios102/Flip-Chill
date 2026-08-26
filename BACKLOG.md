@@ -4,7 +4,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P0 — krytyczne błędy
 
-- [ ] Przywrócić odtwarzalny build `app/FlippChill_Kalkulator.html` — aktualne CI na `develop` kończy się błędem `missing app file`; śledzone w #7.
+- [ ] Przywrócić odtwarzalny build `app/FlippChill_Kalkulator.html` — aktualne CI na `develop` kończy się błędem `missing app file`; śledzone w #7. Dokładny historyczny BEST40 został odnaleziony w ChatGPT File Library, ale repo nadal go nie zawiera; PRIMARY ma importować go wyłącznie po lokalnym potwierdzeniu SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`.
 - [x] Zweryfikować raport 28 zduplikowanych ID DOM — audyt wykazał false positive testu: regex liczył `id=` wewnątrz stringów JavaScript renderujących SVG. Parser realnych tagów HTML potwierdza 0 statycznych duplikatów; test sprawdza teraz również statyczne referencje `for`, `aria-labelledby`, `aria-describedby`, `aria-controls` i lokalne `href="#..."`. Lokalnie: BEST40 = 739 ID / 38 poprawnych referencji, BEST49 = 748 / 38. Issue #8 zamknięte.
 - [ ] P0 #11 — migracja schema 11→12 musi zachować ręczne `preliminaryDate`, `maxDealDate`, `paymentParts`, `id`, `startDate` i `finalDate`; status należy wyprowadzać z istniejących dat zamiast kasować dane. Kandydat AUDYT przechodzi test zachowania danych, ale issue pozostaje otwarte do czasu testu na kanonicznym artefakcie repo i realnym `localStorage`.
 - [ ] Każda nowa regresja blokująca logowanie, zapis danych, otwieranie Bazy mieszkań, Rozliczenia lub Dat.
@@ -13,7 +13,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P1 — do naprawy / twarde testy
 
-- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → claim → wykonanie → test → handoff`; statyczna spójność `AI_SYNC` jest chroniona gate'em CI.
+- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → claim → wykonanie → test → handoff`. Claim/lock przed subprocess jest już deterministycznie wymuszony przez `tests/check_agent_dispatch_claim.py` i przechodzi CI; pozostał pełny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
 - [ ] Zbudować test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage`.
 - [ ] Zbudować automatyczny test: logowanie → Baza mieszkań → filtr → Rozlicz → Daty → status → zapis → ponowne otwarcie.
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
