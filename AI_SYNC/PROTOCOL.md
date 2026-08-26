@@ -43,14 +43,15 @@ Each task has exactly one `owner` while CLAIMED/WORKING/TESTING. `lock.owner` + 
 - `action=IDLE`: nothing to launch.
 - `action=RUN_FIX`, `status=READY`: watcher/supervisor may prepare the work order for the bot named by `target_agent`.
 - if no real local bot command is configured, dispatcher leaves task and trigger READY; it does not claim work it cannot execute.
-- immediately before a real bot subprocess, watcher atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`.
-- only then may the local bot process start.
-- if the bot subprocess exits non-zero while the task is still `CLAIMED` by that same agent, dispatcher records `task.status=BLOCKED`, `last_error`, releases the lock and moves trigger to `action=IDLE`, `status=BLOCKED`.
+- immediately before a real bot subprocess, watcher acquires the local atomic mutex `AI_SYNC/.dispatcher_claim.lock` using an exclusive create operation, then reloads queue + trigger while holding that mutex.
+- only one watcher in the same checkout can perform the READY→CLAIMED transition; a second watcher skips the cycle while the mutex is occupied or if reloaded state is no longer READY.
+- while holding the mutex, watcher atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`; the mutex is then released before the bot subprocess starts.
+- if the bot subprocess exits non-zero while the task is still `CLAIMED` by that same agent, dispatcher records `task.status=BLOCKED`, `last_error`, releases the task lock and moves trigger to `action=IDLE`, `status=BLOCKED`.
 - if the bot already advanced the task to WORKING/TESTING/DONE/BLOCKED, dispatcher does not overwrite the newer bot-owned state.
 - bot runs the requested checks and writes outcome back to queue/audit state.
 - after a successful verified cycle, trigger becomes `IDLE` or points to the next READY task.
 
-A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two watchers to launch the same task concurrently or leaving a failed subprocess as a stale permanent claim.
+A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two local watchers to launch the same task concurrently or leaving a failed subprocess as a stale permanent claim.
 
 ## Safety gates
 
@@ -74,7 +75,7 @@ Every completed bot cycle updates:
 
 ## Local self-dispatch
 
-Run `python scripts/agent_dispatch.py --watch` from the repository root. The dispatcher polls `AI_SYNC/TRIGGER.json`. When `RUN_FIX + READY` appears, it builds `AI_SYNC/BOT_INBOX.md` from the task. When `FLIPPCHILL_BOT_COMMAND` is configured, it first claims and locks the task, then invokes the local bot.
+Run `python scripts/agent_dispatch.py --watch` from the repository root. The dispatcher polls `AI_SYNC/TRIGGER.json`. When `RUN_FIX + READY` appears, it builds `AI_SYNC/BOT_INBOX.md` from the task. When `FLIPPCHILL_BOT_COMMAND` is configured, it first serializes and claims the task, then invokes the local bot.
 
 The command template may contain `{prompt_file}`, `{agent}`, and `{task_id}`. Example shape only:
 
