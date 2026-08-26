@@ -4,64 +4,59 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 28,
-  "generated_at": "2026-08-26T18:22:00+02:00",
+  "iteration": 29,
+  "generated_at": "2026-08-26T19:20:00+02:00",
   "branch": "develop",
-  "change_head": "025023c4b84d2b3caec79357209b994620a752ef",
-  "tested_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
+  "change_head": "90777b1346ee079a95435b8898a79abb0c8b44d7",
+  "tested_commit": "30c94c1ab94a251e8b69583d1fea58cd319fab91",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P0", "area": "canonical app", "result": "The exact Source-of-Truth BEST56 baseline is locally available with SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, but the repository connector cannot directly upload that local artifact as a file object."},
-    {"priority": "P0", "area": "canonical app staging", "result": "Added scripts/stage_canonical_app.py to stage app/FlippChill_Kalkulator.html only from the exact audited BEST56 SHA-256, plus a deterministic safety contract test and CI step."},
-    {"priority": "P0", "area": "frozen BEST40", "result": "Historical BEST40 remains a separate release gate and must still match c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708 exactly."}
+    {"priority": "P1", "area": "bot orchestration", "result": "Issue #7 combined the canonical BEST56 app gate and historical BEST40 gate into one queue task, unnecessarily blocking P0 #11 runtime migration until BEST40 was also available."},
+    {"priority": "P1", "area": "dependency graph", "result": "Queue was partitioned into P0-7A-CANONICAL-APP and P0-7B-FROZEN-BEST40. P0 #11 and THIRD_UI now depend only on canonical app, while BEST40 remains an independent release gate."},
+    {"priority": "P0", "area": "canonical app", "result": "P0-7A-CANONICAL-APP remains the highest-priority READY task for PRIMARY; exact BEST56 SHA-256 remains mandatory."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
-    "active_p1": [12],
+    "active_p1": [12, 13],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P0 #7 now has an exact-hash canonical BEST56 staging path; blocker remains active until the local exact artifact is staged and CI reaches/passes Static application checks, then exact BEST40 is imported."
+    "source_of_truth_update": "Issue #7 release work is now represented as two queue subtasks. Runtime migration #11 is blocked only by canonical app 7A, not historical BEST40 7B."
   },
   "tests": {
-    "previous_workflow_run": 176,
-    "previous_workflow_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
-    "previous_dispatch_safety_gates": "PASS",
-    "local_best56_fingerprint": "PASS",
-    "local_best56_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "canonical_app_staging_contract": "COMMITTED_CI_PENDING",
-    "latest_visible_workflow": 182,
-    "latest_visible_workflow_status": "QUEUED_ON_PRIOR_COMMIT_0cb2c531",
-    "static_application_checks": "PENDING_CANONICAL_APP_STAGE",
-    "best40_checksum": "PENDING_EXACT_ARTIFACT_IMPORT",
-    "ci_overall": "NO_NEW_CI_EVIDENCE_FOR_ITERATION_28_YET"
+    "previous_workflow_run": 188,
+    "previous_workflow_commit": "30c94c1ab94a251e8b69583d1fea58cd319fab91",
+    "previous_gates_through_canonical_staging": "PASS",
+    "previous_static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP",
+    "queue_dependency_partition_contract": "COMMITTED_CI_PENDING",
+    "ci_overall": "PENDING_NEW_CI_FOR_ITERATION_29"
   },
   "impact": {
-    "baza_mieszkan": "No application behavior or business-rule change; canonical deployment path is safer and deterministic.",
+    "baza_mieszkan": "No application behavior change. After canonical app is staged, data-integrity audit #11 and UI audit can proceed without waiting for historical BEST40.",
     "finance": "No financial rule change.",
-    "data_integrity": "No data mutation; P0 #11 remains blocked by canonical-app work.",
-    "automation": "PRIMARY can now stage the exact audited BEST56 baseline with one guarded command instead of manually copying a similarly named HTML file."
+    "data_integrity": "Reduces unnecessary blocking of the schema 11->12 runtime verification while preserving BEST40 as a separate release gate.",
+    "automation": "Dependency graph now matches actual technical prerequisites and enables earlier parallel audit work."
   },
   "summary": {
-    "highest_priority": "P0-7-CANONICAL-APP",
+    "highest_priority": "P0-7A-CANONICAL-APP",
     "active_p0": [7, 11],
-    "ready_tasks": ["P0-7-CANONICAL-APP"],
-    "blocked_tasks": ["P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
+    "ready_tasks": ["P0-7A-CANONICAL-APP"],
+    "blocked_tasks": ["P0-7B-FROZEN-BEST40", "P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. First run scripts/stage_canonical_app.py against the exact local BEST56 baseline; only SHA-256 3bb0756f...f4044e92 may become app/FlippChill_Kalkulator.html. Then run artifact_preflight.py and import frozen BEST40 only on exact SHA-256 c04106fe...171708. Run full CI and do not touch main.",
-    "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
-    "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
+    "primary": "Claim P0-7A-CANONICAL-APP. Stage only exact BEST56 SHA-256 3bb0756f...f4044e92 as app/FlippChill_Kalkulator.html and run Static application checks. Handle historical BEST40 separately as P0-7B only after exact preflight match.",
+    "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
+    "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
-  "ready_tasks": ["P0-7-CANONICAL-APP"],
-  "blocked_tasks": ["P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
+  "ready_tasks": ["P0-7A-CANONICAL-APP"],
+  "blocked_tasks": ["P0-7B-FROZEN-BEST40", "P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
   "next_action": "RUN_FIX",
   "target_agent": "PRIMARY",
   "machine_action": {
     "trigger_file": "AI_SYNC/TRIGGER.json",
     "queue_file": "AI_SYNC/BOT_QUEUE.json",
     "action": "RUN_FIX",
-    "task_id": "P0-7-CANONICAL-APP",
+    "task_id": "P0-7A-CANONICAL-APP",
     "target_agent": "PRIMARY"
   }
 }
