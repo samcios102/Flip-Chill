@@ -4,18 +4,20 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `22`
+- Iteracja: `24`
 - Branch roboczy: `develop`
-- Testowany commit: `5bbe358ad344b6ea98e43a0f1b059c3875f37bb8`
+- Ostatni w pełni zweryfikowany commit CI: `32954d5adc3db890d61640dcf68a833b79c6b582`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Wykryto race-condition lokalnego dispatchera: dwa watchery mogły równolegle odczytać `RUN_FIX + READY` przed zapisaniem `CLAIMED`. Dispatcher ma teraz cross-platform mutex `AI_SYNC/.dispatcher_claim.lock` tworzony atomowo przez `O_CREAT|O_EXCL`. Po zdobyciu mutexa ponownie czyta `TRIGGER.json` i `BOT_QUEUE.json`; tylko aktualny `READY` może przejść do `CLAIMED`. Mutex jest zwalniany przed subprocess bota.
+Wykryto, że Source of Truth i BOT_QUEUE były nowsze niż LATEST_AUDIT/TRIGGER, mimo że dotychczasowy AI_SYNC gate przechodził. Dodano `tests/check_ai_sync_freshness.py` i krok CI, który wymaga, aby raport i trigger nie były starsze niż wspólny stan, `TRIGGER.source_iteration` odpowiadał iteracji raportu, a `action/task_id/target_agent` zgadzały się z `machine_action`.
+
+Dodatkowo najnowszy dispatcher ma już dependency guard: brakująca lub nierozwiązana zależność `blocked_by` blokuje claim taska.
 
 ## Dowody
 
-Workflow #125 dla `5bbe358a...`:
+Workflow #144 dla `32954d5a...`:
 
 - BEST56 audit manifest: PASS
 - Source of Truth consistency: PASS
@@ -24,15 +26,19 @@ Workflow #125 dla `5bbe358a...`:
 - local dispatcher claim contract: PASS
 - local dispatcher failure recovery: PASS
 - local dispatcher mutex contract: PASS
+- stale mutex recovery: PASS
+- dispatcher dependency guard: PASS
 - artifact discovery preflight safety: PASS
 - Static application checks: FAIL przez aktywny P0 #7
 - BEST40 checksum/stable: pominięte po P0 #7
+
+Nowy gate `AI sync handoff freshness` został dodany w iteracji 24 i czeka na wynik CI dla bieżącego handoffu.
 
 ## P0 / P1
 
 - P0 #7 — aktywny i READY dla PRIMARY.
 - P0 #11 — aktywny, BLOCKED przez #7.
-- P1 #12 — mutex/claim/failure recovery są już chronione CI; pełny lokalny runtime czeka na rzeczywistą komendę bota.
+- P1 #12 — claim/failure recovery/mutex/stale-mutex/dependency guard są chronione CI; świeżość handoffu dostała osobny gate; pełny lokalny runtime czeka na rzeczywistą komendę bota.
 - THIRD_UI czeka na canonical app.
 
 ## Handoff dla 3 botów
@@ -55,6 +61,8 @@ Po canonical app wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibil
 - `status = READY`
 - `task_id = P0-7-CANONICAL-APP`
 - `target_agent = PRIMARY`
+- Handoff musi być świeży względem Source of Truth/BOT_QUEUE.
 - READY→CLAIMED jest lokalnie serializowane przez mutex.
+- unresolved `blocked_by` blokuje claim.
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
