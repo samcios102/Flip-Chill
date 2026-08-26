@@ -45,10 +45,12 @@ Each task has exactly one `owner` while CLAIMED/WORKING/TESTING. `lock.owner` + 
 - if no real local bot command is configured, dispatcher leaves task and trigger READY; it does not claim work it cannot execute.
 - immediately before a real bot subprocess, watcher atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`.
 - only then may the local bot process start.
+- if the bot subprocess exits non-zero while the task is still `CLAIMED` by that same agent, dispatcher records `task.status=BLOCKED`, `last_error`, releases the lock and moves trigger to `action=IDLE`, `status=BLOCKED`.
+- if the bot already advanced the task to WORKING/TESTING/DONE/BLOCKED, dispatcher does not overwrite the newer bot-owned state.
 - bot runs the requested checks and writes outcome back to queue/audit state.
 - after a successful verified cycle, trigger becomes `IDLE` or points to the next READY task.
 
-A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two watchers to launch the same task concurrently.
+A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two watchers to launch the same task concurrently or leaving a failed subprocess as a stale permanent claim.
 
 ## Safety gates
 
