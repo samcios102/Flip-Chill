@@ -1,0 +1,29 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 18,
+  "generated_at": "2026-08-26T10:16:00+02:00",
+  "branch": "develop",
+  "tested_commit": "6eb3038c173b9f07c63e7fc77be55b8920d9cbab",
+  "changes": [
+    "dispatcher persists CLAIMED task state and lock before real bot subprocess",
+    "dispatcher leaves READY state untouched when FLIPPCHILL_BOT_COMMAND is unavailable",
+    "deterministic dispatcher claim test added and integrated into CI",
+    "P0 #7 work order now requires exact BEST40 SHA verification before import"
+  ],
+  "tests": {
+    "workflow": 83,
+    "best56_manifest": "PASS",
+    "source_of_truth": "PASS",
+    "schema_11_12": "PASS",
+    "ai_sync_protocol": "PASS",
+    "dispatcher_claim": "PASS",
+    "static_application": "FAIL_P0_7",
+    "best40_checksum": "SKIPPED_AFTER_P0_7"
+  },
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "next_ready_task": "P0-7-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}
