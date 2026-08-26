@@ -4,21 +4,16 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 24,
-  "generated_at": "2026-08-26T15:36:00+02:00",
+  "iteration": 25,
+  "generated_at": "2026-08-26T16:23:00+02:00",
   "branch": "develop",
-  "tested_commit": "4aeab79a6bc95578200de87601d9d1af898123b4",
+  "tested_commit": "e7254f340ee20f95664cf89f307fe74b41078108",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {
       "priority": "P1",
-      "area": "AI_SYNC handoff freshness",
-      "result": "Source of Truth and BOT_QUEUE were newer than LATEST_AUDIT/TRIGGER while previous AI_SYNC CI still passed. Added and CI-verified freshness gate so stale report/trigger state cannot silently remain dispatchable."
-    },
-    {
-      "priority": "P1",
-      "area": "dispatcher dependency guard",
-      "result": "Latest develop dependency guard is CI-verified: tasks with missing or unresolved blocked_by dependencies cannot be claimed. Protocol and handoff now explicitly include this contract."
+      "area": "runtime handoff enforcement",
+      "result": "CI freshness validation existed, but local agent_dispatch.py did not independently enforce freshness/source_iteration/machine_action immediately before subprocess. A side-effect-free runtime guard component and deterministic CI contract were added; direct dispatcher integration remains the next P1 #12 step."
     },
     {
       "priority": "P0",
@@ -31,16 +26,17 @@
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P1 #12 advanced to FRESHNESS_GATE_CI_PASS_PENDING_LOCAL_BOT_RUNTIME; dependency guard and handoff freshness are now shared contracts."
+    "source_of_truth_update": "P1 #12 now includes a CI-verified runtime handoff guard component; integration into agent_dispatch.py before subprocess and full local bot runtime remain pending."
   },
   "tests": {
-    "workflow_run": 153,
-    "workflow_commit": "4aeab79a6bc95578200de87601d9d1af898123b4",
+    "workflow_run": 160,
+    "workflow_commit": "e7254f340ee20f95664cf89f307fe74b41078108",
     "best56_audit_manifest_gate": "PASS",
     "source_of_truth_consistency_gate": "PASS",
     "schema_11_12_contract_gate": "PASS",
     "ai_sync_dispatch_protocol_gate": "PASS",
     "ai_sync_handoff_freshness_gate": "PASS",
+    "runtime_handoff_guard_contract_gate": "PASS",
     "dispatcher_claim_contract_gate": "PASS",
     "dispatcher_failure_recovery_gate": "PASS",
     "dispatcher_mutex_contract_gate": "PASS",
@@ -55,7 +51,7 @@
     "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
     "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
-    "automation": "Stale handoff state and unresolved task dependencies are now deterministic CI contracts; local full real-bot runtime remains pending."
+    "automation": "Runtime freshness/machine-action validation is now a reusable CI-verified component; direct pre-subprocess dispatcher integration remains pending."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
@@ -65,7 +61,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main. Respect dependency guard and fresh handoff contract.",
+    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main. Separately, P1 #12 now requires runtime guard integration into agent_dispatch.py before real subprocess.",
     "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
     "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
