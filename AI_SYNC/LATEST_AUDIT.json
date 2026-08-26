@@ -5,9 +5,9 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 33,
-  "generated_at": "2026-08-26T23:20:00+02:00",
+  "generated_at": "2026-08-26T23:24:00+02:00",
   "branch": "develop",
-  "change_head": "b6ba03e5c9d908b1bc6d3794d859cf46955c6801",
+  "change_head": "7a94fe7d0c1c7a062d4d320a74a82c4dfd41cb70",
   "tested_commit": "77783db907c04314df1a56f4904fe7c273190697",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
@@ -20,7 +20,7 @@
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "Recorded canonical BEST56 auto-discovery capability; no business or financial rule changed."
+    "source_of_truth_update": "Recorded canonical BEST56 auto-discovery capability and CI evidence; no business or financial rule changed."
   },
   "tests": {
     "workflow_run": 226,
