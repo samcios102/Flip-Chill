@@ -5,7 +5,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 ## Aktualny stan
 
 - Źródło pracy: `develop`
-- Gałąź integracyjna rozwiązania: `feat/crm-source-of-truth`
+- Source of Truth jest zintegrowany bezpośrednio z `develop`
 - P0: reprodukowalny `app/FlippChill_Kalkulator.html`
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
@@ -55,3 +55,10 @@ Po zmianie:
 - Walidacja kandydata: 9/9 bloków JavaScript PASS, 766 unikalnych ID DOM, 0 duplikatów, 38/38 referencji DOM poprawnych.
 - `tests/check_app.py` został dostosowany do aktualnego UX BEST56: Daty otwierają się z jednego przycisku wybranej transakcji `#fac-portfolio-dates-selected`, zamiast wymagać usuniętego przycisku per-row `data-open-pf-dates=`.
 - P0 #7 pozostaje otwarte do czasu umieszczenia kanonicznego `app/FlippChill_Kalkulator.html`; polityka wersji pozostaje BEST56 + dopisek `AUDYT`.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 10
+
+- PR #9 został bezpiecznie scalony do `develop`; `OPENCODE.md`, `sync/CRM_SOURCE_OF_TRUTH.json` i `sync/CRM_SYNC.md` są teraz bezpośrednio w gałęzi roboczej.
+- Usunięto zależność operacyjną od osobnej gałęzi `feat/crm-source-of-truth`.
+- Reguły biznesowe i polityka wersji nie zmieniły się: automat zachowuje BEST56 i dopisek `AUDYT`.
+- P0 #7 i P0 #11 pozostają aktywne; następny techniczny priorytet to kanoniczny artefakt aplikacji oraz realny test migracji `localStorage`.
