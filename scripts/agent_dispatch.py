@@ -29,6 +29,7 @@ QUEUE = SYNC / "BOT_QUEUE.json"
 SOURCE = ROOT / "sync" / "CRM_SOURCE_OF_TRUTH.json"
 AUDIT = SYNC / "LATEST_AUDIT.json"
 INBOX = SYNC / "BOT_INBOX.md"
+DISPATCH_MUTEX = SYNC / ".dispatcher_claim.lock"
 
 
 def load_json(path: Path):
@@ -54,6 +55,33 @@ def find_task(queue: dict, task_id: str) -> dict:
     raise KeyError(f"task not found: {task_id}")
 
 
+def acquire_dispatch_mutex():
+    """Acquire a cross-platform local mutex for the READY->CLAIMED transition.
+
+    O_CREAT|O_EXCL guarantees that only one watcher in the same checkout can
+    enter the claim critical section at a time. The mutex is intentionally held
+    only while state is reloaded and CLAIMED is persisted, never for bot runtime.
+    """
+    try:
+        fd = os.open(str(DISPATCH_MUTEX), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        return None
+    os.write(fd, f"pid={os.getpid()} claimed_at={utc_now()}\n".encode("utf-8"))
+    return fd
+
+
+def release_dispatch_mutex(fd) -> None:
+    if fd is None:
+        return
+    try:
+        os.close(fd)
+    finally:
+        try:
+            DISPATCH_MUTEX.unlink()
+        except FileNotFoundError:
+            pass
+
+
 def claim_task(queue: dict, trigger: dict, task: dict) -> str:
     """Claim exactly one READY task before launching the local bot."""
     target = trigger.get("target_agent")
@@ -75,6 +103,36 @@ def claim_task(queue: dict, trigger: dict, task: dict) -> str:
     save_json(QUEUE, queue)
     save_json(TRIGGER, trigger)
     return claimed_at
+
+
+def claim_current_ready_task(task_id: str, target: str):
+    """Serialize, reload and claim current READY state.
+
+    Returns claimed_at on success, None when another watcher owns the critical
+    section or when repository state changed before this watcher could claim.
+    """
+    mutex_fd = acquire_dispatch_mutex()
+    if mutex_fd is None:
+        print("Another dispatcher is claiming work; skipping this cycle")
+        return None
+    try:
+        trigger = load_json(TRIGGER)
+        queue = load_json(QUEUE)
+        if (
+            trigger.get("action") != "RUN_FIX"
+            or trigger.get("status") != "READY"
+            or trigger.get("task_id") != task_id
+            or trigger.get("target_agent") != target
+        ):
+            print("Dispatch state changed before claim; skipping this cycle")
+            return None
+        task = find_task(queue, task_id)
+        if task.get("status") != "READY":
+            print(f"Task {task_id} changed to {task.get('status')} before claim; skipping")
+            return None
+        return claim_task(queue, trigger, task)
+    finally:
+        release_dispatch_mutex(mutex_fd)
 
 
 def recover_failed_dispatch(task_id: str, target: str, returncode: int) -> bool:
@@ -209,7 +267,9 @@ def dispatch_once(dry_run: bool = False) -> int:
         print(f"DRY RUN command: {command}")
         return 0
 
-    claimed_at = claim_task(queue, trigger, task)
+    claimed_at = claim_current_ready_task(task["id"], target)
+    if claimed_at is None:
+        return 0
     print(f"Claimed {task['id']} for {target} at {claimed_at}")
     completed = subprocess.run(command, shell=True, cwd=ROOT)
     if completed.returncode != 0:
