@@ -6,7 +6,8 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0: reprodukowalny `app/FlippChill_Kalkulator.html`
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256
+- P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -68,3 +69,10 @@ Po zmianie:
 - P1 #10 został zamknięty jako zakończony: fingerprint bazowego BEST56, kontrola DOM/ARIA/JS, reguły finansowe oraz osobny gate CI BEST56 AUDYT są już udokumentowane i zweryfikowane.
 - `CRM_SOURCE_OF_TRUTH.json` został zsynchronizowany: #10 usunięto z `current_blockers`; aktywne pozostają P0 #7 i P0 #11.
 - Reguły biznesowe i polityka wersji nie zmieniły się. Automat nadal utrzymuje `BEST56 BAZA MIESZKAŃ AUDYT` i NIE tworzy BEST57.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 13
+
+- Zsynchronizowano Source of Truth z potwierdzoną diagnozą P0 #7: release gate składa się z dwóch niezależnych artefaktów, bieżącego `app/FlippChill_Kalkulator.html` i historycznego `versions/FlippChill_Kalkulator_BEST40.html`.
+- Do manifestu dodano ścieżkę zamrożonego BEST40 i referencyjny SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`.
+- Workflow #53 dla poprzedniego commitu zakończył się `failure`; status P0 #7 i P0 #11 pozostaje OPEN.
+- Reguły biznesowe oraz polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez podbijania numeru.
