@@ -4,48 +4,48 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 20,
-  "generated_at": "2026-08-26T12:18:15+02:00",
+  "iteration": 21,
+  "generated_at": "2026-08-26T13:11:23+02:00",
   "branch": "develop",
-  "tested_commit": "315b274f7701abe35c82ddf0688ad8d7b261444c",
+  "tested_commit": "2bf529b7148c28b550d4427be6862a381da168b8",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {
-      "priority": "P0",
-      "area": "artifact recovery safety",
-      "result": "P0 #7 depended on manual artifact discovery. A deterministic preflight now scans local candidate paths and treats BEST40 as importable only on exact frozen SHA-256 match."
+      "priority": "P1",
+      "area": "AI_SYNC blocker semantics",
+      "result": "check_ai_sync_protocol.py treated only literal status OPEN as an active P0, while Source of Truth legitimately uses staged non-terminal statuses such as PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT. This could create a false active-P0 drift failure."
     },
     {
       "priority": "P0",
       "area": "canonical app",
-      "result": "Static application checks still fail because app/FlippChill_Kalkulator.html is absent; frozen BEST40 checksum remains downstream."
+      "result": "P0 #7 remains active; app/FlippChill_Kalkulator.html is still absent and frozen BEST40 import still requires local exact-hash preflight."
     }
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
-    "source_of_truth_update_required": true,
-    "source_of_truth_update": "P0 #7 moved to PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT. The blocker remains open, but exact-hash discovery is now CI-guarded."
+    "source_of_truth_update_required": false,
+    "source_of_truth_update": "No blocker status changed. The CI checker was corrected to preserve staged non-terminal P0 states as active."
   },
   "tests": {
-    "workflow_run": 106,
-    "best56_audit_manifest_gate": "PASS",
-    "source_of_truth_consistency_gate": "PASS",
-    "schema_11_12_contract_gate": "PASS",
-    "ai_sync_dispatch_protocol_gate": "PASS",
-    "dispatcher_claim_contract_gate": "PASS",
-    "dispatcher_failure_recovery_gate": "PASS",
-    "artifact_preflight_safety_gate": "PASS",
-    "static_application_checks": "FAIL_BLOCKED_BY_P0_7",
-    "best40_checksum": "SKIPPED_AFTER_P0_7",
-    "ci_overall": "FAIL_UNTIL_P0_7"
+    "workflow_run": 114,
+    "best56_audit_manifest_gate": "PENDING_AT_AUDIT_WRITE",
+    "source_of_truth_consistency_gate": "PENDING_AT_AUDIT_WRITE",
+    "schema_11_12_contract_gate": "PENDING_AT_AUDIT_WRITE",
+    "ai_sync_dispatch_protocol_gate": "PENDING_AT_AUDIT_WRITE",
+    "dispatcher_claim_contract_gate": "PENDING_AT_AUDIT_WRITE",
+    "dispatcher_failure_recovery_gate": "PENDING_AT_AUDIT_WRITE",
+    "artifact_preflight_safety_gate": "PENDING_AT_AUDIT_WRITE",
+    "static_application_checks": "EXPECTED_FAIL_UNTIL_P0_7",
+    "best40_checksum": "BLOCKED_BY_P0_7",
+    "ci_overall": "PENDING"
   },
   "impact": {
     "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
-    "data_integrity": "Artifact import now has an exact-hash safety gate; P0 #11 remains blocked until canonical app enables runtime migration verification.",
-    "automation": "PRIMARY can run artifact_preflight.py locally and receive a machine-readable exact-match decision instead of manually guessing which historical file is safe."
+    "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
+    "automation": "AI_SYNC now recognizes staged non-terminal blocker statuses as active P0 instead of requiring the literal OPEN token."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
@@ -55,7 +55,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. First run python scripts/artifact_preflight.py on local artifact/download/project locations. Import frozen BEST40 only if report says EXACT_MATCH for SHA-256 c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708; otherwise mark BLOCKED. Restore canonical app without touching main.",
+    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main.",
     "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
     "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
