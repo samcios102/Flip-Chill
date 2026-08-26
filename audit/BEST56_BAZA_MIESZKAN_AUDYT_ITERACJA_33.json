@@ -1,0 +1,20 @@
+{
+  "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 33,
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "change": "Canonical stager now supports deterministic --auto discovery of the exact BEST56 artifact by SHA-256.",
+  "evidence": {
+    "workflow": 226,
+    "tested_commit": "77783db907c04314df1a56f4904fe7c273190697",
+    "canonical_staging_auto_discovery": "PASS",
+    "pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_EXPECTED_MISSING_CANONICAL_APP",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "work_order": "python scripts/stage_canonical_app.py --auto && python tests/check_app.py",
+  "main_modified": false,
+  "best_number_incremented": false
+}
