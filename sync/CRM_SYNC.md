@@ -6,7 +6,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; kolejka rozdziela je na 7A canonical app i 7B frozen BEST40
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma runtime-verified stager exact BEST56 i oczekuje wyłącznie na zapis canonical app do repo, 7B pozostaje BLOCKED na exact BEST40
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - P1 #13: CLOSED / CI_VERIFIED — dependency partition 7A/7B potwierdzony workflow #202
@@ -182,3 +182,12 @@ Po zmianie:
 - `BACKLOG.md` oznacza teraz #13 jako ukończone; sekcja „Aktualny stan” tego pliku ma `P1 #13: CLOSED / CI_VERIFIED`.
 - Source of Truth już wcześniej poprawnie usuwał #13 z aktywnych blockerów, więc reguły biznesowe i aktywne P0/P1 nie zmieniły się.
 - Najwyższy READY task pozostaje `P0-7A-CANONICAL-APP` dla PRIMARY; numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 32
+
+- Wykonano rzeczywisty runtime test `scripts/stage_canonical_app.py` na exact lokalnym BEST56: dry-run = PASS oraz atomowe staging do tymczasowego targetu = PASS.
+- SHA-256 wejścia i staged targetu są identyczne: `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+- Workflow #216 na `8b00996f...` potwierdził 15/15 gate'ów przed aplikacją = PASS; `Static application checks` nadal FAIL, ponieważ canonical app nie jest jeszcze zapisany w repo.
+- Source of Truth zmienił stan #7 na `CANONICAL_STAGER_RUNTIME_VERIFIED_AWAITING_REPOSITORY_STAGE_BEST40_BLOCKED`.
+- `P0-7A-CANONICAL-APP` pozostaje READY dla PRIMARY, ale nie wymaga już ponownego sprawdzania stagera — następny krok to zapis exact BEST56 jako `app/FlippChill_Kalkulator.html` na `develop` i uruchomienie Static application checks.
+- P0 #11 nadal zależy wyłącznie od 7A; reguły finansowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`.
