@@ -9,6 +9,15 @@ REQUIRED_TASK_FIELDS = {"id", "priority", "owner", "status", "scope", "acceptanc
 ACTIVE_LOCK_STATES = {"CLAIMED", "WORKING", "TESTING"}
 VALID_AGENTS = {"PRIMARY", "SECOND_AUDIT", "THIRD_UI"}
 TERMINAL_BLOCKER_STATES = {"DONE", "CLOSED", "RESOLVED", "COMPLETED", "SUPERSEDED", "REJECTED"}
+REQUIRED_READ_ORDER = [
+    "sync/CRM_SOURCE_OF_TRUTH.json",
+    "AI_SYNC/PROTOCOL.md",
+    "AI_SYNC/LATEST_AUDIT.json",
+    "AI_SYNC/BOT_QUEUE.json",
+    "AI_SYNC/TRIGGER.json",
+    "sync/CRM_SYNC.md",
+    "BACKLOG.md",
+]
 
 
 def fail(message: str) -> None:
@@ -106,7 +115,23 @@ def main() -> None:
         if not Path(expected).is_file():
             fail(f"declared sync path missing: {expected}")
 
-    print("PASS: AI_SYNC report, queue, trigger, P0 state and dispatcher contract are consistent")
+    read_order = contract.get("required_read_order")
+    if read_order != REQUIRED_READ_ORDER:
+        fail(f"canonical read order drifted: {read_order!r}")
+
+    protocol_path = Path("AI_SYNC/PROTOCOL.md")
+    protocol = protocol_path.read_text(encoding="utf-8")
+    positions = []
+    for item in REQUIRED_READ_ORDER:
+        marker = f"`{item}`"
+        pos = protocol.find(marker)
+        if pos < 0:
+            fail(f"protocol missing required read-order entry: {item}")
+        positions.append(pos)
+    if positions != sorted(positions):
+        fail("protocol read-order entries are not in canonical order")
+
+    print("PASS: AI_SYNC report, queue, trigger, read order, P0 state and dispatcher contract are consistent")
 
 
 if __name__ == "__main__":
