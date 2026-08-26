@@ -1,0 +1,31 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "iteration": 15,
+  "date": "2026-08-26",
+  "scope": "Source of Truth consistency gate",
+  "finding": {
+    "priority": "P1",
+    "type": "quality-gate hardening",
+    "summary": "Source of Truth, audit manifest, release gates, active blockers and finance rules previously had no single executable cross-check."
+  },
+  "changes": [
+    "Added tests/check_source_of_truth_consistency.py",
+    "Wired Verify BEST56 Source of Truth consistency into CI before application checks",
+    "Kept BEST56 + AUDYT version policy unchanged",
+    "Kept main untouched"
+  ],
+  "assertions": {
+    "release_target": "BEST56 BAZA MIESZKAŃ",
+    "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+    "best56_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "active_blockers": [7, 11],
+    "cit": 0.09,
+    "vat": 0.23,
+    "pit_default": 0.12,
+    "slack_marketing_counts_toward_thresholds": true,
+    "thresholds": [50000, 100000]
+  },
+  "release_state": "AUDIT ONLY",
+  "version_policy": "keep BEST56; never increment to BEST57 automatically"
+}
