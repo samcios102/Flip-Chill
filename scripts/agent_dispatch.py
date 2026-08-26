@@ -22,6 +22,10 @@ import subprocess
 import sys
 import time
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
 from handoff_runtime_guard import validate_repository_state
 
 ROOT = Path(__file__).resolve().parents[1]
