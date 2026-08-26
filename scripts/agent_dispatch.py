@@ -22,6 +22,8 @@ import subprocess
 import sys
 import time
 
+from handoff_runtime_guard import validate_repository_state
+
 ROOT = Path(__file__).resolve().parents[1]
 SYNC = ROOT / "AI_SYNC"
 TRIGGER = SYNC / "TRIGGER.json"
@@ -234,7 +236,7 @@ def claim_task(queue: dict, trigger: dict, task: dict) -> str:
 
 
 def claim_current_ready_task(task_id: str, target: str):
-    """Serialize, reload and claim current READY state."""
+    """Serialize, reload, runtime-validate and claim current READY state."""
     mutex_fd = acquire_dispatch_mutex()
     if mutex_fd is None:
         print("Another dispatcher is claiming work; skipping this cycle")
@@ -258,6 +260,13 @@ def claim_current_ready_task(task_id: str, target: str):
         if task.get("status") != "READY":
             print(f"Task {task_id} changed to {task.get('status')} before claim; skipping")
             return None
+
+        handoff_errors = validate_repository_state()
+        if handoff_errors:
+            for error in handoff_errors:
+                print(f"HANDOFF BLOCKED: {error}", file=sys.stderr)
+            return None
+
         return claim_task(queue, trigger, task)
     finally:
         release_dispatch_mutex(mutex_fd)
