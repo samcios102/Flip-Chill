@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T00:24:00+02:00",
+  "updated_at": "2026-08-27T00:26:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
   "source_iteration": 34,
-  "reason": "Exact BEST56 staging is now portable across agent runtimes via FLIPPCHILL_ARTIFACT_ROOTS and CI-verified. PRIMARY should persist exact BEST56 as canonical app on develop, then run Static application checks.",
+  "reason": "Exact BEST56 staging is portable across agent runtimes via FLIPPCHILL_ARTIFACT_ROOTS and CI-verified. PRIMARY should persist exact BEST56 as canonical app on develop, then run Static application checks.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
