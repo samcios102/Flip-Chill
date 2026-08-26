@@ -5,20 +5,20 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 24,
-  "generated_at": "2026-08-26T15:32:00+02:00",
+  "generated_at": "2026-08-26T15:36:00+02:00",
   "branch": "develop",
-  "tested_commit": "32954d5adc3db890d61640dcf68a833b79c6b582",
+  "tested_commit": "4aeab79a6bc95578200de87601d9d1af898123b4",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {
       "priority": "P1",
       "area": "AI_SYNC handoff freshness",
-      "result": "Source of Truth and BOT_QUEUE were newer than LATEST_AUDIT/TRIGGER while existing AI_SYNC CI still passed. Added deterministic freshness gate so stale report/trigger state cannot silently remain dispatchable."
+      "result": "Source of Truth and BOT_QUEUE were newer than LATEST_AUDIT/TRIGGER while previous AI_SYNC CI still passed. Added and CI-verified freshness gate so stale report/trigger state cannot silently remain dispatchable."
     },
     {
       "priority": "P1",
       "area": "dispatcher dependency guard",
-      "result": "Latest develop added and CI-verified dependency guarding: tasks with missing or unresolved blocked_by dependencies cannot be claimed. Protocol and handoff now explicitly include this contract."
+      "result": "Latest develop dependency guard is CI-verified: tasks with missing or unresolved blocked_by dependencies cannot be claimed. Protocol and handoff now explicitly include this contract."
     },
     {
       "priority": "P0",
@@ -31,22 +31,22 @@
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P1 #12 now includes dependency guard and handoff freshness contracts; full local real-bot runtime remains pending."
+    "source_of_truth_update": "P1 #12 advanced to FRESHNESS_GATE_CI_PASS_PENDING_LOCAL_BOT_RUNTIME; dependency guard and handoff freshness are now shared contracts."
   },
   "tests": {
-    "last_completed_workflow_run": 144,
-    "last_completed_workflow_commit": "32954d5adc3db890d61640dcf68a833b79c6b582",
+    "workflow_run": 153,
+    "workflow_commit": "4aeab79a6bc95578200de87601d9d1af898123b4",
     "best56_audit_manifest_gate": "PASS",
     "source_of_truth_consistency_gate": "PASS",
     "schema_11_12_contract_gate": "PASS",
     "ai_sync_dispatch_protocol_gate": "PASS",
+    "ai_sync_handoff_freshness_gate": "PASS",
     "dispatcher_claim_contract_gate": "PASS",
     "dispatcher_failure_recovery_gate": "PASS",
     "dispatcher_mutex_contract_gate": "PASS",
     "dispatcher_stale_mutex_recovery_gate": "PASS",
     "dispatcher_dependency_guard_gate": "PASS",
     "artifact_preflight_safety_gate": "PASS",
-    "ai_sync_handoff_freshness_gate": "ADDED_PENDING_CURRENT_HANDOFF_CI",
     "static_application_checks": "FAIL_BLOCKED_BY_P0_7",
     "best40_checksum": "SKIPPED_AFTER_P0_7",
     "ci_overall": "FAIL_UNTIL_P0_7"
@@ -55,7 +55,7 @@
     "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
     "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
-    "automation": "Handoff freshness and unresolved task dependencies are now explicit CI contracts; local full real-bot runtime remains pending."
+    "automation": "Stale handoff state and unresolved task dependencies are now deterministic CI contracts; local full real-bot runtime remains pending."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
