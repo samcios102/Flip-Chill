@@ -1,0 +1,24 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 31,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "finding": "Issue #13 was already closed/completed and removed from active Source of Truth blockers, while BACKLOG and CRM_SYNC current state still described it as pending.",
+  "changes": [
+    "BACKLOG marks P1 #13 completed with workflow #202 evidence",
+    "CRM_SYNC current state records P1 #13 CLOSED / CI_VERIFIED",
+    "AI_SYNC handoff, queue timestamp and trigger advanced to iteration 31"
+  ],
+  "business_rules_changed": false,
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "tested_evidence": {
+    "workflow": 209,
+    "commit": "cbdd2c9603d09faa56a4647ff0c02aa7be5d0669",
+    "pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}
