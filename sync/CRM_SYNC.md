@@ -6,7 +6,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256; preflight exact-hash jest już chroniony CI
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; canonical BEST56 ma teraz exact-hash stager `scripts/stage_canonical_app.py`, a BEST40 nadal wymaga preflight exact SHA-256
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - DOM IDs: quality gate ma wymagać 0 duplikatów
@@ -154,4 +154,14 @@ Po zmianie:
 - `Static application checks` nadal FAIL przez aktywny P0 #7; BEST40 checksum i frozen stable pozostają pominięte downstream.
 - P1 #12 przeszedł do `DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PASS_PENDING_LOCAL_RUNTIME`; do pełnego zamknięcia pozostał tylko realny lokalny smoke z `FLIPPCHILL_BOT_COMMAND`.
 - P0 #7 pozostaje jedynym READY taskiem dla PRIMARY; P0 #11 i THIRD_UI nadal są prawidłowo zablokowane zależnościami.
+- Reguły CRM, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 28
+
+- Ponownie zweryfikowano lokalny bazowy BEST56: SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`, dokładnie zgodny z Source of Truth.
+- Dodano `scripts/stage_canonical_app.py`: canonical `app/FlippChill_Kalkulator.html` może zostać przygotowany wyłącznie z exact baseline BEST56; mismatch kończy się `BLOCKED` bez kopiowania.
+- Dodano `tests/check_stage_canonical_app.py` oraz krok CI `Verify canonical app staging safety` przed `Static application checks`.
+- Historyczny BEST40 pozostaje niezależnym gate i nadal wymaga exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`; żaden podobnie nazwany plik nie może go zastąpić.
+- Najnowszy widoczny workflow #182 pozostaje `QUEUED` na starszym commicie, dlatego nowego CI PASS dla stagera jeszcze NIE zadeklarowano.
+- P0 #7 ma stan `CANONICAL_STAGER_COMMITTED_CI_PENDING_LOCAL_STAGE`; PRIMARY pozostaje właścicielem jedynego READY taska.
 - Reguły CRM, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
