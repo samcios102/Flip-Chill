@@ -45,13 +45,14 @@ Each task has exactly one `owner` while CLAIMED/WORKING/TESTING. `lock.owner` + 
 - if no real local bot command is configured, dispatcher leaves task and trigger READY; it does not claim work it cannot execute.
 - immediately before a real bot subprocess, watcher acquires the local atomic mutex `AI_SYNC/.dispatcher_claim.lock` using an exclusive create operation, then reloads queue + trigger while holding that mutex.
 - only one watcher in the same checkout can perform the READY→CLAIMED transition; a second watcher skips the cycle while the mutex is occupied or if reloaded state is no longer READY.
+- a mutex older than the configured stale threshold is recovered only when its recorded local PID is confirmed dead; fresh locks, unparseable locks and locks owned by live processes are never stolen.
 - while holding the mutex, watcher atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`; the mutex is then released before the bot subprocess starts.
 - if the bot subprocess exits non-zero while the task is still `CLAIMED` by that same agent, dispatcher records `task.status=BLOCKED`, `last_error`, releases the task lock and moves trigger to `action=IDLE`, `status=BLOCKED`.
 - if the bot already advanced the task to WORKING/TESTING/DONE/BLOCKED, dispatcher does not overwrite the newer bot-owned state.
 - bot runs the requested checks and writes outcome back to queue/audit state.
 - after a successful verified cycle, trigger becomes `IDLE` or points to the next READY task.
 
-A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two local watchers to launch the same task concurrently or leaving a failed subprocess as a stale permanent claim.
+A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two local watchers to launch the same task concurrently, leaving a failed subprocess as a stale permanent claim, or permanently blocking dispatch after an orphaned mutex from a hard process stop.
 
 ## Safety gates
 
