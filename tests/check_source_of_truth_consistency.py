@@ -11,6 +11,7 @@ EXPECTED_APP_PATH = "app/FlippChill_Kalkulator.html"
 EXPECTED_BEST40_PATH = "versions/FlippChill_Kalkulator_BEST40.html"
 EXPECTED_BEST40_SHA256 = "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708"
 EXPECTED_BLOCKERS = {7: "P0", 11: "P0"}
+TERMINAL_BLOCKER_STATES = {"DONE", "CLOSED", "RESOLVED", "COMPLETED", "SUPERSEDED", "REJECTED"}
 
 
 def fail(message: str) -> None:
@@ -68,7 +69,10 @@ def main() -> None:
             blocker_id = int(blocker.get("id"))
         except (TypeError, ValueError):
             fail("blocker id must be numeric")
-        if blocker.get("status") == "OPEN":
+        state = str(blocker.get("status", "")).strip().upper()
+        if not state:
+            fail(f"blocker {blocker_id} must have a status")
+        if state not in TERMINAL_BLOCKER_STATES:
             blockers[blocker_id] = blocker.get("priority")
     if blockers != EXPECTED_BLOCKERS:
         fail(f"active blocker set drifted: expected {EXPECTED_BLOCKERS}, got {blockers}")
