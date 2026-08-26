@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "project": "Flipp&Chill CRM / Baza mieszkań",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "updated_at": "2026-08-26T08:40:00+02:00",
+  "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
+  "tasks": [
+    {
+      "id": "P0-7-CANONICAL-APP",
+      "issue": 7,
+      "priority": "P0",
+      "title": "Restore canonical app artifact and frozen BEST40 gate",
+      "status": "READY",
+      "owner": "PRIMARY",
+      "scope": ["app/FlippChill_Kalkulator.html", "versions/FlippChill_Kalkulator_BEST40.html", "tests", ".github/workflows"],
+      "acceptance": [
+        "canonical app exists or is generated deterministically",
+        "frozen BEST40 matches required SHA-256",
+        "Static application checks pass",
+        "BEST56 audit naming policy remains unchanged",
+        "main is not modified"
+      ],
+      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "Static application checks", "BEST40 checksum"],
+      "lock": {"owner": null, "claimed_at": null}
+    },
+    {
+      "id": "P0-11-RUNTIME-MIGRATION",
+      "issue": 11,
+      "priority": "P0",
+      "title": "Run real schema 11->12 localStorage migration against canonical app",
+      "status": "BLOCKED",
+      "blocked_by": ["P0-7-CANONICAL-APP"],
+      "owner": "SECOND_AUDIT",
+      "scope": ["localStorage migration", "paymentParts", "transaction dates", "status derivation"],
+      "acceptance": [
+        "id preserved",
+        "startDate preserved",
+        "preliminaryDate preserved",
+        "finalDate preserved",
+        "maxDealDate preserved",
+        "paymentParts preserved",
+        "status derived consistently from dates"
+      ],
+      "required_checks": ["schema 11->12 fixture contract", "runtime localStorage migration"],
+      "lock": {"owner": null, "claimed_at": null}
+    },
+    {
+      "id": "P1-UI-RESPONSIVE-AUDIT",
+      "priority": "P1",
+      "title": "Responsive and interaction audit for Baza mieszkań",
+      "status": "BLOCKED",
+      "blocked_by": ["P0-7-CANONICAL-APP"],
+      "owner": "THIRD_UI",
+      "scope": ["Baza mieszkań", "mobile", "responsive", "accessibility", "visual regression"],
+      "acceptance": ["no critical overflow", "status/payment controls remain usable", "desktop layout preserved", "keyboard/focus issues documented"],
+      "required_checks": ["390px", "768px", "1366x768", "1440x900"],
+      "lock": {"owner": null, "claimed_at": null}
+    }
+  ]
+}
