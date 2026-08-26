@@ -8,6 +8,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
 - P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
+- P1 #12: statyczna spójność AI_SYNC jest chroniona CI; pełny lokalny dispatcher czeka na runtime smoke z rzeczywistą komendą bota
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -84,4 +85,13 @@ Po zmianie:
 - Test został wpięty do `.github/workflows/quality.yml` jako osobny gate przed statyczną kontrolą aplikacji.
 - Workflow #57: manifest BEST56 AUDYT = PASS, nowy gate migracji 11→12 = PASS; workflow nadal zatrzymuje się na P0 #7 przy `Static application checks` z powodu braku kanonicznego `app/FlippChill_Kalkulator.html`.
 - P0 #11 pozostaje OPEN, ponieważ pełne kryterium nadal wymaga uruchomienia rzeczywistej migracji w kanonicznym artefakcie i `localStorage`.
+- Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 17
+
+- Dodano `tests/check_ai_sync_protocol.py`, który deterministycznie sprawdza spójność `LATEST_AUDIT.json`, `BOT_QUEUE.json`, `TRIGGER.json`, locków, właścicieli, aktywnych P0 i ścieżek dispatchera.
+- Gate został wpięty do CI jako `Verify AI sync dispatch protocol` przed `Static application checks`.
+- Workflow #73: BEST56 manifest = PASS, Source of Truth consistency = PASS, schema 11→12 = PASS, AI sync dispatch protocol = PASS; workflow nadal zatrzymuje się wyłącznie na P0 #7 przy `Static application checks`.
+- P1 #12 przeszedł do stanu `CI_GUARDED_PENDING_LOCAL_RUNTIME_DISPATCH_CHECK`; pozostał lokalny pełny test watcher → claim → bot → test → handoff z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
+- Kolejka nadal wystawia `P0-7-CANONICAL-APP` jako jedyny READY task dla PRIMARY; P0 #11, runtime dispatch #12 i THIRD_UI pozostają poprawnie zablokowane zależnościami.
 - Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
