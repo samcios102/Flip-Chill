@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-27T01:23:00+02:00",
+  "updated_at": "2026-08-27T01:28:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -57,7 +57,7 @@
       "scope": ["scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
       "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard is invoked before real subprocess", "stale/mismatched handoff blocks dispatch", "canonical required_read_order includes CRM_SYNC before BACKLOG", "mutex/dependency/claim/failure recovery contracts hold", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
       "required_checks": ["AI sync dispatch protocol including canonical read order", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim/failure/mutex/dependency contracts", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
-      "ci_evidence": "iteration 35 read-order contract committed; CI pending; workflow #249 passed all earlier pre-application gates before Static application checks",
+      "ci_evidence": "workflow #257: Verify AI sync dispatch protocol = PASS; Source of Truth, freshness, dispatcher/runtime gates also PASS before Static application checks; local real FLIPPCHILL_BOT_COMMAND runtime remains pending",
       "lock": {"owner": null, "claimed_at": null}
     },
     {
