@@ -4,60 +4,60 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `28`
+- Iteracja: `29`
 - Branch roboczy: `develop`
-- Najwyższy priorytet: `P0-7-CANONICAL-APP`
+- Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Dodano `scripts/stage_canonical_app.py`. Stager przyjmuje bieżący BEST56 wyłącznie przy exact SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92` i atomowo przygotowuje `app/FlippChill_Kalkulator.html`. Dodano też `tests/check_stage_canonical_app.py` oraz osobny krok CI.
+Rozdzielono issue #7 na dwa niezależne zadania kolejki:
 
-Lokalny artefakt BEST56 został ponownie sprawdzony: fingerprint jest dokładnie zgodny z Source of Truth. Historyczny BEST40 pozostaje niezależnym gate i nadal wymaga exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`.
+- `P0-7A-CANONICAL-APP` — bieżący exact BEST56 jako `app/FlippChill_Kalkulator.html`;
+- `P0-7B-FROZEN-BEST40` — historyczny BEST40 z exact SHA-256.
+
+Dzięki temu `P0-11-RUNTIME-MIGRATION` i `P1-UI-RESPONSIVE-AUDIT` czekają tylko na canonical app 7A. Historyczny BEST40 pozostaje osobnym release gate i NIE blokuje już audytu integralności danych ani UI po wystawieniu canonical app.
 
 ## Testy / CI
 
-- lokalny fingerprint BEST56: `PASS`
-- canonical app staging contract: `COMMITTED / CI PENDING`
-- ostatni pełny dowód gate'ów dispatchera: workflow #176 = `PASS` przed P0 #7
-- najnowszy widoczny workflow #182 jest nadal `QUEUED` na starszym commicie `0cb2c531...`
-- `Static application checks`: oczekuje na realne wystawienie canonical app
-- BEST40 checksum: oczekuje na exact artefakt
-
-Nie deklarujemy nowego CI PASS dla iteracji 28 bez wyniku workflow.
+- workflow #188 na `30c94c1...`: wszystkie gate'y do `Verify canonical app staging safety` = `PASS`;
+- `Static application checks` = `FAIL` z powodu aktywnego P0 #7 / braku canonical app;
+- nowy `tests/check_queue_dependency_partition.py`: dodany i wpięty do CI;
+- wynik nowego gate'u dla iteracji 29: `CI PENDING`.
 
 ## P0 / P1
 
-- P0 #7 — aktywny i READY dla PRIMARY; ma teraz bezpieczny exact-hash stager BEST56.
-- P0 #11 — aktywny, BLOCKED przez #7.
-- P1 #12 — `DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PASS_PENDING_LOCAL_RUNTIME`.
-- THIRD_UI czeka na canonical app.
+- P0 #7 — aktywny, rozdzielony operacyjnie na 7A READY i 7B BLOCKED.
+- P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
+- P1 #12 — lokalny realny bot runtime pozostaje otwarty.
+- P1 #13 — dependency partition wdrożony, oczekuje na dowód CI.
 
 ## Handoff dla 3 botów
 
 ### PRIMARY
 
-Claim `P0-7-CANONICAL-APP`.
+Claim `P0-7A-CANONICAL-APP`.
 
 1. Uruchom `python scripts/stage_canonical_app.py <ścieżka-do-exact-BEST56>`.
 2. Kandydat musi mieć SHA-256 `3bb0756f...f4044e92`.
-3. Uruchom `artifact_preflight.py` i importuj historyczny BEST40 wyłącznie przy exact SHA-256 `c04106fe...171708`.
-4. Uruchom pełny workflow; `main` pozostaje bez zmian.
+3. Uruchom `Static application checks`.
+4. BEST40 obsługuj osobno jako `P0-7B-FROZEN-BEST40`, wyłącznie po `EXACT_MATCH`.
+5. `main` pozostaje bez zmian.
 
 ### SECOND_AUDIT
 
-Po P0 #7 wykonaj realny test migracji schema 11→12 na `localStorage`.
+Po DONE `P0-7A-CANONICAL-APP` wykonaj realny test migracji schema 11→12 na `localStorage`. NIE czekaj na BEST40.
 
 ### THIRD_UI
 
-Po canonical app wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression. Nie zmieniaj finansów.
+Po DONE `P0-7A-CANONICAL-APP` wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression. NIE zmieniaj finansów.
 
 ## Auto-dispatch
 
 - `action = RUN_FIX`
 - `status = READY`
-- `task_id = P0-7-CANONICAL-APP`
+- `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 28`
+- `source_iteration = 29`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
