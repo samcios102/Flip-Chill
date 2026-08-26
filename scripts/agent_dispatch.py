@@ -30,6 +30,9 @@ SOURCE = ROOT / "sync" / "CRM_SOURCE_OF_TRUTH.json"
 AUDIT = SYNC / "LATEST_AUDIT.json"
 INBOX = SYNC / "BOT_INBOX.md"
 DISPATCH_MUTEX = SYNC / ".dispatcher_claim.lock"
+DISPATCH_MUTEX_STALE_SECONDS = max(
+    30.0, float(os.environ.get("FLIPPCHILL_DISPATCH_MUTEX_STALE_SECONDS", "120"))
+)
 
 
 def load_json(path: Path):
@@ -55,19 +58,136 @@ def find_task(queue: dict, task_id: str) -> dict:
     raise KeyError(f"task not found: {task_id}")
 
 
+def _parse_mutex_pid(raw: str) -> int | None:
+    for token in raw.split():
+        if token.startswith("pid="):
+            try:
+                pid = int(token.split("=", 1)[1])
+            except ValueError:
+                return None
+            return pid if pid > 0 else None
+    return None
+
+
+def _process_is_alive(pid: int) -> bool:
+    """Best-effort local PID liveness check using only the standard library."""
+    if pid == os.getpid():
+        return True
+    if os.name == "nt":
+        try:
+            import ctypes
+            from ctypes import wintypes
+
+            process_query_limited_information = 0x1000
+            still_active = 259
+            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+            open_process = kernel32.OpenProcess
+            open_process.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            open_process.restype = wintypes.HANDLE
+            get_exit_code = kernel32.GetExitCodeProcess
+            get_exit_code.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+            get_exit_code.restype = wintypes.BOOL
+            close_handle = kernel32.CloseHandle
+            close_handle.argtypes = [wintypes.HANDLE]
+            close_handle.restype = wintypes.BOOL
+
+            handle = open_process(process_query_limited_information, False, pid)
+            if not handle:
+                return False
+            try:
+                code = wintypes.DWORD()
+                if not get_exit_code(handle, ctypes.byref(code)):
+                    return True
+                return code.value == still_active
+            finally:
+                close_handle(handle)
+        except Exception:
+            return True
+
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+    return True
+
+
+def _recover_orphaned_dispatch_mutex() -> bool:
+    """Remove only an old mutex whose recorded local PID is definitely gone.
+
+    A fresh lock, an unparseable lock, or a lock owned by a live process is kept.
+    The stat fingerprint is rechecked before unlink to avoid deleting a lock that
+    changed while it was inspected.
+    """
+    try:
+        initial_stat = DISPATCH_MUTEX.stat()
+        raw = DISPATCH_MUTEX.read_text(encoding="utf-8", errors="replace")
+    except FileNotFoundError:
+        return False
+
+    pid = _parse_mutex_pid(raw)
+    age_seconds = max(0.0, time.time() - initial_stat.st_mtime)
+    if pid is None or age_seconds < DISPATCH_MUTEX_STALE_SECONDS or _process_is_alive(pid):
+        return False
+
+    try:
+        current_stat = DISPATCH_MUTEX.stat()
+    except FileNotFoundError:
+        return False
+    fingerprint_before = (
+        initial_stat.st_dev,
+        initial_stat.st_ino,
+        initial_stat.st_mtime_ns,
+        initial_stat.st_size,
+    )
+    fingerprint_now = (
+        current_stat.st_dev,
+        current_stat.st_ino,
+        current_stat.st_mtime_ns,
+        current_stat.st_size,
+    )
+    if fingerprint_now != fingerprint_before:
+        return False
+
+    try:
+        DISPATCH_MUTEX.unlink()
+    except FileNotFoundError:
+        return False
+    print(f"Recovered orphaned dispatcher mutex from dead pid={pid} age={age_seconds:.1f}s")
+    return True
+
+
 def acquire_dispatch_mutex():
     """Acquire a cross-platform local mutex for the READY->CLAIMED transition.
 
     O_CREAT|O_EXCL guarantees that only one watcher in the same checkout can
-    enter the claim critical section at a time. The mutex is intentionally held
-    only while state is reloaded and CLAIMED is persisted, never for bot runtime.
+    enter the claim critical section at a time. If a previous process crashed,
+    an old lock is recovered only after its recorded PID is confirmed dead.
+    The mutex is held only while state is reloaded and CLAIMED is persisted.
     """
-    try:
-        fd = os.open(str(DISPATCH_MUTEX), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-    except FileExistsError:
-        return None
-    os.write(fd, f"pid={os.getpid()} claimed_at={utc_now()}\n".encode("utf-8"))
-    return fd
+    for attempt in range(2):
+        try:
+            fd = os.open(str(DISPATCH_MUTEX), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            if attempt == 0 and _recover_orphaned_dispatch_mutex():
+                continue
+            return None
+        payload = f"pid={os.getpid()} claimed_at={utc_now()}\n".encode("utf-8")
+        try:
+            os.write(fd, payload)
+            os.fsync(fd)
+        except Exception:
+            os.close(fd)
+            try:
+                DISPATCH_MUTEX.unlink()
+            except FileNotFoundError:
+                pass
+            raise
+        return fd
+    return None
 
 
 def release_dispatch_mutex(fd) -> None:
