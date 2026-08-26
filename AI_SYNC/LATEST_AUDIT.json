@@ -4,38 +4,41 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 30,
-  "generated_at": "2026-08-26T20:18:00+02:00",
+  "iteration": 31,
+  "generated_at": "2026-08-26T21:21:00+02:00",
   "branch": "develop",
-  "change_head": "1ab59a1a810f7815b7cb1704750bafecfb47b2d8",
-  "tested_commit": "3daaef3b66a07853b90537797d0c15bdcffc3086",
+  "change_head": "09ffa490f7dfb2d618c47e4c6fd6793935e301a2",
+  "tested_commit": "cbdd2c9603d09faa56a4647ff0c02aa7be5d0669",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P1", "area": "dependency graph", "result": "Queue dependency partition is now CI-verified: workflow #202 passed Verify BEST56 queue dependency partition."},
-    {"priority": "P1", "area": "issue lifecycle", "result": "Issue #13 criteria are complete and issue #13 was closed as completed."},
-    {"priority": "P0", "area": "canonical app", "result": "P0-7A-CANONICAL-APP remains the highest-priority READY task for PRIMARY; Static application checks still fail because canonical app is not yet staged."}
+    {"priority": "P1", "area": "shared-state documentation", "result": "Issue #13 was already closed/completed and removed from active Source of Truth blockers, but BACKLOG and CRM_SYNC current-state text still presented it as open/pending."},
+    {"priority": "P1", "area": "shared-state reconciliation", "result": "BACKLOG now marks #13 completed and CRM_SYNC current state now records CLOSED / CI_VERIFIED with workflow #202 evidence."},
+    {"priority": "P0", "area": "canonical app", "result": "P0-7A-CANONICAL-APP remains the highest-priority READY task for PRIMARY; exact local BEST56 SHA-256 is available in the audit runtime, while repository Static application checks still fail because canonical app is not staged."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
-    "source_of_truth_update_required": true,
-    "source_of_truth_update": "Dependency partition 7A/7B moved from CI_PENDING to CI_VERIFIED and P1 #13 was removed from active blockers."
+    "source_of_truth_update_required": false,
+    "source_of_truth_update": "No business rule or blocker state changed; this iteration reconciled stale human/backlog documentation with the already-correct Source of Truth."
   },
   "tests": {
-    "workflow_run": 202,
-    "workflow_commit": "3daaef3b66a07853b90537797d0c15bdcffc3086",
+    "workflow_run": 209,
+    "workflow_commit": "cbdd2c9603d09faa56a4647ff0c02aa7be5d0669",
+    "all_pre_application_gates": "PASS",
     "queue_dependency_partition_contract": "PASS",
-    "gates_before_static_application_checks": "PASS",
+    "ai_sync_handoff_freshness": "PASS",
+    "canonical_app_staging_safety": "PASS",
     "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "FAIL_EXPECTED_P0_7"
+    "ci_overall": "FAIL_EXPECTED_P0_7",
+    "iteration_31_ci": "PENDING_AFTER_SYNC_ONLY_COMMITS"
   },
   "impact": {
-    "baza_mieszkan": "No application behavior change. Dependency routing is now CI-proven.",
+    "baza_mieszkan": "No application behavior change. Shared-state documentation is now consistent about completed issue #13.",
     "finance": "No financial rule change.",
-    "data_integrity": "After canonical app 7A is completed, SECOND_AUDIT can start runtime migration #11 without waiting for BEST40.",
-    "automation": "P1 #13 closed; dependency routing contract is verified rather than pending."
+    "data_integrity": "No migration rule change; #11 remains blocked only by canonical app 7A.",
+    "automation": "Handoff no longer exposes closed #13 as pending work; queue routing itself is unchanged."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
