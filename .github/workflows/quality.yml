@@ -19,6 +19,8 @@ jobs:
           python-version: '3.12'
       - name: Verify BEST56 Baza Mieszkań audit manifest
         run: python tests/check_best56_audit_manifest.py audit/BEST56_BAZA_MIESZKAN_AUDYT.json
+      - name: Verify BEST56 schema 11 to 12 migration contract
+        run: python tests/check_schema_11_12_contract.py
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
       - name: Verify frozen BEST40 checksum
