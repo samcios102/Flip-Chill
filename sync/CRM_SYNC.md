@@ -8,7 +8,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
 - P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256; preflight exact-hash jest już chroniony CI
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
-- P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard i freshness są chronione CI; runtime handoff guard jest już wpięty do serializowanej ścieżki claimu przed subprocess, a pełny lokalny bot runtime pozostaje otwarty
+- P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -146,4 +146,12 @@ Po zmianie:
 - Dodano `tests/check_agent_dispatch_runtime_guard_integration.py` oraz krok CI `Verify dispatcher runtime guard integration`.
 - Bieżący workflow został uruchomiony, ale podczas publikacji handoffu nadal oczekiwał w kolejce; nowego gate NIE oznaczono jeszcze jako PASS.
 - P1 #12 ma stan `DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PENDING_LOCAL_RUNTIME`; po wyniku CI pozostanie pełny lokalny smoke z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
+- Reguły CRM, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 27
+
+- Workflow #176 na commicie `9293c8766dd047bb233c5808391e282c6d5f5ac4` potwierdził PASS dla BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC protocol/freshness, runtime handoff guard, bezpośredniej integracji guardu w dispatcherze, claim/failure/mutex/stale-mutex/dependencies oraz artifact preflight.
+- `Static application checks` nadal FAIL przez aktywny P0 #7; BEST40 checksum i frozen stable pozostają pominięte downstream.
+- P1 #12 przeszedł do `DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PASS_PENDING_LOCAL_RUNTIME`; do pełnego zamknięcia pozostał tylko realny lokalny smoke z `FLIPPCHILL_BOT_COMMAND`.
+- P0 #7 pozostaje jedynym READY taskiem dla PRIMARY; P0 #11 i THIRD_UI nadal są prawidłowo zablokowane zależnościami.
 - Reguły CRM, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
