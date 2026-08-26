@@ -6,7 +6,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256; preflight exact-hash jest już chroniony CI
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
 - P1 #12: claim/lock i failure recovery lokalnego dispatchera są chronione CI; pełny runtime czeka wyłącznie na rzeczywistą komendę bota
 - DOM IDs: quality gate ma wymagać 0 duplikatów
@@ -112,4 +112,12 @@ Po zmianie:
 - Dodano `tests/check_agent_dispatch_failure_recovery.py` oraz gate `Verify local dispatcher failure recovery`.
 - Workflow #95: BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC protocol, claim contract oraz failure recovery = PASS; `Static application checks` nadal FAIL wyłącznie przez P0 #7, a BEST40 checks są pominięte downstream.
 - P1 #12 ma teraz stan `FAILURE_RECOVERY_CI_PASS_PENDING_LOCAL_BOT_RUNTIME`; pozostał wyłącznie pełny lokalny runtime z prawdziwym `FLIPPCHILL_BOT_COMMAND`.
+- Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 20
+
+- Dodano `scripts/artifact_preflight.py`, który lokalnie skanuje kandydatów HTML i klasyfikuje BEST40 jako bezpieczny wyłącznie przy exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`.
+- Dodano `tests/check_artifact_preflight.py` oraz gate CI `Verify artifact discovery preflight safety`.
+- Workflow #106: BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC, dispatcher claim/failure recovery i artifact preflight = PASS; `Static application checks` nadal FAIL wyłącznie przez P0 #7.
+- P0 #7 ma stan `PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT`; PRIMARY ma wykonać lokalny preflight, importować historyczny BEST40 tylko przy `EXACT_MATCH`, a potem przywrócić kanoniczny `app/FlippChill_Kalkulator.html`.
 - Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
