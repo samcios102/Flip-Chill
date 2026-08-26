@@ -41,12 +41,14 @@ Each task has exactly one `owner` while CLAIMED/WORKING/TESTING. `lock.owner` + 
 `AI_SYNC/TRIGGER.json` is the machine dispatch signal.
 
 - `action=IDLE`: nothing to launch.
-- `action=RUN_FIX`, `status=READY`: watcher/supervisor may launch the bot named by `target_agent` for `task_id`.
-- watcher changes local state to `CLAIMED` before execution.
+- `action=RUN_FIX`, `status=READY`: watcher/supervisor may prepare the work order for the bot named by `target_agent`.
+- if no real local bot command is configured, dispatcher leaves task and trigger READY; it does not claim work it cannot execute.
+- immediately before a real bot subprocess, watcher atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`.
+- only then may the local bot process start.
 - bot runs the requested checks and writes outcome back to queue/audit state.
 - after a successful verified cycle, trigger becomes `IDLE` or points to the next READY task.
 
-A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX.
+A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX without allowing two watchers to launch the same task concurrently.
 
 ## Safety gates
 
@@ -70,7 +72,7 @@ Every completed bot cycle updates:
 
 ## Local self-dispatch
 
-Run `python scripts/agent_dispatch.py --watch` from the repository root. The dispatcher polls `AI_SYNC/TRIGGER.json`. When `RUN_FIX + READY` appears, it builds `AI_SYNC/BOT_INBOX.md` from the task and invokes the command configured in `FLIPPCHILL_BOT_COMMAND`.
+Run `python scripts/agent_dispatch.py --watch` from the repository root. The dispatcher polls `AI_SYNC/TRIGGER.json`. When `RUN_FIX + READY` appears, it builds `AI_SYNC/BOT_INBOX.md` from the task. When `FLIPPCHILL_BOT_COMMAND` is configured, it first claims and locks the task, then invokes the local bot.
 
 The command template may contain `{prompt_file}`, `{agent}`, and `{task_id}`. Example shape only:
 
