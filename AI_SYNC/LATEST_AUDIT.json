@@ -5,10 +5,10 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 35,
-  "generated_at": "2026-08-27T01:25:00+02:00",
+  "generated_at": "2026-08-27T01:30:00+02:00",
   "branch": "develop",
-  "change_head": "92a71f88042c1d96202619d337adacddb20ce6c4",
-  "tested_commit": "f6ca0dbd33b92b327b232bce3f53c7d2de85362f",
+  "change_head": "67d6917da725a3c8a33123c5a6dd6b0f04317918",
+  "tested_commit": "4d4c1f7aee5d1cf26efeb6b5634134e9cc5d3873",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {"priority": "P1", "area": "3-agent protocol", "result": "AI_SYNC/PROTOCOL.md omitted sync/CRM_SYNC.md from the mandatory read order, creating drift from the automation instruction and shared-state contract."},
@@ -20,16 +20,20 @@
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "Added canonical required_read_order for all three bots and aligned protocol/test. No business or financial rule changed."
+    "source_of_truth_update": "Canonical required_read_order added and CI-verified in workflow #257. No business or financial rule changed."
   },
   "tests": {
-    "previous_workflow_run": 249,
-    "previous_workflow_commit": "f6ca0dbd33b92b327b232bce3f53c7d2de85362f",
-    "previous_all_pre_application_gates": "PASS",
-    "read_order_contract": "COMMITTED_CI_PENDING",
+    "workflow_run": 257,
+    "workflow_commit": "4d4c1f7aee5d1cf26efeb6b5634134e9cc5d3873",
+    "best56_manifest": "PASS",
+    "source_of_truth": "PASS",
+    "schema_11_12": "PASS",
+    "ai_sync_dispatch_protocol_including_read_order": "PASS",
+    "handoff_freshness": "PASS",
+    "dispatcher_and_runtime_gates": "PASS",
     "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "PENDING_FOR_ITERATION_35_HEAD"
+    "ci_overall": "FAIL_EXPECTED_P0_7"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
