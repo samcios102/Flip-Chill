@@ -4,40 +4,40 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 33,
-  "generated_at": "2026-08-26T23:24:00+02:00",
+  "iteration": 34,
+  "generated_at": "2026-08-27T00:22:00+02:00",
   "branch": "develop",
-  "change_head": "7a94fe7d0c1c7a062d4d320a74a82c4dfd41cb70",
-  "tested_commit": "77783db907c04314df1a56f4904fe7c273190697",
+  "change_head": "2f20b58b6a43e17f8bf8bf496f3c3462884756de",
+  "tested_commit": "167efab675903eeb004c4819e60b6f4cf103b098",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P0", "area": "canonical app automation", "result": "stage_canonical_app.py now supports bounded deterministic --auto discovery and accepts only the exact audited BEST56 SHA-256."},
-    {"priority": "P0", "area": "canonical app evidence", "result": "The exact local BEST56 artifact remains available with SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
-    {"priority": "P0", "area": "CI", "result": "Workflow #226 on 77783db9 passed every pre-application gate including the expanded canonical staging/auto-discovery contract, then failed only at Static application checks because canonical app is still absent from repository develop."}
+    {"priority": "P0", "area": "canonical app portability", "result": "Auto-discovery previously depended on a fixed set of local roots; multi-agent runtimes may mount exact BEST56 elsewhere."},
+    {"priority": "P0", "area": "canonical app fix", "result": "stage_canonical_app.py now supports FLIPPCHILL_ARTIFACT_ROOTS, evaluated before cwd/Downloads/Desktop/OneDrive, while still accepting only the exact audited BEST56 SHA-256."},
+    {"priority": "P0", "area": "CI", "result": "Workflow #239 passed every pre-application gate including the expanded environment-root canonical staging contract, then failed only at Static application checks because canonical app is still absent from repository develop."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "Recorded canonical BEST56 auto-discovery capability and CI evidence; no business or financial rule changed."
+    "source_of_truth_update": "Recorded portable artifact-root discovery via FLIPPCHILL_ARTIFACT_ROOTS and workflow #239 CI evidence; no business/financial rule changed."
   },
   "tests": {
-    "workflow_run": 226,
-    "workflow_commit": "77783db907c04314df1a56f4904fe7c273190697",
+    "workflow_run": 239,
+    "workflow_commit": "167efab675903eeb004c4819e60b6f4cf103b098",
     "all_pre_application_gates": "PASS",
-    "canonical_app_staging_and_auto_discovery": "PASS_CI",
+    "canonical_app_staging_auto_discovery_and_env_roots": "PASS_CI",
     "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
     "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
     "ci_overall": "FAIL_EXPECTED_P0_7",
-    "iteration_33_final_ci": "PENDING_AFTER_HANDOFF_COMMITS"
+    "iteration_34_final_ci": "PENDING_AFTER_HANDOFF_COMMITS"
   },
   "impact": {
-    "baza_mieszkan": "No application behavior changed; canonical BEST56 staging no longer requires a manually supplied candidate path.",
+    "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule change.",
-    "data_integrity": "No migration rule change; #11 remains blocked only by canonical app 7A.",
-    "automation": "PRIMARY can now execute a repository-native work order: python scripts/stage_canonical_app.py --auto, then Static application checks."
+    "data_integrity": "Exact SHA-only staging is preserved; #11 remains blocked only by canonical app 7A.",
+    "automation": "PRIMARY/automation runners can expose exact BEST56 from arbitrary mounted/download roots through FLIPPCHILL_ARTIFACT_ROOTS without repository-specific path assumptions."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -47,7 +47,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7A-CANONICAL-APP. Run python scripts/stage_canonical_app.py --auto from the local checkout. The stager must accept only SHA-256 3bb0756f...f4044e92, write app/FlippChill_Kalkulator.html, then run Static application checks and commit on develop.",
+    "primary": "Claim P0-7A-CANONICAL-APP. If the exact BEST56 is outside default roots, set FLIPPCHILL_ARTIFACT_ROOTS to its mounted/download directory, then run python scripts/stage_canonical_app.py --auto. Accept only SHA-256 3bb0756f...f4044e92, write app/FlippChill_Kalkulator.html, run Static application checks and commit on develop.",
     "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
