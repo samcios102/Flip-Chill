@@ -1,20 +1,21 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T13:11:23+02:00",
+  "updated_at": "2026-08-26T14:16:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 21,
-  "reason": "Highest-priority unblocked P0 remains canonical app + exact frozen BEST40. AI_SYNC blocker semantics now preserve staged non-terminal P0 statuses as active; PRIMARY should continue P0-7.",
+  "source_iteration": 22,
+  "reason": "P0 #7 remains the highest-priority unblocked task. Dispatcher READY-to-CLAIMED race is now mutex-guarded and CI-verified, so PRIMARY can continue canonical app + exact BEST40 work safely.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
     "require_tests_before_done": true,
     "require_ci_before_release": true,
     "require_claim_before_subprocess": true,
+    "require_dispatch_mutex_before_claim": true,
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
