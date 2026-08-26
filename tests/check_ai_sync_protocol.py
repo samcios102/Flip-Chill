@@ -8,6 +8,7 @@ EXPECTED_AUDIT = "BEST56 BAZA MIESZKAŃ AUDYT"
 REQUIRED_TASK_FIELDS = {"id", "priority", "owner", "status", "scope", "acceptance", "required_checks", "lock"}
 ACTIVE_LOCK_STATES = {"CLAIMED", "WORKING", "TESTING"}
 VALID_AGENTS = {"PRIMARY", "SECOND_AUDIT", "THIRD_UI"}
+TERMINAL_BLOCKER_STATES = {"DONE", "CLOSED", "RESOLVED", "COMPLETED", "SUPERSEDED", "REJECTED"}
 
 
 def fail(message: str) -> None:
@@ -77,11 +78,15 @@ def main() -> None:
     elif action != "IDLE":
         fail(f"unsupported trigger state: action={action}, status={status}")
 
-    source_p0 = {
-        int(item["id"])
-        for item in source.get("current_blockers", [])
-        if item.get("priority") == "P0" and item.get("status") == "OPEN"
-    }
+    source_p0 = set()
+    for item in source.get("current_blockers", []):
+        if item.get("priority") != "P0":
+            continue
+        state = str(item.get("status", "")).strip().upper()
+        if not state:
+            fail(f"P0 blocker {item.get('id')} must have a status")
+        if state not in TERMINAL_BLOCKER_STATES:
+            source_p0.add(int(item["id"]))
     audit_p0 = {int(x) for x in audit.get("summary", {}).get("active_p0", [])}
     if source_p0 != audit_p0:
         fail(f"active P0 drift: source={sorted(source_p0)}, audit={sorted(audit_p0)}")
