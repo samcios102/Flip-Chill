@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "report_type": "AUDIT_AND_DISPATCH",
+  "project": "Flipp&Chill CRM / Baza mieszkań",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 16,
+  "generated_at": "2026-08-26T08:40:00+02:00",
+  "branch": "develop",
+  "version_policy": "automatic audit never increments BEST number",
+  "summary": {
+    "highest_priority": "P0-7-CANONICAL-APP",
+    "active_p0": [7, 11],
+    "ready_tasks": ["P0-7-CANONICAL-APP"],
+    "blocked_tasks": ["P0-11-RUNTIME-MIGRATION", "P1-UI-RESPONSIVE-AUDIT"],
+    "dispatch": "READY_TO_FIX"
+  },
+  "known_evidence": {
+    "best56_audit_manifest_gate": "PASS",
+    "schema_11_12_contract_gate": "PASS",
+    "source_of_truth_consistency_gate": "PASS",
+    "static_application_checks": "BLOCKED_BY_P0_7",
+    "ci_overall": "FAIL_UNTIL_P0_7"
+  },
+  "business_rules_changed": false,
+  "source_of_truth_update_required": false,
+  "handoff": {
+    "primary": "Claim P0-7-CANONICAL-APP and restore deterministic canonical app + verified frozen BEST40 without touching main.",
+    "second_audit": "After P0-7 is green, execute runtime localStorage migration verification for issue #11.",
+    "third_ui": "After canonical app is available, execute responsive/accessibility audit without changing financial semantics."
+  },
+  "machine_action": {
+    "trigger_file": "AI_SYNC/TRIGGER.json",
+    "queue_file": "AI_SYNC/BOT_QUEUE.json",
+    "action": "RUN_FIX",
+    "task_id": "P0-7-CANONICAL-APP",
+    "target_agent": "PRIMARY"
+  }
+}
