@@ -4,18 +4,18 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `19`
+- Iteracja: `20`
 - Branch roboczy: `develop`
-- Testowany commit: `9de64f55346155a5e68b97fba4169eaaec68ea3b`
+- Testowany commit: `315b274f7701abe35c82ddf0688ad8d7b261444c`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Naprawiono drugi przypadek blokowania lokalnego dispatchera. Jeśli uruchomiony bot kończy się niezerowym kodem i task nadal jest `CLAIMED` przez tego samego agenta, dispatcher zapisuje `BLOCKED`, `last_error`, zwalnia lock oraz przełącza trigger na `IDLE/BLOCKED`. Jeśli bot sam zdążył zmienić stan na WORKING/TESTING/DONE/BLOCKED, dispatcher zachowuje nowszy stan bota.
+Dodano `scripts/artifact_preflight.py`. PRIMARY może przeskanować lokalne katalogi z artefaktami, a BEST40 jest oznaczany jako `EXACT_MATCH` wyłącznie przy SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`. Nazwa pliku bez zgodnego hasha NIE wystarcza do importu.
 
 ## Dowody
 
-Workflow #95:
+Workflow #106:
 
 - BEST56 audit manifest: PASS
 - Source of Truth consistency: PASS
@@ -23,21 +23,22 @@ Workflow #95:
 - AI sync dispatch protocol: PASS
 - local dispatcher claim contract: PASS
 - local dispatcher failure recovery: PASS
+- artifact discovery preflight safety: PASS
 - Static application checks: FAIL przez aktywny P0 #7
 - BEST40 checksum/stable: pominięte po P0 #7
 
 ## P0 / P1
 
-- P0 #7 — nadal najwyższy READY task dla PRIMARY.
+- P0 #7 — `PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT`; nadal READY dla PRIMARY.
 - P0 #11 — BLOCKED przez #7; po canonical app SECOND_AUDIT wykonuje realny runtime `localStorage`.
-- P1 #12 — claim/lock i failure recovery są zabezpieczone testami CI; pozostał pełny lokalny runtime z rzeczywistą komendą bota.
+- P1 #12 — pełny lokalny runtime nadal czeka na rzeczywistą komendę bota.
 - THIRD_UI czeka na canonical app.
 
 ## Handoff dla 3 botów
 
 ### PRIMARY
 
-Claim `P0-7-CANONICAL-APP`. Importuj historyczny BEST40 tylko przy dokładnym SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`; przy braku exact match oznacz task BLOCKED. Następnie przywróć kanoniczny `app/FlippChill_Kalkulator.html`, uruchom gate'y i zaktualizuj AI_SYNC.
+Claim `P0-7-CANONICAL-APP`. Najpierw uruchom `python scripts/artifact_preflight.py <katalogi_z_artefaktami> --output AI_SYNC/ARTIFACT_PREFLIGHT.json`. Importuj historyczny BEST40 tylko przy `EXACT_MATCH`; przy braku exact match oznacz task BLOCKED. Następnie przywróć kanoniczny `app/FlippChill_Kalkulator.html` i uruchom pełny workflow.
 
 ### SECOND_AUDIT
 
@@ -54,4 +55,4 @@ Po canonical app wykonaj 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `task_id = P0-7-CANONICAL-APP`
 - `target_agent = PRIMARY`
 
-`P1-12-LOCAL-DISPATCH-RUNTIME` pozostaje BLOCKED wyłącznie do czasu lokalnego ustawienia `FLIPPCHILL_BOT_COMMAND` i potwierdzenia pełnego cyklu watcher → claim → bot → test → handoff.
+Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
