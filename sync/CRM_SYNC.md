@@ -8,7 +8,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
 - P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html` o referencyjnym SHA-256; preflight exact-hash jest już chroniony CI
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
-- P1 #12: claim/lock i failure recovery lokalnego dispatchera są chronione CI; pełny runtime czeka wyłącznie na rzeczywistą komendę bota
+- P1 #12: claim/lock, failure recovery i lokalny mutex READY→CLAIMED dispatchera są chronione CI; pełny runtime czeka wyłącznie na rzeczywistą komendę bota
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -120,4 +120,13 @@ Po zmianie:
 - Dodano `tests/check_artifact_preflight.py` oraz gate CI `Verify artifact discovery preflight safety`.
 - Workflow #106: BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC, dispatcher claim/failure recovery i artifact preflight = PASS; `Static application checks` nadal FAIL wyłącznie przez P0 #7.
 - P0 #7 ma stan `PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT`; PRIMARY ma wykonać lokalny preflight, importować historyczny BEST40 tylko przy `EXACT_MATCH`, a potem przywrócić kanoniczny `app/FlippChill_Kalkulator.html`.
+- Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 22
+
+- Wykryto race-condition lokalnego dispatchera: dwa watchery mogły równolegle odczytać `RUN_FIX + READY` przed zapisaniem `CLAIMED` i oba przejść walidację na starym stanie.
+- Dodano cross-platform mutex `AI_SYNC/.dispatcher_claim.lock` przez atomowe `O_CREAT|O_EXCL`; po jego zdobyciu dispatcher ponownie czyta `TRIGGER.json` i `BOT_QUEUE.json`, a dopiero potem wykonuje READY→CLAIMED.
+- Dodano `tests/check_agent_dispatch_mutex.py` i gate CI `Verify local dispatcher mutex contract`.
+- Workflow #125: BEST56 manifest, Source of Truth, schema 11→12, AI_SYNC protocol, claim, failure recovery, nowy mutex i artifact preflight = PASS; cały workflow nadal kończy się dopiero na osobnym P0 #7 `Static application checks`.
+- P1 #12 ma teraz stan `MUTEX_CI_PASS_PENDING_LOCAL_BOT_RUNTIME`; do pełnego zamknięcia pozostaje runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
 - Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
