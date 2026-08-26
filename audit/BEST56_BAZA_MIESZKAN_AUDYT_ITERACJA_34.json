@@ -1,0 +1,17 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 34,
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "change": "Portable exact-artifact discovery via FLIPPCHILL_ARTIFACT_ROOTS for canonical BEST56 staging.",
+  "business_rules_changed": false,
+  "finance_changed": false,
+  "tested_commit": "167efab675903eeb004c4819e60b6f4cf103b098",
+  "workflow": 239,
+  "pre_application_gates": "PASS",
+  "canonical_staging_env_roots": "PASS",
+  "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY",
+  "notes": "P0 #11 and THIRD_UI depend only on 7A; BEST40 remains separate blocked 7B. Automatic version remains BEST56 + AUDYT."
+}
