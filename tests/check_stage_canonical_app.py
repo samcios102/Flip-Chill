@@ -44,7 +44,35 @@ with tempfile.TemporaryDirectory() as tmpdir:
             pass
         else:
             raise AssertionError("mismatched candidate must be rejected")
+
+        # Auto-discovery accepts only exact SHA and deterministically returns the
+        # lexicographically first exact match if the same audited bytes exist twice.
+        search_a = root / "a"
+        search_b = root / "b"
+        search_a.mkdir()
+        search_b.mkdir()
+        exact_b = search_b / "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html"
+        exact_a = search_a / "copy.html"
+        exact_b.write_bytes(candidate.read_bytes())
+        exact_a.write_bytes(candidate.read_bytes())
+        (search_a / "near_match.html").write_bytes(b"not exact")
+
+        discovered = module.discover_exact([search_b, search_a])
+        expected_first = sorted([exact_a.resolve(), exact_b.resolve()], key=lambda p: str(p).lower())[0]
+        assert discovered["candidate"] == expected_first
+        assert discovered["candidate_sha256"] == fixture_sha
+        assert len(discovered["matches"]) == 2
+        assert discovered["scanned"] >= 3
+
+        empty = root / "empty"
+        empty.mkdir()
+        try:
+            module.discover_exact([empty])
+        except FileNotFoundError:
+            pass
+        else:
+            raise AssertionError("auto-discovery must block when exact BEST56 is absent")
     finally:
         module.EXPECTED_BEST56_SHA256 = original_expected
 
-print("canonical app staging contract: PASS")
+print("canonical app staging + auto-discovery contract: PASS")
