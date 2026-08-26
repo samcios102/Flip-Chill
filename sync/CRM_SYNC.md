@@ -76,3 +76,12 @@ Po zmianie:
 - Do manifestu dodano ścieżkę zamrożonego BEST40 i referencyjny SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`.
 - Workflow #53 dla poprzedniego commitu zakończył się `failure`; status P0 #7 i P0 #11 pozostaje OPEN.
 - Reguły biznesowe oraz polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez podbijania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 14
+
+- Dodano wykonywalny test kontraktu `tests/check_schema_11_12_contract.py` z trzema fixture'ami migracji: ręczna `preliminaryDate`, istniejąca `finalDate` oraz rekord `ongoing` bez dat.
+- Test wymusza zachowanie `id`, `startDate`, `preliminaryDate`, `finalDate`, `maxDealDate` i całych `paymentParts`, a status normalizuje wyłącznie z istniejących dat.
+- Test został wpięty do `.github/workflows/quality.yml` jako osobny gate przed statyczną kontrolą aplikacji.
+- Workflow #57: manifest BEST56 AUDYT = PASS, nowy gate migracji 11→12 = PASS; workflow nadal zatrzymuje się na P0 #7 przy `Static application checks` z powodu braku kanonicznego `app/FlippChill_Kalkulator.html`.
+- P0 #11 pozostaje OPEN, ponieważ pełne kryterium nadal wymaga uruchomienia rzeczywistej migracji w kanonicznym artefakcie i `localStorage`.
+- Reguły biznesowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
