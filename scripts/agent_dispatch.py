@@ -14,10 +14,10 @@ The script intentionally does not assume a particular OpenCode CLI syntax.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
-import shlex
 import subprocess
 import sys
 import time
@@ -36,11 +36,41 @@ def load_json(path: Path):
         return json.load(fh)
 
 
+def save_json(path: Path, payload: dict) -> None:
+    """Persist state via same-directory replace so readers never see partial JSON."""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    tmp.replace(path)
+
+
 def find_task(queue: dict, task_id: str) -> dict:
     for task in queue.get("tasks", []):
         if task.get("id") == task_id:
             return task
     raise KeyError(f"task not found: {task_id}")
+
+
+def claim_task(queue: dict, trigger: dict, task: dict) -> str:
+    """Claim exactly one READY task before launching the local bot."""
+    target = trigger.get("target_agent")
+    if task.get("status") != "READY":
+        raise RuntimeError(f"cannot claim task in state {task.get('status')}")
+    if task.get("owner") != target:
+        raise RuntimeError(f"owner mismatch: queue={task.get('owner')} trigger={target}")
+    lock = task.get("lock")
+    if not isinstance(lock, dict) or lock.get("owner") is not None:
+        raise RuntimeError(f"task {task.get('id')} already locked")
+
+    claimed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    task["status"] = "CLAIMED"
+    task["lock"] = {"owner": target, "claimed_at": claimed_at}
+    trigger["status"] = "CLAIMED"
+    trigger["claimed_at"] = claimed_at
+    trigger["claimed_by"] = target
+
+    save_json(QUEUE, queue)
+    save_json(TRIGGER, trigger)
+    return claimed_at
 
 
 def build_prompt(trigger: dict, task: dict, audit: dict, source: dict) -> str:
@@ -134,6 +164,8 @@ def dispatch_once(dry_run: bool = False) -> int:
         print(f"DRY RUN command: {command}")
         return 0
 
+    claimed_at = claim_task(queue, trigger, task)
+    print(f"Claimed {task['id']} for {target} at {claimed_at}")
     completed = subprocess.run(command, shell=True, cwd=ROOT)
     return completed.returncode
 
