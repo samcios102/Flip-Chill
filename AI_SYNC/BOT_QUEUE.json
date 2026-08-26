@@ -3,20 +3,21 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-26T22:21:00+02:00",
+  "updated_at": "2026-08-26T23:19:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
       "id": "P0-7A-CANONICAL-APP",
       "issue": 7,
       "priority": "P0",
-      "title": "Stage exact BEST56 as canonical app",
+      "title": "Auto-discover exact BEST56 and stage canonical app",
       "status": "READY",
       "owner": "PRIMARY",
-      "scope": ["scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_app.py", ".github/workflows/quality.yml"],
-      "acceptance": ["use only the exact BEST56 baseline SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "canonical app exists or is generated deterministically", "Static application checks pass", "BEST56 audit naming policy remains unchanged", "main is not modified"],
-      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "AI sync dispatch protocol", "canonical app staging safety", "Static application checks"],
-      "runtime_evidence": {"stager": "PASS", "dry_run": "PASS", "atomic_stage": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"},
+      "scope": ["scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_stage_canonical_app.py", "tests/check_app.py", ".github/workflows/quality.yml"],
+      "acceptance": ["run canonical stager with --auto or explicit exact candidate", "accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "canonical app exists or is generated deterministically", "Static application checks pass", "BEST56 audit naming policy remains unchanged", "main is not modified"],
+      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "AI sync dispatch protocol", "canonical app staging + auto-discovery safety", "Static application checks"],
+      "runtime_evidence": {"stager": "PASS", "dry_run": "PASS", "atomic_stage": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "auto_discovery_ci": "PENDING_ITERATION_33"},
+      "work_order": "python scripts/stage_canonical_app.py --auto && python tests/check_app.py",
       "lock": {"owner": null, "claimed_at": null}
     },
     {
@@ -54,9 +55,9 @@
       "blocked_by": ["LOCAL_FLIPPCHILL_BOT_COMMAND"],
       "owner": "PRIMARY",
       "scope": ["scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
-      "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard is invoked in the serialized claim path before real subprocess", "stale timestamps block dispatch", "source_iteration mismatch blocks dispatch", "machine_action mismatch blocks dispatch", "handoff report/trigger are not older than shared Source of Truth/BOT_QUEUE state", "local atomic mutex serializes READY-to-CLAIMED across watchers in one checkout", "stale mutex is recovered only when old and recorded PID is dead", "fresh or live-process mutex is never stolen", "unresolved blocked_by dependencies prevent claim", "task is atomically claimed and locked before bot subprocess", "failed subprocess releases stale claim and records BLOCKED unless bot already advanced state", "BOT_INBOX is generated from repository queue", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
-      "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim contract", "dispatcher failure recovery", "dispatcher mutex contract", "dispatcher stale mutex recovery", "dispatcher dependency guard", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
-      "ci_evidence": "workflow #216 on 8b00996f8b6c2bcbf007114100f858b638036b92 passed all 15 pre-application gates before Static application checks",
+      "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard is invoked before real subprocess", "stale/mismatched handoff blocks dispatch", "mutex/dependency/claim/failure recovery contracts hold", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
+      "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim/failure/mutex/dependency contracts", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
+      "ci_evidence": "workflow #224 on 680f2427f646326d5d1e2beeeca6a08fc5988963 passed all pre-application gates before Static application checks",
       "lock": {"owner": null, "claimed_at": null}
     },
     {
