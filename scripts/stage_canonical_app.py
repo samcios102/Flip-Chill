@@ -18,6 +18,7 @@ import sys
 
 EXPECTED_BEST56_SHA256 = "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
 DEFAULT_TARGET = Path("app/FlippChill_Kalkulator.html")
+ARTIFACT_ROOTS_ENV = "FLIPPCHILL_ARTIFACT_ROOTS"
 NAME_HINTS = (
     "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html",
     "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAŃ.html",
@@ -32,9 +33,16 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _env_search_roots() -> list[Path]:
+    raw = os.environ.get(ARTIFACT_ROOTS_ENV, "").strip()
+    if not raw:
+        return []
+    return [Path(part) for part in raw.split(os.pathsep) if part.strip()]
+
+
 def default_search_roots() -> list[Path]:
     home = Path.home()
-    roots = [Path.cwd(), home / "Downloads", home / "Desktop", home / "OneDrive"]
+    roots = [*_env_search_roots(), Path.cwd(), home / "Downloads", home / "Desktop", home / "OneDrive"]
     seen: set[str] = set()
     result: list[Path] = []
     for root in roots:
@@ -158,7 +166,7 @@ def main() -> int:
         "--search-root",
         action="append",
         default=[],
-        help="directory/file searched by --auto; may be repeated",
+        help=f"directory/file searched by --auto; may be repeated. Defaults also include {ARTIFACT_ROOTS_ENV}.",
     )
     parser.add_argument("--target", default=str(DEFAULT_TARGET), help="canonical app destination")
     parser.add_argument("--dry-run", action="store_true", help="verify only; do not copy")
