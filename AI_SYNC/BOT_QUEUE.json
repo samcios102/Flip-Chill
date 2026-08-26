@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-26T08:40:00+02:00",
+  "updated_at": "2026-08-26T09:15:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -21,7 +21,7 @@
         "BEST56 audit naming policy remains unchanged",
         "main is not modified"
       ],
-      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "Static application checks", "BEST40 checksum"],
+      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "Static application checks", "BEST40 checksum"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
@@ -43,6 +43,25 @@
         "status derived consistently from dates"
       ],
       "required_checks": ["schema 11->12 fixture contract", "runtime localStorage migration"],
+      "lock": {"owner": null, "claimed_at": null}
+    },
+    {
+      "id": "P1-12-LOCAL-DISPATCH-RUNTIME",
+      "issue": 12,
+      "priority": "P1",
+      "title": "Verify full local dispatcher RUN_FIX cycle with real bot command",
+      "status": "BLOCKED",
+      "blocked_by": ["LOCAL_FLIPPCHILL_BOT_COMMAND"],
+      "owner": "PRIMARY",
+      "scope": ["scripts/agent_dispatch.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
+      "acceptance": [
+        "watcher detects RUN_FIX+READY",
+        "task is claimed before execution",
+        "BOT_INBOX is generated from repository queue",
+        "configured local bot command runs",
+        "result returns to queue/audit handoff without touching main"
+      ],
+      "required_checks": ["AI sync dispatch protocol", "local dispatcher runtime smoke"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
