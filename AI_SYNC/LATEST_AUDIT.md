@@ -4,27 +4,28 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `30`
+- Iteracja: `31`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Kontrakt rozdzielenia issue #7 na 7A canonical app i 7B frozen BEST40 został potwierdzony przez CI. Workflow #202 dla `3daaef3b...` ma `Verify BEST56 queue dependency partition = PASS`. Issue #13 zamknięto jako completed.
+Usunięto niespójność wspólnego stanu: issue #13 było już `closed/completed`, Source of Truth nie traktował go jako aktywny blocker, ale BACKLOG i nagłówek CRM_SYNC nadal przedstawiały je jako otwarte/pending. BACKLOG oznacza teraz #13 jako ukończone, a CRM_SYNC ma `CLOSED / CI_VERIFIED` z dowodem workflow #202.
 
 ## Testy / CI
 
-- wszystkie gate'y przed aplikacją, w tym dependency partition, = `PASS`;
+- workflow #209 na `cbdd2c960...`: wszystkie gate'y przed aplikacją = `PASS`;
 - `Static application checks` = `FAIL` z powodu aktywnego P0 #7 / braku canonical app;
-- BEST40 checksum/stable = `SKIPPED` downstream.
+- BEST40 checksum/stable = `SKIPPED` downstream;
+- commity iteracji 31 są synchronizacyjne; ich końcowy CI jest oczekiwany przed deklaracją nowego PASS.
 
 ## P0 / P1
 
 - P0 #7 — aktywny: 7A READY, 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
 - P1 #12 — lokalny realny bot runtime pozostaje otwarty.
-- P1 #13 — CLOSED / CI VERIFIED.
+- P1 #13 — CLOSED / CI_VERIFIED; NIE jest aktywnym blockerem.
 
 ## Handoff dla 3 botów
 
@@ -43,6 +44,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 30`
+- `source_iteration = 31`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
