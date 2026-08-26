@@ -5,9 +5,9 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 34,
-  "generated_at": "2026-08-27T00:22:00+02:00",
+  "generated_at": "2026-08-27T00:25:00+02:00",
   "branch": "develop",
-  "change_head": "2f20b58b6a43e17f8bf8bf496f3c3462884756de",
+  "change_head": "a71fb8e0d5080ca93b60f461640d48284c65f6a8",
   "tested_commit": "167efab675903eeb004c4819e60b6f4cf103b098",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
