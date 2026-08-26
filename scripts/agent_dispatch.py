@@ -33,6 +33,7 @@ DISPATCH_MUTEX = SYNC / ".dispatcher_claim.lock"
 DISPATCH_MUTEX_STALE_SECONDS = max(
     30.0, float(os.environ.get("FLIPPCHILL_DISPATCH_MUTEX_STALE_SECONDS", "120"))
 )
+DEPENDENCY_TERMINAL_STATES = {"DONE", "SUPERSEDED"}
 
 
 def load_json(path: Path):
@@ -56,6 +57,21 @@ def find_task(queue: dict, task_id: str) -> dict:
         if task.get("id") == task_id:
             return task
     raise KeyError(f"task not found: {task_id}")
+
+
+def unresolved_dependencies(queue: dict, task: dict) -> list[str]:
+    """Return blockers that are missing or not in an explicitly resolved state."""
+    blockers = []
+    for dependency_id in task.get("blocked_by", []) or []:
+        try:
+            dependency = find_task(queue, dependency_id)
+        except KeyError:
+            blockers.append(f"{dependency_id}:MISSING")
+            continue
+        state = str(dependency.get("status") or "UNKNOWN")
+        if state not in DEPENDENCY_TERMINAL_STATES:
+            blockers.append(f"{dependency_id}:{state}")
+    return blockers
 
 
 def _parse_mutex_pid(raw: str) -> int | None:
@@ -116,12 +132,7 @@ def _process_is_alive(pid: int) -> bool:
 
 
 def _recover_orphaned_dispatch_mutex() -> bool:
-    """Remove only an old mutex whose recorded local PID is definitely gone.
-
-    A fresh lock, an unparseable lock, or a lock owned by a live process is kept.
-    The stat fingerprint is rechecked before unlink to avoid deleting a lock that
-    changed while it was inspected.
-    """
+    """Remove only an old mutex whose recorded local PID is definitely gone."""
     try:
         initial_stat = DISPATCH_MUTEX.stat()
         raw = DISPATCH_MUTEX.read_text(encoding="utf-8", errors="replace")
@@ -161,13 +172,7 @@ def _recover_orphaned_dispatch_mutex() -> bool:
 
 
 def acquire_dispatch_mutex():
-    """Acquire a cross-platform local mutex for the READY->CLAIMED transition.
-
-    O_CREAT|O_EXCL guarantees that only one watcher in the same checkout can
-    enter the claim critical section at a time. If a previous process crashed,
-    an old lock is recovered only after its recorded PID is confirmed dead.
-    The mutex is held only while state is reloaded and CLAIMED is persisted.
-    """
+    """Acquire a cross-platform local mutex for the READY->CLAIMED transition."""
     for attempt in range(2):
         try:
             fd = os.open(str(DISPATCH_MUTEX), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
@@ -205,6 +210,9 @@ def release_dispatch_mutex(fd) -> None:
 def claim_task(queue: dict, trigger: dict, task: dict) -> str:
     """Claim exactly one READY task before launching the local bot."""
     target = trigger.get("target_agent")
+    blockers = unresolved_dependencies(queue, task)
+    if blockers:
+        raise RuntimeError(f"task {task.get('id')} has unresolved dependencies: {', '.join(blockers)}")
     if task.get("status") != "READY":
         raise RuntimeError(f"cannot claim task in state {task.get('status')}")
     if task.get("owner") != target:
@@ -226,11 +234,7 @@ def claim_task(queue: dict, trigger: dict, task: dict) -> str:
 
 
 def claim_current_ready_task(task_id: str, target: str):
-    """Serialize, reload and claim current READY state.
-
-    Returns claimed_at on success, None when another watcher owns the critical
-    section or when repository state changed before this watcher could claim.
-    """
+    """Serialize, reload and claim current READY state."""
     mutex_fd = acquire_dispatch_mutex()
     if mutex_fd is None:
         print("Another dispatcher is claiming work; skipping this cycle")
@@ -247,6 +251,10 @@ def claim_current_ready_task(task_id: str, target: str):
             print("Dispatch state changed before claim; skipping this cycle")
             return None
         task = find_task(queue, task_id)
+        blockers = unresolved_dependencies(queue, task)
+        if blockers:
+            print(f"Task {task_id} blocked by {', '.join(blockers)}; skipping")
+            return None
         if task.get("status") != "READY":
             print(f"Task {task_id} changed to {task.get('status')} before claim; skipping")
             return None
@@ -256,11 +264,7 @@ def claim_current_ready_task(task_id: str, target: str):
 
 
 def recover_failed_dispatch(task_id: str, target: str, returncode: int) -> bool:
-    """Release a stale dispatcher claim after a failed bot process.
-
-    State is changed only when the task is still CLAIMED by this dispatcher.
-    If the bot already advanced the task itself, its newer state wins.
-    """
+    """Release a stale dispatcher claim after a failed bot process."""
     queue = load_json(QUEUE)
     trigger = load_json(TRIGGER)
     task = find_task(queue, task_id)
@@ -362,6 +366,11 @@ def dispatch_once(dry_run: bool = False) -> int:
     if task.get("status") != "READY":
         print(f"Task {task.get('id')} is {task.get('status')}; not dispatching")
         return 0
+
+    blockers = unresolved_dependencies(queue, task)
+    if blockers:
+        print(f"Task {task.get('id')} blocked by {', '.join(blockers)}; not dispatching", file=sys.stderr)
+        return 4
 
     target = trigger.get("target_agent")
     if task.get("owner") and task.get("owner") != target:
