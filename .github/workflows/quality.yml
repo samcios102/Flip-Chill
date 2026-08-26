@@ -29,6 +29,8 @@ jobs:
         run: python tests/check_ai_sync_freshness.py
       - name: Verify runtime handoff guard contract
         run: python tests/check_handoff_runtime_guard.py
+      - name: Verify dispatcher runtime guard integration
+        run: python tests/check_agent_dispatch_runtime_guard_integration.py
       - name: Verify local dispatcher claim contract
         run: python tests/check_agent_dispatch_claim.py
       - name: Verify local dispatcher failure recovery
