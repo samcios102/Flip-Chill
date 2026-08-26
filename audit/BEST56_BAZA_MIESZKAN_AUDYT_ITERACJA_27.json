@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 27,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "evidence_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
+  "workflow_run": 176,
+  "finding": "dispatcher runtime guard integration is CI-proven; only real local bot runtime remains for P1 #12",
+  "gates_passed": [
+    "BEST56 audit manifest",
+    "Source of Truth consistency",
+    "schema 11->12 contract",
+    "AI sync dispatch protocol",
+    "AI sync handoff freshness",
+    "runtime handoff guard contract",
+    "dispatcher runtime guard integration",
+    "dispatcher claim contract",
+    "dispatcher failure recovery",
+    "dispatcher mutex contract",
+    "dispatcher stale mutex recovery",
+    "dispatcher dependency guard",
+    "artifact discovery preflight safety"
+  ],
+  "remaining_failure": "Static application checks / P0 #7",
+  "next_ready_task": "P0-7-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY",
+  "version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never BEST57"
+}
