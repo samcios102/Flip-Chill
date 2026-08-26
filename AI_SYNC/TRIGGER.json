@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T18:23:00+02:00",
+  "updated_at": "2026-08-26T19:21:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
-  "task_id": "P0-7-CANONICAL-APP",
+  "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 28,
-  "reason": "P0 #7 remains the highest-priority unblocked task. Iteration 28 adds an exact-SHA BEST56 canonical app stager so PRIMARY can safely stage app/FlippChill_Kalkulator.html before the separate exact BEST40 import.",
+  "source_iteration": 29,
+  "reason": "P0 #7 canonical BEST56 subtask is the highest-priority unblocked work. Historical BEST40 is now a separate blocked release-gate task, so #11 and UI can proceed immediately after 7A completes.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
