@@ -9,7 +9,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 - P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; kolejka rozdziela je na 7A canonical app i 7B frozen BEST40
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
-- P1 #13: dependency partition 7A/7B wdrożony; gate CI oczekuje na wynik
+- P1 #13: CLOSED / CI_VERIFIED — dependency partition 7A/7B potwierdzony workflow #202
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -175,3 +175,10 @@ Po zmianie:
 - Dodano `tests/check_queue_dependency_partition.py` i gate CI `Verify BEST56 queue dependency partition`.
 - Utworzono issue #13 śledzące kontrakt zależności; Source of Truth, BACKLOG, AI_SYNC i trigger zostały zsynchronizowane.
 - Reguły biznesowe, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 31
+
+- Usunięto niespójność dokumentacji stanu: issue #13 jest `closed/completed`, a workflow #202 potwierdził `Verify BEST56 queue dependency partition = PASS`.
+- `BACKLOG.md` oznacza teraz #13 jako ukończone; sekcja „Aktualny stan” tego pliku ma `P1 #13: CLOSED / CI_VERIFIED`.
+- Source of Truth już wcześniej poprawnie usuwał #13 z aktywnych blockerów, więc reguły biznesowe i aktywne P0/P1 nie zmieniły się.
+- Najwyższy READY task pozostaje `P0-7A-CANONICAL-APP` dla PRIMARY; numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
