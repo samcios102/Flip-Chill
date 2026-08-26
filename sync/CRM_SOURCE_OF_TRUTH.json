@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-26T11:17:00+02:00",
+  "updated_at": "2026-08-26T12:18:15+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -47,6 +47,7 @@
     "canonical_app_path": "app/FlippChill_Kalkulator.html",
     "frozen_best40_path": "versions/FlippChill_Kalkulator_BEST40.html",
     "frozen_best40_sha256": "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
+    "artifact_preflight": "scripts/artifact_preflight.py",
     "duplicate_dom_ids": 0,
     "broken_aria_refs": 0,
     "console_errors": 0,
@@ -57,7 +58,7 @@
       "id": 7,
       "priority": "P0",
       "title": "Reprodukowalny bieżący app + zweryfikowany zamrożony BEST40",
-      "status": "OPEN"
+      "status": "PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT"
     },
     {
       "id": 11,
@@ -84,6 +85,7 @@
     "bot_queue_file": "AI_SYNC/BOT_QUEUE.json",
     "trigger_file": "AI_SYNC/TRIGGER.json",
     "local_dispatcher": "scripts/agent_dispatch.py",
+    "artifact_preflight": "scripts/artifact_preflight.py",
     "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"]
   }
 }
