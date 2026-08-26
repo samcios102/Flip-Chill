@@ -4,47 +4,42 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 27,
-  "generated_at": "2026-08-26T17:30:00+02:00",
+  "iteration": 28,
+  "generated_at": "2026-08-26T18:22:00+02:00",
   "branch": "develop",
+  "change_head": "025023c4b84d2b3caec79357209b994620a752ef",
   "tested_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P1", "area": "runtime handoff enforcement", "result": "Workflow #176 proves the dispatcher runtime guard integration and all AI_SYNC/dispatcher safety gates pass before application checks."},
-    {"priority": "P0", "area": "canonical app", "result": "P0 #7 remains the highest-priority application blocker; Static application checks fail because canonical app is still absent, and BEST40 checks remain downstream."}
+    {"priority": "P0", "area": "canonical app", "result": "The exact Source-of-Truth BEST56 baseline is locally available with SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, but the repository connector cannot directly upload that local artifact as a file object."},
+    {"priority": "P0", "area": "canonical app staging", "result": "Added scripts/stage_canonical_app.py to stage app/FlippChill_Kalkulator.html only from the exact audited BEST56 SHA-256, plus a deterministic safety contract test and CI step."},
+    {"priority": "P0", "area": "frozen BEST40", "result": "Historical BEST40 remains a separate release gate and must still match c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708 exactly."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P1 #12 changed from CI_PENDING to CI_PASS_PENDING_LOCAL_RUNTIME based on workflow #176 evidence."
+    "source_of_truth_update": "P0 #7 now has an exact-hash canonical BEST56 staging path; blocker remains active until the local exact artifact is staged and CI reaches/passes Static application checks, then exact BEST40 is imported."
   },
   "tests": {
-    "workflow_run": 176,
-    "workflow_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
-    "best56_audit_manifest_gate": "PASS",
-    "source_of_truth_consistency_gate": "PASS",
-    "schema_11_12_contract_gate": "PASS",
-    "ai_sync_dispatch_protocol_gate": "PASS",
-    "ai_sync_handoff_freshness_gate": "PASS",
-    "runtime_handoff_guard_contract_gate": "PASS",
-    "dispatcher_runtime_guard_integration_gate": "PASS",
-    "dispatcher_claim_contract_gate": "PASS",
-    "dispatcher_failure_recovery_gate": "PASS",
-    "dispatcher_mutex_contract_gate": "PASS",
-    "dispatcher_stale_mutex_recovery_gate": "PASS",
-    "dispatcher_dependency_guard_gate": "PASS",
-    "artifact_preflight_safety_gate": "PASS",
-    "static_application_checks": "FAIL_P0_7",
-    "best40_checksum": "SKIPPED_AFTER_P0_7",
-    "ci_overall": "FAIL_P0_7"
+    "previous_workflow_run": 176,
+    "previous_workflow_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
+    "previous_dispatch_safety_gates": "PASS",
+    "local_best56_fingerprint": "PASS",
+    "local_best56_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "canonical_app_staging_contract": "COMMITTED_CI_PENDING",
+    "latest_visible_workflow": 182,
+    "latest_visible_workflow_status": "QUEUED_ON_PRIOR_COMMIT_0cb2c531",
+    "static_application_checks": "PENDING_CANONICAL_APP_STAGE",
+    "best40_checksum": "PENDING_EXACT_ARTIFACT_IMPORT",
+    "ci_overall": "NO_NEW_CI_EVIDENCE_FOR_ITERATION_28_YET"
   },
   "impact": {
-    "baza_mieszkan": "No application or business-rule change.",
+    "baza_mieszkan": "No application behavior or business-rule change; canonical deployment path is safer and deterministic.",
     "finance": "No financial rule change.",
-    "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
-    "automation": "The full code-level dispatch safety chain is CI-proven. Only the real local FLIPPCHILL_BOT_COMMAND smoke remains for P1 #12."
+    "data_integrity": "No data mutation; P0 #11 remains blocked by canonical-app work.",
+    "automation": "PRIMARY can now stage the exact audited BEST56 baseline with one guarded command instead of manually copying a similarly named HTML file."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
@@ -54,7 +49,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main. P1 #12 code-level dispatcher guard integration is CI PASS; local bot runtime remains blocked only by LOCAL_FLIPPCHILL_BOT_COMMAND.",
+    "primary": "Claim P0-7-CANONICAL-APP. First run scripts/stage_canonical_app.py against the exact local BEST56 baseline; only SHA-256 3bb0756f...f4044e92 may become app/FlippChill_Kalkulator.html. Then run artifact_preflight.py and import frozen BEST40 only on exact SHA-256 c04106fe...171708. Run full CI and do not touch main.",
     "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
     "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
