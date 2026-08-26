@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-26T23:18:00+02:00",
+  "updated_at": "2026-08-26T23:22:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -51,7 +51,7 @@
       "enabled": true,
       "exact_sha_only": true,
       "mode": "bounded deterministic local search",
-      "ci_status": "PENDING_ITERATION_33"
+      "ci_status": "PASS_WORKFLOW_226"
     },
     "canonical_app_stager_runtime_evidence": {
       "status": "PASS",
@@ -79,7 +79,7 @@
       "id": 7,
       "priority": "P0",
       "title": "Reprodukowalny bieżący app + zweryfikowany zamrożony BEST40",
-      "status": "CANONICAL_AUTO_DISCOVERY_COMMITTED_CI_PENDING_REPOSITORY_STAGE_BEST40_BLOCKED"
+      "status": "CANONICAL_AUTO_DISCOVERY_CI_PASS_AWAITING_REPOSITORY_STAGE_BEST40_BLOCKED"
     },
     {
       "id": 11,
