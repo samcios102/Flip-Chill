@@ -4,26 +4,21 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 18,
-  "generated_at": "2026-08-26T10:16:00+02:00",
+  "iteration": 19,
+  "generated_at": "2026-08-26T11:17:00+02:00",
   "branch": "develop",
-  "tested_commit": "6eb3038c173b9f07c63e7fc77be55b8920d9cbab",
+  "tested_commit": "9de64f55346155a5e68b97fba4169eaaec68ea3b",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {
       "priority": "P1",
-      "area": "local dispatcher concurrency",
-      "result": "Dispatcher previously launched a real bot command without persisting CLAIMED/lock state first. This race is fixed and guarded by CI."
-    },
-    {
-      "priority": "P0",
-      "area": "release gate",
-      "result": "Exact historical BEST40 is confirmed in ChatGPT File Library, but repository still lacks the artifact. PRIMARY must verify the required SHA locally before import; substitution is forbidden."
+      "area": "local dispatcher failure recovery",
+      "result": "A failed bot subprocess previously left task and trigger in CLAIMED. Dispatcher now converts only its own still-CLAIMED task to BLOCKED, records return code, releases the lock and idles the trigger; newer bot-owned states are preserved."
     },
     {
       "priority": "P0",
       "area": "canonical app",
-      "result": "Static application checks still fail at P0 #7 because app/FlippChill_Kalkulator.html is absent; BEST40 checksum checks remain downstream."
+      "result": "Static application checks still fail at P0 #7 because app/FlippChill_Kalkulator.html is absent; frozen BEST40 checksum remains downstream."
     }
   ],
   "business_decisions": [],
@@ -31,24 +26,25 @@
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "Issue #12 is now claim-guarded and CI-verified; only the real local bot-command end-to-end runtime remains. P0 #7 gained explicit exact-SHA artifact discovery guard."
+    "source_of_truth_update": "Issue #12 now has CI-verified failure recovery in addition to claim/lock protection. Full local runtime with a real FLIPPCHILL_BOT_COMMAND remains pending."
   },
   "tests": {
-    "workflow_run": 83,
+    "workflow_run": 95,
     "best56_audit_manifest_gate": "PASS",
     "source_of_truth_consistency_gate": "PASS",
     "schema_11_12_contract_gate": "PASS",
     "ai_sync_dispatch_protocol_gate": "PASS",
     "dispatcher_claim_contract_gate": "PASS",
+    "dispatcher_failure_recovery_gate": "PASS",
     "static_application_checks": "FAIL_BLOCKED_BY_P0_7",
     "best40_checksum": "SKIPPED_AFTER_P0_7",
     "ci_overall": "FAIL_UNTIL_P0_7"
   },
   "impact": {
-    "baza_mieszkan": "No application/business-rule change. Bot coordination is safer because the same READY task cannot be launched twice before a persisted claim/lock.",
+    "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
     "data_integrity": "P0 #11 remains blocked until canonical app enables real localStorage runtime migration verification.",
-    "automation": "Runtime dispatcher now persists CLAIMED state and lock metadata before subprocess execution; no configured bot command leaves the task READY."
+    "automation": "Failed local bot processes can no longer leave a stale permanent CLAIMED lock when the bot has not advanced its own state."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
@@ -58,7 +54,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. First search local artifact locations. Import frozen BEST40 only if SHA-256 exactly matches c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708; otherwise mark BLOCKED. Then restore canonical app without touching main.",
+    "primary": "Claim P0-7-CANONICAL-APP. Import frozen BEST40 only if SHA-256 exactly matches c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708; otherwise mark BLOCKED. Restore canonical app without touching main.",
     "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
     "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
