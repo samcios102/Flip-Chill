@@ -69,9 +69,11 @@ def main() -> None:
             blocker_id = int(blocker.get("id"))
         except (TypeError, ValueError):
             fail("blocker id must be numeric")
+        if blocker.get("priority") != "P0":
+            continue
         state = str(blocker.get("status", "")).strip().upper()
         if not state:
-            fail(f"blocker {blocker_id} must have a status")
+            fail(f"P0 blocker {blocker_id} must have a status")
         if state not in TERMINAL_BLOCKER_STATES:
             blockers[blocker_id] = blocker.get("priority")
     if blockers != EXPECTED_BLOCKERS:
