@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T16:24:00+02:00",
+  "updated_at": "2026-08-26T17:20:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 25,
-  "reason": "P0 #7 remains the highest-priority unblocked task. Runtime handoff guard component is CI-verified; direct dispatcher integration remains P1 #12 and does not change the current P0 dispatch target.",
+  "source_iteration": 26,
+  "reason": "P0 #7 remains the highest-priority unblocked task. Runtime handoff guard is now integrated in the dispatcher serialized claim path; local real-bot runtime remains a separate P1 #12 blocker.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -19,7 +19,7 @@
     "require_resolved_dependencies_before_claim": true,
     "require_fresh_handoff_before_dispatch": true,
     "runtime_handoff_guard": "scripts/handoff_runtime_guard.py",
-    "runtime_handoff_guard_dispatcher_integration": "PENDING_P1_12",
+    "runtime_handoff_guard_dispatcher_integration": "INTEGRATED_BEFORE_CLAIM",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
