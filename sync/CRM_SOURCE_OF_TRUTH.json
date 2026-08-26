@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-26T22:20:00+02:00",
+  "updated_at": "2026-08-26T23:18:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -47,6 +47,12 @@
     "canonical_app_path": "app/FlippChill_Kalkulator.html",
     "canonical_app_stager": "scripts/stage_canonical_app.py",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "canonical_app_auto_discovery": {
+      "enabled": true,
+      "exact_sha_only": true,
+      "mode": "bounded deterministic local search",
+      "ci_status": "PENDING_ITERATION_33"
+    },
     "canonical_app_stager_runtime_evidence": {
       "status": "PASS",
       "verified_at": "2026-08-26T22:18:00+02:00",
@@ -73,7 +79,7 @@
       "id": 7,
       "priority": "P0",
       "title": "Reprodukowalny bieżący app + zweryfikowany zamrożony BEST40",
-      "status": "CANONICAL_STAGER_RUNTIME_VERIFIED_AWAITING_REPOSITORY_STAGE_BEST40_BLOCKED"
+      "status": "CANONICAL_AUTO_DISCOVERY_COMMITTED_CI_PENDING_REPOSITORY_STAGE_BEST40_BLOCKED"
     },
     {
       "id": 11,
@@ -112,6 +118,7 @@
     "handoff_must_not_predate_shared_state": true,
     "artifact_preflight": "scripts/artifact_preflight.py",
     "canonical_app_stager": "scripts/stage_canonical_app.py",
+    "canonical_app_auto_discovery": true,
     "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"]
   }
 }
