@@ -4,53 +4,38 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `29`
+- Iteracja: `30`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Rozdzielono issue #7 na dwa niezależne zadania kolejki:
-
-- `P0-7A-CANONICAL-APP` — bieżący exact BEST56 jako `app/FlippChill_Kalkulator.html`;
-- `P0-7B-FROZEN-BEST40` — historyczny BEST40 z exact SHA-256.
-
-Dzięki temu `P0-11-RUNTIME-MIGRATION` i `P1-UI-RESPONSIVE-AUDIT` czekają tylko na canonical app 7A. Historyczny BEST40 pozostaje osobnym release gate i NIE blokuje już audytu integralności danych ani UI po wystawieniu canonical app.
+Kontrakt rozdzielenia issue #7 na 7A canonical app i 7B frozen BEST40 został potwierdzony przez CI. Workflow #202 dla `3daaef3b...` ma `Verify BEST56 queue dependency partition = PASS`. Issue #13 zamknięto jako completed.
 
 ## Testy / CI
 
-- workflow #188 na `30c94c1...`: wszystkie gate'y do `Verify canonical app staging safety` = `PASS`;
+- wszystkie gate'y przed aplikacją, w tym dependency partition, = `PASS`;
 - `Static application checks` = `FAIL` z powodu aktywnego P0 #7 / braku canonical app;
-- nowy `tests/check_queue_dependency_partition.py`: dodany i wpięty do CI;
-- wynik nowego gate'u dla iteracji 29: `CI PENDING`.
+- BEST40 checksum/stable = `SKIPPED` downstream.
 
 ## P0 / P1
 
-- P0 #7 — aktywny, rozdzielony operacyjnie na 7A READY i 7B BLOCKED.
+- P0 #7 — aktywny: 7A READY, 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
 - P1 #12 — lokalny realny bot runtime pozostaje otwarty.
-- P1 #13 — dependency partition wdrożony, oczekuje na dowód CI.
+- P1 #13 — CLOSED / CI VERIFIED.
 
 ## Handoff dla 3 botów
 
 ### PRIMARY
-
-Claim `P0-7A-CANONICAL-APP`.
-
-1. Uruchom `python scripts/stage_canonical_app.py <ścieżka-do-exact-BEST56>`.
-2. Kandydat musi mieć SHA-256 `3bb0756f...f4044e92`.
-3. Uruchom `Static application checks`.
-4. BEST40 obsługuj osobno jako `P0-7B-FROZEN-BEST40`, wyłącznie po `EXACT_MATCH`.
-5. `main` pozostaje bez zmian.
+Claim `P0-7A-CANONICAL-APP`: stage exact BEST56 SHA-256 `3bb0756f...f4044e92` do `app/FlippChill_Kalkulator.html`, uruchom Static application checks, nie dotykaj main.
 
 ### SECOND_AUDIT
-
-Po DONE `P0-7A-CANONICAL-APP` wykonaj realny test migracji schema 11→12 na `localStorage`. NIE czekaj na BEST40.
+Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`; NIE czekaj na BEST40.
 
 ### THIRD_UI
-
-Po DONE `P0-7A-CANONICAL-APP` wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression. NIE zmieniaj finansów.
+Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression; NIE zmieniaj finansów.
 
 ## Auto-dispatch
 
@@ -58,6 +43,6 @@ Po DONE `P0-7A-CANONICAL-APP` wykonaj audyt 390px / 768px / 1366×768 / 1440×90
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 29`
+- `source_iteration = 30`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
