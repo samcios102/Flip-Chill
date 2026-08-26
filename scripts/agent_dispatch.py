@@ -43,6 +43,10 @@ def save_json(path: Path, payload: dict) -> None:
     tmp.replace(path)
 
 
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
 def find_task(queue: dict, task_id: str) -> dict:
     for task in queue.get("tasks", []):
         if task.get("id") == task_id:
@@ -61,7 +65,7 @@ def claim_task(queue: dict, trigger: dict, task: dict) -> str:
     if not isinstance(lock, dict) or lock.get("owner") is not None:
         raise RuntimeError(f"task {task.get('id')} already locked")
 
-    claimed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    claimed_at = utc_now()
     task["status"] = "CLAIMED"
     task["lock"] = {"owner": target, "claimed_at": claimed_at}
     trigger["status"] = "CLAIMED"
@@ -71,6 +75,47 @@ def claim_task(queue: dict, trigger: dict, task: dict) -> str:
     save_json(QUEUE, queue)
     save_json(TRIGGER, trigger)
     return claimed_at
+
+
+def recover_failed_dispatch(task_id: str, target: str, returncode: int) -> bool:
+    """Release a stale dispatcher claim after a failed bot process.
+
+    State is changed only when the task is still CLAIMED by this dispatcher.
+    If the bot already advanced the task itself, its newer state wins.
+    """
+    queue = load_json(QUEUE)
+    trigger = load_json(TRIGGER)
+    task = find_task(queue, task_id)
+    lock = task.get("lock") if isinstance(task.get("lock"), dict) else {}
+
+    if task.get("status") != "CLAIMED" or lock.get("owner") != target:
+        return False
+
+    failed_at = utc_now()
+    task["status"] = "BLOCKED"
+    task["last_error"] = {
+        "type": "BOT_SUBPROCESS_EXIT",
+        "returncode": returncode,
+        "at": failed_at,
+    }
+    task["lock"] = {"owner": None, "claimed_at": None}
+    save_json(QUEUE, queue)
+
+    if (
+        trigger.get("task_id") == task_id
+        and trigger.get("status") == "CLAIMED"
+        and trigger.get("claimed_by") == target
+    ):
+        trigger["action"] = "IDLE"
+        trigger["status"] = "BLOCKED"
+        trigger["last_error"] = {
+            "type": "BOT_SUBPROCESS_EXIT",
+            "returncode": returncode,
+            "at": failed_at,
+        }
+        save_json(TRIGGER, trigger)
+
+    return True
 
 
 def build_prompt(trigger: dict, task: dict, audit: dict, source: dict) -> str:
@@ -136,7 +181,7 @@ def dispatch_once(dry_run: bool = False) -> int:
     source = load_json(SOURCE)
     task = find_task(queue, trigger["task_id"])
 
-    if task.get("status") not in {"READY", "OPEN"}:
+    if task.get("status") != "READY":
         print(f"Task {task.get('id')} is {task.get('status')}; not dispatching")
         return 0
 
@@ -167,6 +212,13 @@ def dispatch_once(dry_run: bool = False) -> int:
     claimed_at = claim_task(queue, trigger, task)
     print(f"Claimed {task['id']} for {target} at {claimed_at}")
     completed = subprocess.run(command, shell=True, cwd=ROOT)
+    if completed.returncode != 0:
+        recovered = recover_failed_dispatch(task["id"], target, completed.returncode)
+        if recovered:
+            print(
+                f"Bot failed with exit {completed.returncode}; task {task['id']} moved to BLOCKED and claim released",
+                file=sys.stderr,
+            )
     return completed.returncode
 
 
