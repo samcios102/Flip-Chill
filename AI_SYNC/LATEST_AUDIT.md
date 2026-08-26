@@ -4,35 +4,39 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `34`
+- Iteracja: `35`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-`stage_canonical_app.py` obsługuje teraz `FLIPPCHILL_ARTIFACT_ROOTS`. Dzięki temu PRIMARY i inne runtime'y mogą wskazać katalog montowany/pobrany bez wpisywania platformowej ścieżki do repo. Te rooty mają pierwszeństwo przed cwd/Downloads/Desktop/OneDrive.
+Wykryto drift protokołu 3 botów: `AI_SYNC/PROTOCOL.md` pomijał `sync/CRM_SYNC.md` w obowiązkowej kolejności odczytu, mimo że automat i wspólny stan wymagają tego pliku przed BACKLOG.
 
-Bezpieczeństwo pozostaje twarde: kandydat jest akceptowany wyłącznie przy exact SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+Naprawa:
+- `sync/CRM_SOURCE_OF_TRUTH.json` ma teraz kanoniczne `sync_contract.required_read_order`;
+- `AI_SYNC/PROTOCOL.md` odtwarza tę kolejność 1:1;
+- `tests/check_ai_sync_protocol.py` blokuje przyszły drift manifestu i kolejności w Markdown.
+
+Brak zmian zachowania aplikacji, danych i finansów.
 
 ## Testy / CI
 
-- workflow #239 na `167efab6...`: wszystkie gate'y przed aplikacją = `PASS`;
-- `Verify canonical app staging safety` z testem `FLIPPCHILL_ARTIFACT_ROOTS` = `PASS`;
-- `Static application checks` = `FAIL` wyłącznie z powodu braku `app/FlippChill_Kalkulator.html` w repo;
-- BEST40 checksum/stable = `SKIPPED` downstream;
-- końcowy CI po commitach handoffu iteracji 34 pozostaje do potwierdzenia.
+- poprzedni workflow #249 na `f6ca0dbd...`: wszystkie gate'y przed aplikacją = `PASS`;
+- nowy kontrakt read-order = `COMMITTED / CI PENDING`;
+- `Static application checks` pozostaje P0 #7 do czasu canonical app;
+- BEST40 checksum/stable pozostaje osobnym downstream gate 7B.
 
 ## P0 / P1
 
-- P0 #7 — aktywny: 7A READY z portable artifact roots; 7B BLOCKED na exact BEST40.
+- P0 #7 — aktywny: 7A READY; 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
-- P1 #12 — lokalny realny bot runtime pozostaje otwarty.
+- P1 #12 — read-order contract dodany; pełny lokalny bot runtime pozostaje otwarty.
 
 ## Handoff dla 3 botów
 
 ### PRIMARY
-Claim `P0-7A-CANONICAL-APP`. Jeśli exact BEST56 jest poza domyślnymi katalogami, ustaw `FLIPPCHILL_ARTIFACT_ROOTS=<katalog>`, następnie uruchom `python scripts/stage_canonical_app.py --auto`. Skrypt ma przyjąć tylko exact BEST56 SHA-256 `3bb0756f...f4044e92`, zapisać `app/FlippChill_Kalkulator.html`, uruchomić `python tests/check_app.py app/FlippChill_Kalkulator.html` i commitować na `develop`. NIE dotykaj `main`.
+Claim `P0-7A-CANONICAL-APP`. Jeśli exact BEST56 jest poza domyślnymi katalogami, ustaw `FLIPPCHILL_ARTIFACT_ROOTS=<katalog>`, uruchom `python scripts/stage_canonical_app.py --auto`, zaakceptuj wyłącznie SHA-256 `3bb0756f...f4044e92`, następnie uruchom `python tests/check_app.py app/FlippChill_Kalkulator.html`. Pracuj na `develop`; `main` pozostaje stabilny.
 
 ### SECOND_AUDIT
 Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`; NIE czekaj na BEST40.
@@ -46,6 +50,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 34`
+- `source_iteration = 35`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
