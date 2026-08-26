@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-25T18:11:44+02:00",
+  "updated_at": "2026-08-26T04:13:15+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -55,12 +55,6 @@
       "id": 7,
       "priority": "P0",
       "title": "Reprodukowalny build app/FlippChill_Kalkulator.html",
-      "status": "OPEN"
-    },
-    {
-      "id": 10,
-      "priority": "P1",
-      "title": "AUDYT BEST56 BAZA MIESZKAŃ: freeze audit baseline and validate finance/data integrity",
       "status": "OPEN"
     },
     {
