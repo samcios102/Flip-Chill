@@ -4,48 +4,52 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
+- Iteracja: `17`
 - Branch roboczy: `develop`
+- Testowany commit: `275bbf757cddba406b2d1e1c99ab04cd4797770a`
 - Automatyczne podbijanie numeru BEST: zabronione
 
-## Najwyższy priorytet
+## Nowa zmiana
 
-`P0-7-CANONICAL-APP` — przywrócić kanoniczny `app/FlippChill_Kalkulator.html` oraz zweryfikowany zamrożony `versions/FlippChill_Kalkulator_BEST40.html` bez modyfikacji `main`.
+Dodano twardy gate `tests/check_ai_sync_protocol.py` i krok CI `Verify AI sync dispatch protocol`. Gate sprawdza spójność raportu, kolejki, triggera, locków, właścicieli zadań, aktywnych P0 oraz ścieżek dispatchera.
 
-## Aktualne dowody
+## Dowody
 
-- BEST56 audit manifest gate: PASS
-- schema 11→12 contract gate: PASS
-- Source of Truth consistency gate: PASS
-- Static application checks: BLOCKED przez P0 #7
-- pełne CI: FAIL do czasu usunięcia P0 #7
+Workflow #73 na testowanym commicie:
+
+- BEST56 audit manifest: PASS
+- Source of Truth consistency: PASS
+- schema 11→12 contract: PASS
+- AI sync dispatch protocol: PASS
+- Static application checks: FAIL przez aktywny P0 #7
+- BEST40 checksum/stable: pominięte po P0 #7
+
+## P0 / P1
+
+- P0 #7 — nadal najwyższy READY task dla PRIMARY.
+- P0 #11 — BLOCKED przez #7; po canonical app SECOND_AUDIT wykonuje realny runtime `localStorage`.
+- P1 #12 — statyczny protokół jest już chroniony CI; pozostał lokalny pełny runtime dispatcher z rzeczywistą komendą bota.
+- THIRD_UI czeka na canonical app.
 
 ## Handoff dla 3 botów
 
 ### PRIMARY
 
-Claim `P0-7-CANONICAL-APP`. Napraw release gate na `develop`/feature branch. Nie zmieniaj `main`. Po naprawie uruchom wszystkie dostępne gate'y i zapisz wynik w `AI_SYNC/BOT_QUEUE.json` + `AI_SYNC/LATEST_AUDIT.json`.
+Claim `P0-7-CANONICAL-APP`. Przywróć kanoniczny `app/FlippChill_Kalkulator.html` oraz zweryfikowany zamrożony `versions/FlippChill_Kalkulator_BEST40.html`. Pracuj poza `main`, uruchom wszystkie gate'y i zaktualizuj AI_SYNC.
 
 ### SECOND_AUDIT
 
-Czeka na P0 #7. Po zielonym canonical app wykonaj runtime test migracji schema 11→12 na realnym `localStorage` dla issue #11. Zweryfikuj daty i `paymentParts`.
+Po zielonym P0 #7 wykonaj realny test migracji schema 11→12 na `localStorage`: daty, `paymentParts`, status derivation i ponowne otwarcie.
 
 ### THIRD_UI
 
-Czeka na canonical app. Następnie audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression. Nie zmieniaj reguł finansowych.
+Po canonical app wykonaj 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression. Nie zmieniaj finansów.
 
 ## Auto-dispatch
-
-Raport ustawia `AI_SYNC/TRIGGER.json` na:
 
 - `action = RUN_FIX`
 - `status = READY`
 - `task_id = P0-7-CANONICAL-APP`
 - `target_agent = PRIMARY`
 
-Watcher uruchomiony przez `python scripts/agent_dispatch.py --watch` może przejąć to zadanie automatycznie i zbudować prompt dla bota.
-
-## Następne po naprawie P0 #7
-
-1. P0 #11 — runtime localStorage migration.
-2. THIRD_UI — responsywność i accessibility.
-3. Ponowny audyt CI + kolejny raport nadal jako `BEST56 BAZA MIESZKAŃ AUDYT`.
+`P1-12-LOCAL-DISPATCH-RUNTIME` pozostaje BLOCKED wyłącznie do czasu lokalnego ustawienia `FLIPPCHILL_BOT_COMMAND` i potwierdzenia pełnego cyklu watcher → claim → bot → test → handoff.
