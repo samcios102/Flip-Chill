@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-26T19:19:00+02:00",
+  "updated_at": "2026-08-26T20:16:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -53,7 +53,8 @@
     "dependency_partition": {
       "canonical_task": "P0-7A-CANONICAL-APP",
       "best40_task": "P0-7B-FROZEN-BEST40",
-      "runtime_migration_depends_only_on": "P0-7A-CANONICAL-APP"
+      "runtime_migration_depends_only_on": "P0-7A-CANONICAL-APP",
+      "status": "CI_VERIFIED"
     },
     "duplicate_dom_ids": 0,
     "broken_aria_refs": 0,
@@ -78,12 +79,6 @@
       "priority": "P1",
       "title": "Agent handoff + self-dispatch protocol for 3 bots",
       "status": "DISPATCHER_RUNTIME_GUARD_INTEGRATED_CI_PASS_PENDING_LOCAL_RUNTIME"
-    },
-    {
-      "id": 13,
-      "priority": "P1",
-      "title": "Split canonical-app and BEST40 queue dependencies",
-      "status": "IMPLEMENTED_CI_PENDING"
     }
   ],
   "sync_contract": {
