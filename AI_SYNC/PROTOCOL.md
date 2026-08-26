@@ -44,19 +44,20 @@ Each task has exactly one `owner` while CLAIMED/WORKING/TESTING. `lock.owner` + 
 - `action=RUN_FIX`, `status=READY`: watcher/supervisor may prepare the work order for the bot named by `target_agent`.
 - `LATEST_AUDIT.generated_at` and `TRIGGER.updated_at` must be at least as new as the newest shared-state timestamp from Source of Truth / BOT_QUEUE. A stale report or trigger must not dispatch work.
 - `TRIGGER.source_iteration` must equal `LATEST_AUDIT.iteration`, and trigger `action/task_id/target_agent` must equal `LATEST_AUDIT.machine_action`.
-- `scripts/handoff_runtime_guard.py` is the side-effect-free runtime validator for those freshness/machine-action constraints. Its guard must pass immediately before a real bot subprocess; dispatcher integration is tracked under P1 #12.
+- `scripts/handoff_runtime_guard.py` is the side-effect-free runtime validator for those freshness/machine-action constraints.
+- `scripts/agent_dispatch.py` invokes that guard inside the serialized claim path while the local mutex is held, after reloading current READY/dependency state and before READY→CLAIMED. Any guard error aborts claim and prevents the subprocess.
 - if no real local bot command is configured, dispatcher leaves task and trigger READY; it does not claim work it cannot execute.
 - immediately before a real bot subprocess, watcher acquires the local atomic mutex `AI_SYNC/.dispatcher_claim.lock` using an exclusive create operation, then reloads queue + trigger while holding that mutex.
 - only one watcher in the same checkout can perform the READY→CLAIMED transition; a second watcher skips the cycle while the mutex is occupied or if reloaded state is no longer READY.
 - a mutex older than the configured stale threshold is recovered only when its recorded local PID is confirmed dead; fresh locks, unparseable locks and locks owned by live processes are never stolen.
-- while holding the mutex, watcher atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`; the mutex is then released before the bot subprocess starts.
+- while holding the mutex, watcher validates the runtime handoff, then atomically persists task `CLAIMED`, `lock.owner`, `lock.claimed_at` and trigger `status=CLAIMED`; the mutex is then released before the bot subprocess starts.
 - dependencies listed in `blocked_by` must be in explicit resolved states before claim; missing or unresolved dependencies block dispatch.
 - if the bot subprocess exits non-zero while the task is still `CLAIMED` by that same agent, dispatcher records `task.status=BLOCKED`, `last_error`, releases the task lock and moves trigger to `action=IDLE`, `status=BLOCKED`.
 - if the bot already advanced the task to WORKING/TESTING/DONE/BLOCKED, dispatcher does not overwrite the newer bot-owned state.
 - bot runs the requested checks and writes outcome back to queue/audit state.
 - after a successful verified cycle, trigger becomes `IDLE` or points to the next READY task.
 
-A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX. CI protects freshness, dependencies, lock/claim/failure recovery and mutex behavior; the runtime guard additionally provides a direct local pre-subprocess validation boundary.
+A report can therefore create work by publishing a READY queue item and setting the trigger to RUN_FIX. CI protects freshness, dependencies, lock/claim/failure recovery, mutex behavior and dispatcher↔runtime-guard integration.
 
 ## Safety gates
 
@@ -78,13 +79,11 @@ Every completed bot cycle updates:
 - `sync/CRM_SYNC.md` if shared project state changed,
 - `BACKLOG.md` / issue if blocker scope/status changed.
 
-CI runs `tests/check_ai_sync_freshness.py` to ensure the handoff does not lag behind shared state and that trigger/audit machine action stays aligned. CI also runs `tests/check_handoff_runtime_guard.py` to verify the reusable runtime guard contract.
+CI runs `tests/check_ai_sync_freshness.py` to ensure the handoff does not lag behind shared state and that trigger/audit machine action stays aligned. CI also runs `tests/check_handoff_runtime_guard.py` plus `tests/check_agent_dispatch_runtime_guard_integration.py` to verify the runtime guard contract and direct dispatcher integration.
 
 ## Local self-dispatch
 
-Run `python scripts/agent_dispatch.py --watch` from the repository root. The dispatcher polls `AI_SYNC/TRIGGER.json`. When `RUN_FIX + READY` appears, it builds `AI_SYNC/BOT_INBOX.md` from the task. When `FLIPPCHILL_BOT_COMMAND` is configured, it first serializes and claims the task, then invokes the local bot.
-
-Before real subprocess execution, the target architecture requires the dispatcher to invoke the runtime handoff guard. Until that integration is merged, `python scripts/handoff_runtime_guard.py` can be used as an explicit local preflight and P1 #12 remains open.
+Run `python scripts/agent_dispatch.py --watch` from the repository root. The dispatcher polls `AI_SYNC/TRIGGER.json`. When `RUN_FIX + READY` appears, it builds `AI_SYNC/BOT_INBOX.md` from the task. When `FLIPPCHILL_BOT_COMMAND` is configured, it serializes the claim, revalidates the current handoff with the runtime guard, claims the task, then invokes the local bot.
 
 The command template may contain `{prompt_file}`, `{agent}`, and `{task_id}`. Example shape only:
 
