@@ -6,7 +6,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma runtime-verified stager exact BEST56 i oczekuje wyłącznie na zapis canonical app do repo, 7B pozostaje BLOCKED na exact BEST40
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma runtime-verified stager exact BEST56 z przenośnym `FLIPPCHILL_ARTIFACT_ROOTS` i oczekuje wyłącznie na zapis canonical app do repo, 7B pozostaje BLOCKED na exact BEST40
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - P1 #13: CLOSED / CI_VERIFIED — dependency partition 7A/7B potwierdzony workflow #202
@@ -191,3 +191,13 @@ Po zmianie:
 - Source of Truth zmienił stan #7 na `CANONICAL_STAGER_RUNTIME_VERIFIED_AWAITING_REPOSITORY_STAGE_BEST40_BLOCKED`.
 - `P0-7A-CANONICAL-APP` pozostaje READY dla PRIMARY, ale nie wymaga już ponownego sprawdzania stagera — następny krok to zapis exact BEST56 jako `app/FlippChill_Kalkulator.html` na `develop` i uruchomienie Static application checks.
 - P0 #11 nadal zależy wyłącznie od 7A; reguły finansowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`.
+
+### 2026-08-27 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 34
+
+- Wykryto przenośnościowy blocker 7A: `--auto` znał tylko stałe lokalne rooty, podczas gdy różne runtime'y agentów mogą montować exact BEST56 w innych katalogach.
+- Dodano `FLIPPCHILL_ARTIFACT_ROOTS`; rooty z env są sprawdzane przed cwd/Downloads/Desktop/OneDrive, nadal wyłącznie po exact SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+- Rozszerzono `tests/check_stage_canonical_app.py` o env-root discovery i deterministyczny wybór.
+- Workflow #239 oraz finalny workflow #247: wszystkie gate'y przed aplikacją = PASS, w tym canonical staging; `Static application checks` nadal FAIL wyłącznie przez brak `app/FlippChill_Kalkulator.html` w repo, BEST40 pozostaje downstream/skipped.
+- Source of Truth, BACKLOG, issue #7 oraz AI_SYNC handoff zostały zsynchronizowane do iteracji 34.
+- NEXT READY TASK pozostaje `P0-7A-CANONICAL-APP` dla PRIMARY; trigger `RUN_FIX / READY / iteration 34`.
+- Reguły CRM, finansowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
