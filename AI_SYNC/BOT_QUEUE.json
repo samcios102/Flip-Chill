@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-26T17:29:00+02:00",
+  "updated_at": "2026-08-26T18:21:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -13,9 +13,9 @@
       "title": "Restore canonical app artifact and frozen BEST40 gate",
       "status": "READY",
       "owner": "PRIMARY",
-      "scope": ["scripts/artifact_preflight.py", "local artifact discovery by SHA-256", "app/FlippChill_Kalkulator.html", "versions/FlippChill_Kalkulator_BEST40.html", "tests", ".github/workflows"],
-      "acceptance": ["run python scripts/artifact_preflight.py against local project/download/artifact directories before importing", "frozen BEST40 is accepted only if preflight reports EXACT_MATCH and SHA-256 equals c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708", "if exact BEST40 is unavailable locally, mark task BLOCKED instead of substituting another file", "canonical app exists or is generated deterministically", "Static application checks pass", "BEST56 audit naming policy remains unchanged", "main is not modified"],
-      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim contract", "dispatcher failure recovery", "dispatcher mutex contract", "dispatcher stale mutex recovery", "dispatcher dependency guard", "artifact discovery preflight safety", "Static application checks", "BEST40 checksum"],
+      "scope": ["scripts/artifact_preflight.py", "scripts/stage_canonical_app.py", "local artifact discovery by SHA-256", "app/FlippChill_Kalkulator.html", "versions/FlippChill_Kalkulator_BEST40.html", "tests", ".github/workflows"],
+      "acceptance": ["run python scripts/stage_canonical_app.py against the exact local BEST56 baseline before canonical app import", "BEST56 canonical app candidate is accepted only if SHA-256 equals 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "run python scripts/artifact_preflight.py against local project/download/artifact directories before BEST40 import", "frozen BEST40 is accepted only if preflight reports EXACT_MATCH and SHA-256 equals c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708", "if exact BEST40 is unavailable locally, mark historical BEST40 substep BLOCKED instead of substituting another file", "canonical app exists or is generated deterministically", "Static application checks pass", "BEST56 audit naming policy remains unchanged", "main is not modified"],
+      "required_checks": ["BEST56 audit manifest", "schema 11->12 contract", "Source of Truth consistency", "AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim contract", "dispatcher failure recovery", "dispatcher mutex contract", "dispatcher stale mutex recovery", "dispatcher dependency guard", "artifact discovery preflight safety", "canonical app staging safety", "Static application checks", "BEST40 checksum"],
       "lock": {"owner": null, "claimed_at": null}
     },
     {
