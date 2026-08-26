@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-26T23:23:00+02:00",
+  "updated_at": "2026-08-27T00:23:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -14,10 +14,10 @@
       "status": "READY",
       "owner": "PRIMARY",
       "scope": ["scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_stage_canonical_app.py", "tests/check_app.py", ".github/workflows/quality.yml"],
-      "acceptance": ["run canonical stager with --auto or explicit exact candidate", "accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "canonical app exists or is generated deterministically", "Static application checks pass", "BEST56 audit naming policy remains unchanged", "main is not modified"],
-      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "AI sync dispatch protocol", "canonical app staging + auto-discovery safety", "Static application checks"],
-      "runtime_evidence": {"stager": "PASS", "dry_run": "PASS", "atomic_stage": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "auto_discovery_ci": "PASS_WORKFLOW_226"},
-      "work_order": "python scripts/stage_canonical_app.py --auto && python tests/check_app.py",
+      "acceptance": ["run canonical stager with --auto or explicit exact candidate", "portable runtimes may set FLIPPCHILL_ARTIFACT_ROOTS to mounted/download roots", "accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "canonical app exists or is generated deterministically", "Static application checks pass", "BEST56 audit naming policy remains unchanged", "main is not modified"],
+      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "AI sync dispatch protocol", "canonical app staging + auto-discovery + env-root safety", "Static application checks"],
+      "runtime_evidence": {"stager": "PASS", "dry_run": "PASS", "atomic_stage": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "portable_artifact_roots_ci": "PASS_WORKFLOW_239"},
+      "work_order": "If needed set FLIPPCHILL_ARTIFACT_ROOTS=<artifact-dir>; python scripts/stage_canonical_app.py --auto && python tests/check_app.py app/FlippChill_Kalkulator.html",
       "lock": {"owner": null, "claimed_at": null}
     },
     {
@@ -57,7 +57,7 @@
       "scope": ["scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
       "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard is invoked before real subprocess", "stale/mismatched handoff blocks dispatch", "mutex/dependency/claim/failure recovery contracts hold", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
       "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim/failure/mutex/dependency contracts", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
-      "ci_evidence": "workflow #224 on 680f2427f646326d5d1e2beeeca6a08fc5988963 passed all pre-application gates before Static application checks",
+      "ci_evidence": "workflow #239 passes all pre-application gates before Static application checks",
       "lock": {"owner": null, "claimed_at": null}
     },
     {
