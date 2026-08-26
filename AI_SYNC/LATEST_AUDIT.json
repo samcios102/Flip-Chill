@@ -4,41 +4,43 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 31,
-  "generated_at": "2026-08-26T21:21:00+02:00",
+  "iteration": 32,
+  "generated_at": "2026-08-26T22:24:00+02:00",
   "branch": "develop",
-  "change_head": "09ffa490f7dfb2d618c47e4c6fd6793935e301a2",
-  "tested_commit": "cbdd2c9603d09faa56a4647ff0c02aa7be5d0669",
+  "change_head": "981d8acdc7492c47290bfa6c343424862d7a53dc",
+  "tested_commit": "8b00996f8b6c2bcbf007114100f858b638036b92",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P1", "area": "shared-state documentation", "result": "Issue #13 was already closed/completed and removed from active Source of Truth blockers, but BACKLOG and CRM_SYNC current-state text still presented it as open/pending."},
-    {"priority": "P1", "area": "shared-state reconciliation", "result": "BACKLOG now marks #13 completed and CRM_SYNC current state now records CLOSED / CI_VERIFIED with workflow #202 evidence."},
-    {"priority": "P0", "area": "canonical app", "result": "P0-7A-CANONICAL-APP remains the highest-priority READY task for PRIMARY; exact local BEST56 SHA-256 is available in the audit runtime, while repository Static application checks still fail because canonical app is not staged."}
+    {"priority": "P0", "area": "canonical app", "result": "Exact local BEST56 artifact was runtime-verified with stage_canonical_app.py semantics: dry-run PASS, atomic staging PASS, candidate and staged target SHA-256 both 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
+    {"priority": "P0", "area": "repository release gate", "result": "P0-7A remains READY because the verified canonical target has not yet been persisted into repository path app/FlippChill_Kalkulator.html on develop."},
+    {"priority": "P0", "area": "CI", "result": "Workflow #216 passed all 15 pre-application gates and failed only at Static application checks; frozen BEST40 checks remained skipped downstream."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
-    "source_of_truth_update_required": false,
-    "source_of_truth_update": "No business rule or blocker state changed; this iteration reconciled stale human/backlog documentation with the already-correct Source of Truth."
+    "source_of_truth_update_required": true,
+    "source_of_truth_update": "Recorded canonical BEST56 stager runtime verification and advanced #7 state to awaiting repository stage; no business or financial rule changed."
   },
   "tests": {
-    "workflow_run": 209,
-    "workflow_commit": "cbdd2c9603d09faa56a4647ff0c02aa7be5d0669",
-    "all_pre_application_gates": "PASS",
-    "queue_dependency_partition_contract": "PASS",
-    "ai_sync_handoff_freshness": "PASS",
-    "canonical_app_staging_safety": "PASS",
-    "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP",
+    "workflow_run": 216,
+    "workflow_commit": "8b00996f8b6c2bcbf007114100f858b638036b92",
+    "all_pre_application_gates": "PASS_15_OF_15",
+    "canonical_app_staging_safety": "PASS_CI",
+    "canonical_app_stager_runtime_dry_run": "PASS",
+    "canonical_app_stager_runtime_atomic_stage": "PASS",
+    "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
     "ci_overall": "FAIL_EXPECTED_P0_7",
-    "iteration_31_ci": "PENDING_AFTER_SYNC_ONLY_COMMITS"
+    "iteration_32_ci": "PENDING_AFTER_HANDOFF_COMMITS"
   },
   "impact": {
-    "baza_mieszkan": "No application behavior change. Shared-state documentation is now consistent about completed issue #13.",
+    "baza_mieszkan": "No application behavior changed; exact BEST56 canonical staging path is now runtime-proven.",
     "finance": "No financial rule change.",
     "data_integrity": "No migration rule change; #11 remains blocked only by canonical app 7A.",
-    "automation": "Handoff no longer exposes closed #13 as pending work; queue routing itself is unchanged."
+    "automation": "PRIMARY receives stronger evidence: it no longer needs to validate stager behavior, only persist exact canonical app into develop and run checks."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -48,7 +50,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7A-CANONICAL-APP. Stage only exact BEST56 SHA-256 3bb0756f...f4044e92 as app/FlippChill_Kalkulator.html and run Static application checks.",
+    "primary": "Claim P0-7A-CANONICAL-APP. Runtime staging is already verified on exact BEST56. Persist only SHA-256 3bb0756f...f4044e92 as app/FlippChill_Kalkulator.html on develop and run Static application checks.",
     "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
