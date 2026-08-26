@@ -29,6 +29,8 @@ jobs:
         run: python tests/check_agent_dispatch_claim.py
       - name: Verify local dispatcher failure recovery
         run: python tests/check_agent_dispatch_failure_recovery.py
+      - name: Verify artifact discovery preflight safety
+        run: python tests/check_artifact_preflight.py
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
       - name: Verify frozen BEST40 checksum
