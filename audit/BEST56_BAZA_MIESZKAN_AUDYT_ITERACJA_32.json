@@ -1,0 +1,26 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 32,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "timestamp": "2026-08-26T22:25:00+02:00",
+  "finding": "Canonical BEST56 stager runtime verified on exact audited artifact.",
+  "evidence": {
+    "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "dry_run": "PASS",
+    "atomic_stage": "PASS",
+    "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "previous_ci_run": 216,
+    "previous_ci_pre_application_gates": "PASS_15_OF_15",
+    "previous_ci_static_application_checks": "FAIL_MISSING_CANONICAL_APP_IN_REPO"
+  },
+  "blockers": {
+    "P0-7A-CANONICAL-APP": "READY_AWAITING_REPOSITORY_STAGE",
+    "P0-7B-FROZEN-BEST40": "BLOCKED_EXACT_ARTIFACT",
+    "P0-11-RUNTIME-MIGRATION": "BLOCKED_BY_P0-7A",
+    "P1-12-LOCAL-DISPATCH-RUNTIME": "BLOCKED_LOCAL_BOT_COMMAND"
+  },
+  "next_action": "RUN_FIX",
+  "target_agent": "PRIMARY",
+  "task_id": "P0-7A-CANONICAL-APP",
+  "version_policy": "BEST56 + AUDYT only; never auto-increment"
+}
