@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import os
 from pathlib import Path
 import tempfile
 
@@ -16,6 +17,7 @@ assert spec.loader is not None
 spec.loader.exec_module(module)
 
 assert module.EXPECTED_BEST56_SHA256 == EXPECTED, "BEST56 stager checksum drift"
+assert module.ARTIFACT_ROOTS_ENV == "FLIPPCHILL_ARTIFACT_ROOTS"
 
 with tempfile.TemporaryDirectory() as tmpdir:
     root = Path(tmpdir)
@@ -25,6 +27,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
     fixture_sha = hashlib.sha256(candidate.read_bytes()).hexdigest()
 
     original_expected = module.EXPECTED_BEST56_SHA256
+    original_env = os.environ.get(module.ARTIFACT_ROOTS_ENV)
     module.EXPECTED_BEST56_SHA256 = fixture_sha
     try:
         dry = module.stage(candidate, target, dry_run=True)
@@ -64,6 +67,18 @@ with tempfile.TemporaryDirectory() as tmpdir:
         assert len(discovered["matches"]) == 2
         assert discovered["scanned"] >= 3
 
+        # Cross-agent runtimes can expose mounted/downloaded artifacts without
+        # hard-coding platform-specific paths in the repository.
+        env_root = root / "mounted-artifacts"
+        env_root.mkdir()
+        env_exact = env_root / "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html"
+        env_exact.write_bytes(candidate.read_bytes())
+        os.environ[module.ARTIFACT_ROOTS_ENV] = str(env_root)
+        defaults = module.default_search_roots()
+        assert env_root.resolve() == defaults[0].resolve(), "env root must have first priority"
+        env_discovered = module.discover_exact()
+        assert env_discovered["candidate"] == env_exact.resolve()
+
         empty = root / "empty"
         empty.mkdir()
         try:
@@ -74,5 +89,9 @@ with tempfile.TemporaryDirectory() as tmpdir:
             raise AssertionError("auto-discovery must block when exact BEST56 is absent")
     finally:
         module.EXPECTED_BEST56_SHA256 = original_expected
+        if original_env is None:
+            os.environ.pop(module.ARTIFACT_ROOTS_ENV, None)
+        else:
+            os.environ[module.ARTIFACT_ROOTS_ENV] = original_env
 
 print("canonical app staging + auto-discovery contract: PASS")
