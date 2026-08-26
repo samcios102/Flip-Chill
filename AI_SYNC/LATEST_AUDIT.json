@@ -4,55 +4,47 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 26,
-  "generated_at": "2026-08-26T17:19:00+02:00",
+  "iteration": 27,
+  "generated_at": "2026-08-26T17:30:00+02:00",
   "branch": "develop",
-  "tested_commit": "4366642a9747f23fcf5e2844dc6707c7b3af35ad",
+  "tested_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {
-      "priority": "P1",
-      "area": "runtime handoff enforcement",
-      "result": "Runtime handoff guard is now invoked inside the serialized dispatcher claim path while the local mutex is held, after READY/dependency reload and before READY->CLAIMED. Guard errors abort claim and therefore prevent subprocess launch."
-    },
-    {
-      "priority": "P0",
-      "area": "canonical app",
-      "result": "P0 #7 remains the highest-priority application blocker; canonical app and exact frozen BEST40 are still required."
-    }
+    {"priority": "P1", "area": "runtime handoff enforcement", "result": "Workflow #176 proves the dispatcher runtime guard integration and all AI_SYNC/dispatcher safety gates pass before application checks."},
+    {"priority": "P0", "area": "canonical app", "result": "P0 #7 remains the highest-priority application blocker; Static application checks fail because canonical app is still absent, and BEST40 checks remain downstream."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P1 #12 changed from pending dispatcher integration to integrated-before-claim; only CI completion plus real local FLIPPCHILL_BOT_COMMAND runtime remain."
+    "source_of_truth_update": "P1 #12 changed from CI_PENDING to CI_PASS_PENDING_LOCAL_RUNTIME based on workflow #176 evidence."
   },
   "tests": {
-    "workflow_run": "QUEUED_AFTER_IMPLEMENTATION",
-    "workflow_commit": "4366642a9747f23fcf5e2844dc6707c7b3af35ad",
-    "best56_audit_manifest_gate": "PENDING_CURRENT_RUN",
-    "source_of_truth_consistency_gate": "PENDING_CURRENT_RUN",
-    "schema_11_12_contract_gate": "PENDING_CURRENT_RUN",
-    "ai_sync_dispatch_protocol_gate": "PENDING_CURRENT_RUN",
-    "ai_sync_handoff_freshness_gate": "PENDING_CURRENT_RUN",
-    "runtime_handoff_guard_contract_gate": "PENDING_CURRENT_RUN",
-    "dispatcher_runtime_guard_integration_gate": "ADDED_CI_PENDING",
-    "dispatcher_claim_contract_gate": "PENDING_CURRENT_RUN",
-    "dispatcher_failure_recovery_gate": "PENDING_CURRENT_RUN",
-    "dispatcher_mutex_contract_gate": "PENDING_CURRENT_RUN",
-    "dispatcher_stale_mutex_recovery_gate": "PENDING_CURRENT_RUN",
-    "dispatcher_dependency_guard_gate": "PENDING_CURRENT_RUN",
-    "artifact_preflight_safety_gate": "PENDING_CURRENT_RUN",
-    "static_application_checks": "EXPECTED_FAIL_UNTIL_P0_7",
-    "best40_checksum": "EXPECTED_SKIPPED_AFTER_P0_7",
-    "ci_overall": "PENDING_CURRENT_RUN"
+    "workflow_run": 176,
+    "workflow_commit": "9293c8766dd047bb233c5808391e282c6d5f5ac4",
+    "best56_audit_manifest_gate": "PASS",
+    "source_of_truth_consistency_gate": "PASS",
+    "schema_11_12_contract_gate": "PASS",
+    "ai_sync_dispatch_protocol_gate": "PASS",
+    "ai_sync_handoff_freshness_gate": "PASS",
+    "runtime_handoff_guard_contract_gate": "PASS",
+    "dispatcher_runtime_guard_integration_gate": "PASS",
+    "dispatcher_claim_contract_gate": "PASS",
+    "dispatcher_failure_recovery_gate": "PASS",
+    "dispatcher_mutex_contract_gate": "PASS",
+    "dispatcher_stale_mutex_recovery_gate": "PASS",
+    "dispatcher_dependency_guard_gate": "PASS",
+    "artifact_preflight_safety_gate": "PASS",
+    "static_application_checks": "FAIL_P0_7",
+    "best40_checksum": "SKIPPED_AFTER_P0_7",
+    "ci_overall": "FAIL_P0_7"
   },
   "impact": {
     "baza_mieszkan": "No application or business-rule change.",
     "finance": "No financial rule change.",
     "data_integrity": "P0 #11 remains active and blocked by canonical-app work.",
-    "automation": "Dispatcher now enforces the reusable runtime handoff guard before claim/subprocess. This closes the code-integration portion of P1 #12; real local bot runtime remains external."
+    "automation": "The full code-level dispatch safety chain is CI-proven. Only the real local FLIPPCHILL_BOT_COMMAND smoke remains for P1 #12."
   },
   "summary": {
     "highest_priority": "P0-7-CANONICAL-APP",
@@ -62,7 +54,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main. Dispatcher guard integration for P1 #12 is now in code; full local bot smoke remains blocked by LOCAL_FLIPPCHILL_BOT_COMMAND.",
+    "primary": "Claim P0-7-CANONICAL-APP. Run artifact_preflight.py locally; import frozen BEST40 only on exact SHA-256 match; restore canonical app without touching main. P1 #12 code-level dispatcher guard integration is CI PASS; local bot runtime remains blocked only by LOCAL_FLIPPCHILL_BOT_COMMAND.",
     "second_audit": "Wait for P0-7, then execute real localStorage schema 11->12 migration verification for issue #11.",
     "third_ui": "Wait for canonical app, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
