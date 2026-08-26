@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-26T20:16:00+02:00",
+  "updated_at": "2026-08-26T22:20:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -9,7 +9,7 @@
   "audit_baseline": {
     "artifact": "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html",
     "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "status": "AUDITED_STATICALLY"
+    "status": "AUDITED_STATICALLY_AND_STAGER_RUNTIME_VERIFIED"
   },
   "modules": {
     "baza_mieszkan": {
@@ -47,6 +47,13 @@
     "canonical_app_path": "app/FlippChill_Kalkulator.html",
     "canonical_app_stager": "scripts/stage_canonical_app.py",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "canonical_app_stager_runtime_evidence": {
+      "status": "PASS",
+      "verified_at": "2026-08-26T22:18:00+02:00",
+      "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+      "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+      "mode": "dry-run + atomic staging to temporary target"
+    },
     "frozen_best40_path": "versions/FlippChill_Kalkulator_BEST40.html",
     "frozen_best40_sha256": "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
     "artifact_preflight": "scripts/artifact_preflight.py",
@@ -66,7 +73,7 @@
       "id": 7,
       "priority": "P0",
       "title": "Reprodukowalny bieżący app + zweryfikowany zamrożony BEST40",
-      "status": "DEPENDENCY_PARTITIONED_CANONICAL_READY_BEST40_BLOCKED"
+      "status": "CANONICAL_STAGER_RUNTIME_VERIFIED_AWAITING_REPOSITORY_STAGE_BEST40_BLOCKED"
     },
     {
       "id": 11,
