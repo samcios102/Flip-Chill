@@ -14,7 +14,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 ## P1 — do naprawy / twarde testy
 
 - [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → guard → claim → wykonanie → test → handoff`. Claim/lock, failure recovery, mutex READY→CLAIMED, bezpieczne odzyskanie starego osieroconego mutexa, dependency guard, świeżość handoffu oraz bezpośrednia integracja runtime guardu z dispatcherem są deterministycznie wymuszane przez CI. Workflow #176 na commit `9293c8766dd047bb233c5808391e282c6d5f5ac4` potwierdził PASS dla wszystkich gate'ów automatyki przed `Static application checks`. Pozostał wyłącznie pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
-- [ ] P1 #13 — zweryfikować w CI rozdzielenie zależności #7: `P0-7A-CANONICAL-APP` i `P0-7B-FROZEN-BEST40`; P0 #11 oraz THIRD_UI mają zależeć tylko od canonical app 7A. Test kontraktu: `tests/check_queue_dependency_partition.py`.
+- [x] P1 #13 — rozdzielenie zależności #7 na `P0-7A-CANONICAL-APP` i `P0-7B-FROZEN-BEST40` zweryfikowane przez CI; P0 #11 oraz THIRD_UI zależą tylko od canonical app 7A. `tests/check_queue_dependency_partition.py` = PASS w workflow #202; issue #13 zamknięte jako completed.
 - [ ] Zbudować test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage`.
 - [ ] Zbudować automatyczny test: logowanie → Baza mieszkań → filtr → Rozlicz → Daty → status → zapis → ponowne otwarcie.
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
