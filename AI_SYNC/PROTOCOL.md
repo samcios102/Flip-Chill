@@ -4,12 +4,16 @@
 
 ## Read order before any work
 
+The canonical order is defined by `sync/CRM_SOURCE_OF_TRUTH.json -> sync_contract.required_read_order` and MUST be followed exactly:
+
 1. `sync/CRM_SOURCE_OF_TRUTH.json`
-2. `AI_SYNC/LATEST_AUDIT.json`
-3. `AI_SYNC/BOT_QUEUE.json`
-4. `AI_SYNC/TRIGGER.json`
-5. `BACKLOG.md`
-6. relevant open GitHub issues
+2. `AI_SYNC/PROTOCOL.md`
+3. `AI_SYNC/LATEST_AUDIT.json`
+4. `AI_SYNC/BOT_QUEUE.json`
+5. `AI_SYNC/TRIGGER.json`
+6. `sync/CRM_SYNC.md`
+7. `BACKLOG.md`
+8. relevant open GitHub P0/P1 issues and current CI state
 
 Repository state is authoritative over conversational memory.
 
