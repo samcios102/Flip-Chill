@@ -6,9 +6,10 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; canonical BEST56 ma teraz exact-hash stager `scripts/stage_canonical_app.py`, a BEST40 nadal wymaga preflight exact SHA-256
-- P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; kolejka rozdziela je na 7A canonical app i 7B frozen BEST40
+- P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
+- P1 #13: dependency partition 7A/7B wdrożony; gate CI oczekuje na wynik
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
 - Finanse: CIT 9%, VAT 23%, domyślny PIT agenta 12%
@@ -162,6 +163,15 @@ Po zmianie:
 - Dodano `scripts/stage_canonical_app.py`: canonical `app/FlippChill_Kalkulator.html` może zostać przygotowany wyłącznie z exact baseline BEST56; mismatch kończy się `BLOCKED` bez kopiowania.
 - Dodano `tests/check_stage_canonical_app.py` oraz krok CI `Verify canonical app staging safety` przed `Static application checks`.
 - Historyczny BEST40 pozostaje niezależnym gate i nadal wymaga exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`; żaden podobnie nazwany plik nie może go zastąpić.
-- Najnowszy widoczny workflow #182 pozostaje `QUEUED` na starszym commicie, dlatego nowego CI PASS dla stagera jeszcze NIE zadeklarowano.
-- P0 #7 ma stan `CANONICAL_STAGER_COMMITTED_CI_PENDING_LOCAL_STAGE`; PRIMARY pozostaje właścicielem jedynego READY taska.
+- Workflow #188 na `30c94c1...`: wszystkie gate'y do canonical staging = PASS; `Static application checks` = FAIL przez brak canonical app.
+- P0 #7 ma stan operacyjny przygotowany do lokalnego stage exact BEST56.
 - Reguły CRM, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 29
+
+- Wykryto nadmierną zależność w kolejce: P0 #11 i THIRD_UI czekały na cały #7, mimo że do pracy potrzebują tylko canonical app, a historyczny BEST40 jest osobnym release gate.
+- Rozdzielono issue #7 na `P0-7A-CANONICAL-APP` (READY, PRIMARY) oraz `P0-7B-FROZEN-BEST40` (BLOCKED na exact lokalny artefakt).
+- `P0-11-RUNTIME-MIGRATION` i `P1-UI-RESPONSIVE-AUDIT` zależą teraz wyłącznie od 7A; po canonical app mogą ruszyć niezależnie od BEST40.
+- Dodano `tests/check_queue_dependency_partition.py` i gate CI `Verify BEST56 queue dependency partition`.
+- Utworzono issue #13 śledzące kontrakt zależności; Source of Truth, BACKLOG, AI_SYNC i trigger zostały zsynchronizowane.
+- Reguły biznesowe, finanse i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
