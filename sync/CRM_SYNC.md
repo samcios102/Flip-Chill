@@ -62,3 +62,9 @@ Po zmianie:
 - Usunięto zależność operacyjną od osobnej gałęzi `feat/crm-source-of-truth`.
 - Reguły biznesowe i polityka wersji nie zmieniły się: automat zachowuje BEST56 i dopisek `AUDYT`.
 - P0 #7 i P0 #11 pozostają aktywne; następny techniczny priorytet to kanoniczny artefakt aplikacji oraz realny test migracji `localStorage`.
+
+### 2026-08-26 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 11
+
+- P1 #10 został zamknięty jako zakończony: fingerprint bazowego BEST56, kontrola DOM/ARIA/JS, reguły finansowe oraz osobny gate CI BEST56 AUDYT są już udokumentowane i zweryfikowane.
+- `CRM_SOURCE_OF_TRUTH.json` został zsynchronizowany: #10 usunięto z `current_blockers`; aktywne pozostają P0 #7 i P0 #11.
+- Reguły biznesowe i polityka wersji nie zmieniły się. Automat nadal utrzymuje `BEST56 BAZA MIESZKAŃ AUDYT` i NIE tworzy BEST57.
