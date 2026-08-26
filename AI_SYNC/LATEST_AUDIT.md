@@ -4,18 +4,18 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `21`
+- Iteracja: `22`
 - Branch roboczy: `develop`
-- Testowany commit: `d98dfacd5af264c1380ebf66ce54ce59389c21b6`
+- Testowany commit: `5bbe358ad344b6ea98e43a0f1b059c3875f37bb8`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Naprawiono dwa gate’y CI, które błędnie uznawały P0 za aktywne tylko przy literalnym `status=OPEN`. Etapowe nie-terminalne statusy, np. `PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT`, są teraz poprawnie traktowane jako aktywne. Jawne terminalne stany (`DONE`, `CLOSED`, `RESOLVED`, `COMPLETED`, `SUPERSEDED`, `REJECTED`) wyłączają blocker.
+Wykryto race-condition lokalnego dispatchera: dwa watchery mogły równolegle odczytać `RUN_FIX + READY` przed zapisaniem `CLAIMED`. Dispatcher ma teraz cross-platform mutex `AI_SYNC/.dispatcher_claim.lock` tworzony atomowo przez `O_CREAT|O_EXCL`. Po zdobyciu mutexa ponownie czyta `TRIGGER.json` i `BOT_QUEUE.json`; tylko aktualny `READY` może przejść do `CLAIMED`. Mutex jest zwalniany przed subprocess bota.
 
 ## Dowody
 
-Workflow dla `d98dfacd...`:
+Workflow #125 dla `5bbe358a...`:
 
 - BEST56 audit manifest: PASS
 - Source of Truth consistency: PASS
@@ -23,6 +23,7 @@ Workflow dla `d98dfacd...`:
 - AI sync dispatch protocol: PASS
 - local dispatcher claim contract: PASS
 - local dispatcher failure recovery: PASS
+- local dispatcher mutex contract: PASS
 - artifact discovery preflight safety: PASS
 - Static application checks: FAIL przez aktywny P0 #7
 - BEST40 checksum/stable: pominięte po P0 #7
@@ -31,7 +32,7 @@ Workflow dla `d98dfacd...`:
 
 - P0 #7 — aktywny i READY dla PRIMARY.
 - P0 #11 — aktywny, BLOCKED przez #7.
-- P1 #12 — lokalny runtime dispatch czeka na rzeczywistą komendę bota.
+- P1 #12 — mutex/claim/failure recovery są już chronione CI; pełny lokalny runtime czeka na rzeczywistą komendę bota.
 - THIRD_UI czeka na canonical app.
 
 ## Handoff dla 3 botów
@@ -54,5 +55,6 @@ Po canonical app wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibil
 - `status = READY`
 - `task_id = P0-7-CANONICAL-APP`
 - `target_agent = PRIMARY`
+- READY→CLAIMED jest lokalnie serializowane przez mutex.
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
