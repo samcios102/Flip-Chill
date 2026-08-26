@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-26T17:31:00+02:00",
+  "updated_at": "2026-08-26T18:23:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 27,
-  "reason": "P0 #7 remains the highest-priority unblocked task. Workflow #176 proved the dispatcher/runtime-guard safety gates; local real-bot runtime remains a separate P1 #12 blocker.",
+  "source_iteration": 28,
+  "reason": "P0 #7 remains the highest-priority unblocked task. Iteration 28 adds an exact-SHA BEST56 canonical app stager so PRIMARY can safely stage app/FlippChill_Kalkulator.html before the separate exact BEST40 import.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -20,6 +20,8 @@
     "require_fresh_handoff_before_dispatch": true,
     "runtime_handoff_guard": "scripts/handoff_runtime_guard.py",
     "runtime_handoff_guard_dispatcher_integration": "CI_PASS_BEFORE_CLAIM",
+    "canonical_app_stager": "scripts/stage_canonical_app.py",
+    "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
