@@ -1,0 +1,27 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 12,
+  "date": "2026-08-26",
+  "branch": "develop",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "version_policy": "keep BEST56; add AUDYT; never create BEST57 from automation",
+  "finding": {
+    "priority": "P0",
+    "issue": 7,
+    "title": "CI baseline blocker consists of two missing canonical artifacts",
+    "details": [
+      "app/FlippChill_Kalkulator.html is required by Static application checks",
+      "versions/FlippChill_Kalkulator_BEST40.html is separately required by frozen BEST40 checksum and stable checks",
+      "restoring only the app file would not make the full workflow green"
+    ]
+  },
+  "safe_rule": "Do not substitute BEST56 for historical BEST40; verify BEST40 exact SHA-256 before import.",
+  "business_rules_changed": false,
+  "source_of_truth_blocker_status_changed": false,
+  "active_blockers": [7, 11],
+  "next_priorities": [
+    "restore verified historical BEST40 artifact under versions/",
+    "establish canonical current app/FlippChill_Kalkulator.html independently under BEST56 AUDYT policy",
+    "run full CI then continue real localStorage migration test for P0 #11"
+  ]
+}
