@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts" / "primary_p0_7a_one_shot.py"
+SCRIPTS = ROOT / "scripts"
+SCRIPT = SCRIPTS / "primary_p0_7a_one_shot.py"
+sys.path.insert(0, str(SCRIPTS))
 
 spec = importlib.util.spec_from_file_location("primary_p0_7a_one_shot", SCRIPT)
 assert spec and spec.loader
@@ -45,7 +48,6 @@ def main() -> int:
         if token not in source:
             raise AssertionError(f"missing one-shot safety contract token: {token}")
 
-    # The helper must never stage arbitrary repository changes.
     forbidden = ["run_git([\"add\", \".\"]", "git add .", "git add -A"]
     for token in forbidden:
         if token in source:
@@ -53,7 +55,6 @@ def main() -> int:
 
     with tempfile.TemporaryDirectory() as td:
         parts = Path(td)
-        # Empty payload is rejected before any commit path can run.
         try:
             mod.verify_payload(parts)
         except SystemExit:
