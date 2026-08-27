@@ -5,15 +5,16 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 46,
-  "generated_at": "2026-08-27T12:18:00+02:00",
+  "generated_at": "2026-08-27T12:20:00+02:00",
   "branch": "develop",
-  "change_head": "45a1929484ac6d63de66ea42df6ceae27d32f080",
+  "change_head": "7dd0119277df0e2613882df0a425052dd14f341a",
   "tested_commit": "45a1929484ac6d63de66ea42df6ceae27d32f080",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {"priority": "P0", "area": "canonical app", "result": "P0-7A remains the highest READY blocker; repository canonical BEST56 payload is still absent, so Static application checks cannot pass."},
-    {"priority": "P1", "area": "evidence freshness", "result": "Workflow #360 is the newest completed CI evidence: all gates 4-23 before the application check PASS, while Static application checks alone FAIL and BEST40 gates are skipped downstream."},
-    {"priority": "P1", "area": "finance/data integrity", "result": "No new regression found. Executable finance contract, Source of Truth, CRM sync contract and schema 11->12 fixture contract remain PASS in workflow #360."}
+    {"priority": "P1", "area": "evidence freshness", "result": "Workflow #360 is the newest completed baseline CI evidence: all gates 4-23 before the application check PASS, while Static application checks alone FAIL and BEST40 gates are skipped downstream."},
+    {"priority": "P1", "area": "handoff freshness", "result": "An intermediate iteration-46 commit correctly failed freshness because BOT_QUEUE.updated_at was newer than LATEST_AUDIT.generated_at. The handoff timestamp order is now corrected before dispatch."},
+    {"priority": "P1", "area": "finance/data integrity", "result": "No new finance or data-integrity regression found. Executable finance contract, Source of Truth, CRM sync contract and schema 11->12 fixture contract remain protected."}
   ],
   "business_decisions": [],
   "p0_p1": {
@@ -22,7 +23,7 @@
     "completed_p1": [14, 16, 17],
     "completed_p2": [15],
     "source_of_truth_update_required": false,
-    "source_of_truth_update": "No shared business rule or blocker state changed; only CI evidence was refreshed to workflow #360."
+    "source_of_truth_update": "No shared business rule or blocker state changed; handoff timestamp ordering was corrected."
   },
   "tests": {
     "workflow_run": 360,
@@ -34,22 +35,22 @@
     "schema_11_12": "PASS",
     "ai_sync_dispatch_protocol": "PASS",
     "queue_dependency_partition": "PASS",
-    "handoff_freshness": "PASS",
-    "runtime_and_dispatcher_gates": "PASS",
-    "artifact_preflight": "PASS",
-    "canonical_staging_safety": "PASS",
-    "canonical_materializer_contract": "PASS",
-    "deterministic_best56_artifact_packager": "PASS",
-    "ci_auto_materialization": "PASS_NO_PAYLOAD_PRESENT",
-    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "handoff_freshness": "CORRECTED_AFTER_INTERMEDIATE_FAILURE",
+    "runtime_and_dispatcher_gates": "PASS_BASELINE_WORKFLOW_360",
+    "artifact_preflight": "PASS_BASELINE_WORKFLOW_360",
+    "canonical_staging_safety": "PASS_BASELINE_WORKFLOW_360",
+    "canonical_materializer_contract": "PASS_BASELINE_WORKFLOW_360",
+    "deterministic_best56_artifact_packager": "PASS_BASELINE_WORKFLOW_360",
+    "ci_auto_materialization": "PASS_NO_PAYLOAD_PRESENT_BASELINE_WORKFLOW_360",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING_BASELINE_WORKFLOW_360",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "FAIL_ONLY_AT_EXISTING_P0_7A"
+    "ci_overall": "FINAL_ITERATION_46_CI_PENDING_AFTER_FRESHNESS_FIX"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
-    "finance": "No rule changed; executable finance scenarios remain PASS.",
-    "data_integrity": "No new regression found; schema 11->12 fixture contract remains PASS while runtime verification waits for canonical app.",
-    "automation": "Routing remains P0-7A -> PRIMARY; evidence refreshed to workflow #360."
+    "finance": "No rule changed.",
+    "data_integrity": "No new regression found.",
+    "automation": "Freshness timestamp ordering corrected; routing remains P0-7A -> PRIMARY."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
