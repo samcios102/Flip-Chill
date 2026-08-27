@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-27T05:17:00+02:00",
+  "updated_at": "2026-08-27T06:18:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -52,7 +52,9 @@
     "canonical_app_materializer": "scripts/materialize_canonical_app.py",
     "canonical_app_materializer_source_dir": "artifacts/best56",
     "canonical_app_materializer_contract_test": "tests/check_materialize_canonical_app.py",
-    "canonical_app_materializer_status": "CI_PASS_WORKFLOW_303_CANONICAL_PART_SET_GUARDED_SOURCE_ARTIFACT_PENDING",
+    "canonical_app_materializer_status": "CI_PASS_WORKFLOW_313_AUTO_MATERIALIZATION_GUARDED_PAYLOAD_PENDING",
+    "canonical_app_ci_auto_materialization": true,
+    "canonical_app_ci_auto_materialization_evidence": "PASS_WORKFLOW_313",
     "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN; non-canonical names and gaps are rejected before decode",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
     "canonical_app_auto_discovery": {
@@ -89,7 +91,7 @@
       "id": 7,
       "priority": "P0",
       "title": "Reprodukowalny bieżący app + zweryfikowany zamrożony BEST40",
-      "status": "MATERIALIZER_PART_SET_CI_PASS_LOCAL_PAYLOAD_PENDING"
+      "status": "CI_AUTO_MATERIALIZATION_PASS_LOCAL_PAYLOAD_PENDING"
     },
     {
       "id": 11,
