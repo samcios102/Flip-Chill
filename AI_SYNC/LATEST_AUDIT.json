@@ -4,27 +4,28 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 39,
-  "generated_at": "2026-08-27T05:17:20+02:00",
+  "iteration": 40,
+  "generated_at": "2026-08-27T06:18:20+02:00",
   "branch": "develop",
-  "change_head": "f74c160f6ee1e484a7515e573cb78081e235d886",
-  "tested_commit": "676d78bb8a59a637f3b7f97ef84d0ab711b93465",
+  "change_head": "5b45ab370a207e9c1b8566538b5489c1cdf922ab",
+  "tested_commit": "3c0b1f7cbfada7f0f7a107a0dcd6ffa3f5df85d9",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P0", "area": "canonical app materializer", "result": "Materializer previously accepted any filename matching best56.html.gz.b64.part*, so non-canonical names or gapped numbering could produce ambiguous operational input even though the final exact-SHA check remained safe."},
-    {"priority": "P0", "area": "artifact part-set safety", "result": "Materializer now requires strict contiguous best56.html.gz.b64.part001..NNN and rejects non-canonical names/gaps before base64 decode."},
-    {"priority": "P0", "area": "CI evidence", "result": "Workflow #303 verifies canonical materializer contract + part-set guard = PASS; all gates before Static application checks pass. Static application checks still fail because canonical app/source payload is not yet persisted in repo."}
+    {"priority": "P0", "area": "exact BEST56 runtime evidence", "result": "Automation runtime has exact BEST56: 857840 bytes, SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
+    {"priority": "P0", "area": "local packager/materializer simulation", "result": "Deterministic gzip mtime=0 + base64 round-trip produced exact BEST56 SHA; a 16-part simulation reconstructed the exact source. Local static gate equivalent passed: 763 unique IDs, 0 duplicates, 38/38 references, required portfolio/payment/date/timeline markers present, VAT 23% and CIT 9% present, script/style counts balanced."},
+    {"priority": "P0", "area": "CI canonical materialization", "result": "Workflow #313 verifies the new Materialize canonical BEST56 app when repository payload exists step = PASS and its ordering before Static application checks. Repository payload remains absent, so Static application checks still fail at P0-7A."},
+    {"priority": "P0", "area": "artifact transfer", "result": "Large exact payload was not persisted through the current connector path because this run cannot guarantee lossless large-artifact transfer. PRIMARY local packager remains the safe write path."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P0 #7 advanced to MATERIALIZER_PART_SET_CI_PASS_LOCAL_PAYLOAD_PENDING. No business or financial rule changed."
+    "source_of_truth_update": "P0 #7 advanced to CI_AUTO_MATERIALIZATION_PASS_LOCAL_PAYLOAD_PENDING. No business or financial rule changed."
   },
   "tests": {
-    "workflow_run": 303,
-    "workflow_commit": "676d78bb8a59a637f3b7f97ef84d0ab711b93465",
+    "workflow_run": 313,
+    "workflow_commit": "3c0b1f7cbfada7f0f7a107a0dcd6ffa3f5df85d9",
     "best56_manifest": "PASS",
     "source_of_truth": "PASS_PREVIOUS_SHARED_STATE",
     "schema_11_12": "PASS",
@@ -34,17 +35,20 @@
     "runtime_and_dispatcher_gates": "PASS",
     "artifact_preflight": "PASS",
     "canonical_staging_safety": "PASS",
-    "canonical_materializer_contract": "PASS_PART_SET_GUARDED",
+    "canonical_materializer_contract": "PASS_CI_ORDERING_GUARDED",
     "deterministic_best56_artifact_packager": "PASS",
-    "static_application_checks": "FAIL_P0_7_CANONICAL_APP_NOT_YET_PERSISTED",
+    "ci_auto_materialization": "PASS",
+    "local_exact_best56_roundtrip": "PASS",
+    "local_static_gate_equivalent": "PASS_763_IDS_0_DUPLICATES_38_OF_38_REFS",
+    "static_application_checks": "FAIL_P0_7_REPOSITORY_PAYLOAD_NOT_YET_PERSISTED",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
     "ci_overall": "FAIL_EXPECTED_P0_7"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule changed.",
-    "data_integrity": "Canonical materialization now rejects malformed/non-contiguous artifact part sets before decode while retaining the final exact BEST56 SHA check.",
-    "automation": "PRIMARY gets a stricter deterministic payload contract before repository payload persistence."
+    "data_integrity": "Exact source and deterministic round-trip were reverified; CI now owns canonical materialization once the payload is persisted.",
+    "automation": "PRIMARY no longer needs to run materialization manually after committing a verified repository payload; CI performs it before static checks."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -54,7 +58,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7A-CANONICAL-APP. Use exact BEST56 only. Preferred path: python scripts/package_best56_artifact.py --auto; verify resulting part set is canonical contiguous part001..NNN; python scripts/materialize_canonical_app.py; python tests/check_app.py app/FlippChill_Kalkulator.html. Commit payload/canonical app only after exact round-trip SHA verification. Fallback remains stage_canonical_app.py --auto.",
+    "primary": "Claim P0-7A-CANONICAL-APP. Run python scripts/package_best56_artifact.py --auto against exact BEST56 SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, verify exact round-trip and canonical contiguous part001..NNN, then commit artifacts/best56 on develop. CI now automatically materializes app/FlippChill_Kalkulator.html before Static application checks. Do not touch main.",
     "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
