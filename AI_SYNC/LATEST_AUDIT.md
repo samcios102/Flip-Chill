@@ -4,20 +4,20 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `50`
+- Iteracja: `51`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Workflow #382 potwierdził naprawę freshness z iteracji 49. Wszystkie gate’y przed aplikacją przeszły PASS; jedyny FAIL pozostaje na `Static application checks`, ponieważ exact BEST56 payload nie został jeszcze utrwalony w repo przez bezpieczną lokalną ścieżkę.
+Dodano CI-guarded one-shot dla PRIMARY: `scripts/primary_p0_7a_one_shot.py`. Helper redukuje lokalny P0-7A do jednego polecenia, przyjmuje wyłącznie exact BEST56, blokuje `main/master`, ogranicza staging do `artifacts/best56` i wymaga jawnego `--push`.
 
 Nie zmieniono aplikacji, finansów, danych ani routingu blockerów.
 
 ## Testy / CI
 
-Workflow #382 na `66b89d6fc0ceb36f0751b255c3883cc8956bacb0`:
+Workflow #392 na `05a05551b02b0a8c75523f5b015643b51ea4cb62`:
 - BEST56 manifest = PASS;
 - Source of Truth = PASS;
 - CRM sync current state = PASS;
@@ -25,7 +25,9 @@ Workflow #382 na `66b89d6fc0ceb36f0751b255c3883cc8956bacb0`:
 - schema 11→12 = PASS;
 - AI_SYNC protocol, dependency partition, freshness i runtime guard = PASS;
 - dispatcher claim/failure/mutex/dependency contracts = PASS;
-- artifact preflight, canonical staging, materializer, packager i CI auto-materialization ordering = PASS;
+- artifact preflight, canonical staging, materializer i packager = PASS;
+- `PRIMARY P0-7A one-shot helper` = PASS;
+- auto-materialization ordering = PASS bez payloadu;
 - `Static application checks` = FAIL przez P0-7A;
 - BEST40 checks = SKIPPED downstream.
 
@@ -38,7 +40,11 @@ Workflow #382 na `66b89d6fc0ceb36f0751b255c3883cc8956bacb0`:
 ## Handoff dla 3 botów
 
 ### PRIMARY
-Na lokalnym repo z Git push access uruchom `python scripts/package_best56_artifact.py --auto`, sprawdź exact SHA `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`, następnie `git add artifacts/best56` i commit na `develop`. Nie przenoś payloadu przez czat/konektor tekstowy.
+Na lokalnym repo z GitHub push access uruchom dokładnie:
+
+`python scripts/primary_p0_7a_one_shot.py --auto --commit --push`
+
+Helper sam wykonuje exact-hash packaging, canonical part validation, `git add artifacts/best56`, commit i jawny push bez dotykania `main`.
 
 ### SECOND_AUDIT
 Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`; nie czekaj na BEST40.
@@ -52,6 +58,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 50`
+- `source_iteration = 51`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
