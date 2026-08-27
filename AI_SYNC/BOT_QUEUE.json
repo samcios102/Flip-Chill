@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-27T10:15:10+02:00",
+  "updated_at": "2026-08-27T11:20:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -96,6 +96,19 @@
       "acceptance": ["develop source branch is published", "P0 #7 and 7A/7B partition are present", "P0 #11 and P1 #12 are present", "BEST56 + AUDYT policy remains explicit", "CIT/VAT/PIT and 50k/100k threshold semantics remain published", "main is not modified"],
       "required_checks": ["Verify CRM sync current-state contract"],
       "result": {"workflow": 345, "commit": "d1250ebab4aba26d12d8d5c1de05f107bd354fe9", "gate": "PASS", "issue": "CLOSED_COMPLETED"},
+      "lock": {"owner": null, "claimed_at": null}
+    },
+    {
+      "id": "P1-17-SEARCH-BONUS-GUARD",
+      "issue": 17,
+      "priority": "P1",
+      "title": "Guard search bonus 10% in executable BEST56 financial scenarios",
+      "status": "DONE",
+      "owner": "SECOND_AUDIT",
+      "scope": ["sync/CRM_SOURCE_OF_TRUTH.json#modules.financial_rules.search_bonus", "tests/check_financial_scenarios.py", "BACKLOG.md"],
+      "acceptance": ["search_bonus remains 0.10", "financial scenario gate fails if the rule drifts", "no business rule or application behavior changes", "main is not modified"],
+      "required_checks": ["Verify BEST56 executable financial scenarios"],
+      "result": {"workflow": 352, "commit": "9673f3958e1ffb6af17f1e03aa81718b4c89a4c8", "gate": "PASS_INCLUDING_SEARCH_BONUS_10_PERCENT", "issue": "CLOSED_COMPLETED"},
       "lock": {"owner": null, "claimed_at": null}
     },
     {
