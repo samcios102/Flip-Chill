@@ -201,3 +201,13 @@ Po zmianie:
 - Source of Truth, BACKLOG, issue #7 oraz AI_SYNC handoff zostały zsynchronizowane do iteracji 34.
 - NEXT READY TASK pozostaje `P0-7A-CANONICAL-APP` dla PRIMARY; trigger `RUN_FIX / READY / iteration 34`.
 - Reguły CRM, finansowe i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-27 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 36
+
+- Exact BEST56 został ponownie potwierdzony: SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+- Dodano `scripts/materialize_canonical_app.py`, `tests/check_materialize_canonical_app.py` oraz gate CI `Verify canonical materializer contract`; materializer wymaga exact SHA po dekodowaniu/dekompresji i zapisuje atomowo.
+- Workflow #274 oraz finalny #279: wszystkie gate'y automatyki, bezpieczeństwa artefaktów, canonical staging i canonical materializer contract = PASS; `Static application checks` nadal FAIL przez brak utrwalonego `app/FlippChill_Kalkulator.html`; BEST40 pozostaje downstream/skipped.
+- `artifacts/best56/` pozostaje `PENDING_SAFE_TRANSFER`; w tej iteracji NIE zapisano częściowego ani niezweryfikowanego payloadu.
+- P0 #7 ma stan `MATERIALIZER_CONTRACT_CI_PASS_SOURCE_ARTIFACT_PENDING`; `P0-7A-CANONICAL-APP` pozostaje READY dla PRIMARY, a P0 #11 nadal zależy wyłącznie od 7A.
+- NEXT READY TASK: `P0-7A-CANONICAL-APP`; TARGET AGENT: `PRIMARY`; TRIGGER: `RUN_FIX / READY / iteration 36`.
+- Reguły CRM, finanse, UX, `main` i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
