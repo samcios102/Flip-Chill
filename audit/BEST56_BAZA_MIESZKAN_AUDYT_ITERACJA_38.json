@@ -1,0 +1,31 @@
+{
+  "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 38,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "finding": "P0-7A still required manual creation of repository payload parts even though the materializer contract was already CI-verified.",
+  "change": [
+    "added scripts/package_best56_artifact.py",
+    "added tests/check_package_best56_artifact.py",
+    "added CI gate Verify deterministic BEST56 artifact packager"
+  ],
+  "safety": {
+    "exact_sha_only": true,
+    "deterministic_gzip_mtime": 0,
+    "fixed_part_size_default": 65536,
+    "atomic_part_writes": true,
+    "full_roundtrip_sha_verification": true,
+    "main_modified": false
+  },
+  "ci_evidence": {
+    "workflow_run": 293,
+    "commit": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
+    "artifact_packager_contract": "PASS",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7_CANONICAL_APP_NOT_YET_PERSISTED",
+    "best40_checks": "SKIPPED_DOWNSTREAM"
+  },
+  "business_rules_changed": false,
+  "next_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY"
+}
