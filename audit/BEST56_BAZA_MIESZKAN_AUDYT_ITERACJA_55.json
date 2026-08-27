@@ -1,0 +1,29 @@
+{
+  "report_type": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 55,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "created_at": "2026-08-27T21:17:00+02:00",
+  "develop_start": "20da2ff7831712bd4e008931ece99a9b5a497006",
+  "ci_evidence": {
+    "workflow": 415,
+    "run_id": 33102786367,
+    "tested_commit": "20da2ff7831712bd4e008931ece99a9b5a497006",
+    "steps_4_24": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "findings": [
+    "No new finance, data-integrity or UX regression detected.",
+    "Previous handoff cited workflow #409; current completed evidence is workflow #415.",
+    "P0-7A remains the only READY highest-priority task and the only reason Static application checks cannot pass."
+  ],
+  "business_decisions": [],
+  "source_of_truth_update_required": false,
+  "active_blockers": [7, 11, 12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY",
+  "authoritative_command": "python scripts/primary_p0_7a_one_shot.py --auto --commit --push",
+  "main_modified": false,
+  "version_policy": "BEST56 BAZA MIESZKAŃ AUDYT; never auto-increment"
+}
