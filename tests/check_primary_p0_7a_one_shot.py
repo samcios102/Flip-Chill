@@ -36,8 +36,8 @@ def main() -> int:
         "package(candidate",
         "validated_parts(parts_dir)",
         "load_payload(parts_dir)",
-        "git\", \"add\", \"--\"",
-        "git\", \"commit\"",
+        "run_git([\"add\", \"--\", str(DEFAULT_PARTS_DIR)]",
+        "run_git([\"commit\", \"-m\", message, \"--\", str(DEFAULT_PARTS_DIR)]",
         "--push requires --commit",
         "refusing P0-7A write on protected branch",
     ]
@@ -46,8 +46,10 @@ def main() -> int:
             raise AssertionError(f"missing one-shot safety contract token: {token}")
 
     # The helper must never stage arbitrary repository changes.
-    if "git\", \"add\", \".\"" in source or "[\"add\", \".\"]" in source:
-        raise AssertionError("one-shot helper must not git add the entire repository")
+    forbidden = ["run_git([\"add\", \".\"]", "git add .", "git add -A"]
+    for token in forbidden:
+        if token in source:
+            raise AssertionError(f"one-shot helper must not stage arbitrary repository changes: {token}")
 
     with tempfile.TemporaryDirectory() as td:
         parts = Path(td)
