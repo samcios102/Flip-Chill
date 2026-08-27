@@ -21,6 +21,8 @@ jobs:
         run: python tests/check_best56_audit_manifest.py audit/BEST56_BAZA_MIESZKAN_AUDYT.json
       - name: Verify BEST56 Source of Truth consistency
         run: python tests/check_source_of_truth_consistency.py
+      - name: Verify BEST56 executable financial scenarios
+        run: python tests/check_financial_scenarios.py
       - name: Verify BEST56 schema 11 to 12 migration contract
         run: python tests/check_schema_11_12_contract.py
       - name: Verify AI sync dispatch protocol
