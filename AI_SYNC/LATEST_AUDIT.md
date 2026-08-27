@@ -4,28 +4,30 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `54`
+- Iteracja: `55`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Wykryto drift BACKLOGU: punkt wymagający, aby `Slack / Marketing` zasilał progi 50 000 / 100 000 PLN, pozostawał otwarty mimo że zakończone issue #14 i wykonywalny `tests/check_financial_scenarios.py` już dokładnie to weryfikują.
+Najnowszy zakończony workflow #415 dla `20da2ff7831712bd4e008931ece99a9b5a497006` potwierdza obecny stan dokładniej niż starszy workflow #409 używany w handoffie iteracji 54.
 
-Punkt został oznaczony jako wykonany i powiązany z istniejącym kontraktem finansowym. Reguła finansowa NIE została zmieniona; poprawiono wyłącznie stan backlogu.
+Nie znaleziono nowej regresji aplikacji, finansów, danych ani UX. Zaktualizowano wyłącznie dowód CI i handoff.
 
 ## Testy / CI
 
-Najnowszy zakończony dowód to workflow #409 dla `e0354ed55c87064c4aa8fa8f577d820430829b4f`:
-- wszystkie gate’y przed aplikacją = PASS;
-- kontrakt finansowy = PASS, w tym Slack/Marketing → obrót progowy 50k/100k;
+Workflow #415:
+- kroki 4–24 = PASS;
+- BEST56 manifest = PASS;
+- Source of Truth = PASS;
+- CRM sync = PASS;
+- finanse = PASS;
 - schema 11→12 = PASS;
-- AI_SYNC / dispatcher / materializer / packager / one-shot = PASS;
-- `Static application checks` = FAIL wyłącznie przez brak payloadu P0-7A;
+- AI_SYNC / freshness / runtime guard / dispatcher = PASS;
+- preflight / stager / materializer / packager / one-shot PRIMARY / auto-materialization = PASS;
+- `Static application checks` = FAIL wyłącznie przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
 - BEST40 = SKIPPED downstream.
-
-CI dla końcowego handoffu iteracji 54 oczekuje na nowy wynik po commitach synchronizacyjnych; nowego PASS nie deklarujemy bez dowodu.
 
 ## P0 / P1
 
@@ -52,6 +54,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 54`
+- `source_iteration = 55`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
