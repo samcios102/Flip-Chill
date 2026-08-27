@@ -4,30 +4,32 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 41,
-  "generated_at": "2026-08-27T07:31:40+02:00",
+  "iteration": 42,
+  "generated_at": "2026-08-27T08:18:20+02:00",
   "branch": "develop",
-  "change_head": "3415709c2b956efaea0099f88727761eff6e6d75",
-  "tested_commit": "625d600cbef9f42346de604662106f35871436ab",
+  "change_head": "a97b17efb42c4bb7235a5a553c9f9528ff491986",
+  "tested_commit": "8d0510cef2f4c56f7cd3687fe928cc690abf61e8",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P0", "area": "exact BEST56 runtime evidence", "result": "Exact BEST56 remains verified locally: 857840 bytes, SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92; deterministic gzip mtime=0 + base64 round-trip PASS."},
-    {"priority": "P0", "area": "connector payload transfer", "result": "A large payload transfer through the GitHub connector changed bytes. Workflow #321 correctly rejected it at Verify canonical materializer contract before materialization/static checks."},
-    {"priority": "P0", "area": "repository recovery", "result": "The non-exact payload was removed immediately in commit bc918d5a43174e1f9540010be4f6620757bb69f8, restoring the repository tree to the pre-payload artifact state."},
-    {"priority": "P0", "area": "safe execution path", "result": "P0-7A remains READY for PRIMARY, but payload generation/write must happen directly in the local repository via scripts/package_best56_artifact.py --auto; large payload must not be reserialized through chat/connector text."}
+    {"priority": "P1", "area": "financial regression coverage", "result": "Previous Source of Truth gate compared constants but did not execute arithmetic scenarios. Added executable numeric scenarios for VAT, CIT, PIT, monthly thresholds and Slack/Marketing threshold contribution."},
+    {"priority": "P1", "area": "financial gate evidence", "result": "Workflow #330 proves Verify BEST56 executable financial scenarios = PASS before application checks."},
+    {"priority": "P0", "area": "canonical app", "result": "P0-7A remains the release blocker: repository still lacks the locally packaged exact BEST56 payload/canonical app, so Static application checks fail downstream."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
+    "completed_p1": [14],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P0 #7 now records connector transfer rejection and local exact packager as the only safe payload write path. No business or financial rule changed."
+    "source_of_truth_update": "Added executable financial scenario contract evidence PASS_WORKFLOW_330. No financial or business rule changed."
   },
   "tests": {
-    "workflow_run": 321,
-    "workflow_commit": "625d600cbef9f42346de604662106f35871436ab",
+    "workflow_run": 330,
+    "workflow_commit": "8d0510cef2f4c56f7cd3687fe928cc690abf61e8",
     "best56_manifest": "PASS",
-    "source_of_truth": "PASS_PRE_TRANSFER_STATE",
+    "source_of_truth": "PASS_PRE_ITERATION_42_SYNC",
+    "financial_scenarios": "PASS",
+    "financial_scenario_coverage": ["VAT 23% gross-to-net and VAT amount", "CIT 9% positive profit and zero on loss", "agent PIT default 12%", "monthly bonus boundaries 49999/50000/99999/100000/125000", "Slack/Marketing threshold contribution"],
     "schema_11_12": "PASS",
     "ai_sync_dispatch_protocol": "PASS",
     "queue_dependency_partition": "PASS",
@@ -35,30 +37,30 @@
     "runtime_and_dispatcher_gates": "PASS",
     "artifact_preflight": "PASS",
     "canonical_staging_safety": "PASS",
-    "canonical_materializer_contract": "FAIL_REJECTED_NON_EXACT_CONNECTOR_TRANSFER",
-    "deterministic_best56_artifact_packager": "SKIPPED_DOWNSTREAM",
-    "ci_auto_materialization": "SKIPPED_DOWNSTREAM",
-    "local_exact_best56_roundtrip": "PASS",
-    "static_application_checks": "SKIPPED_DOWNSTREAM",
+    "canonical_materializer_contract": "PASS",
+    "deterministic_best56_artifact_packager": "PASS",
+    "ci_auto_materialization": "PASS_NO_PAYLOAD_PRESENT",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "FAIL_SAFELY_REJECTED_PAYLOAD"
+    "ci_overall": "FAIL_ONLY_AT_EXISTING_P0_7A"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
-    "finance": "No financial rule changed.",
-    "data_integrity": "Exact-hash gate prevented a modified payload from becoming the canonical app.",
-    "automation": "PRIMARY work order is narrowed to direct local packager output; connector/text payload transfer is explicitly prohibited."
+    "finance": "Financial business rules are unchanged; arithmetic regression coverage is stronger and now executable in CI.",
+    "data_integrity": "No new data-integrity regression found; schema 11->12 contract remains PASS while runtime test still waits for canonical app.",
+    "automation": "Finance gate is now part of CI and P1 #14 is completed; routing remains P0-7A -> PRIMARY."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
     "active_p0": [7, 11],
     "ready_tasks": ["P0-7A-CANONICAL-APP"],
     "blocked_tasks": ["P0-7B-FROZEN-BEST40", "P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
+    "completed_tasks": ["P1-14-FINANCIAL-SCENARIOS"],
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
     "primary": "Claim P0-7A-CANONICAL-APP locally. Run python scripts/package_best56_artifact.py --auto against exact BEST56 SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, verify exact round-trip and canonical contiguous part001..NNN, then git-add/commit generated artifacts/best56 directly from disk on develop. Do not copy the payload through chat/connector text. CI then materializes app/FlippChill_Kalkulator.html and runs static checks. Do not touch main.",
-    "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
+    "second_audit": "Financial numeric contract #14 is DONE/PASS. Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
   "ready_tasks": ["P0-7A-CANONICAL-APP"],
