@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-27T08:18:10+02:00",
+  "updated_at": "2026-08-27T09:16:40+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -82,7 +82,20 @@
       "scope": ["sync/CRM_SOURCE_OF_TRUTH.json#modules.financial_rules", "tests/check_financial_scenarios.py", ".github/workflows/quality.yml"],
       "acceptance": ["VAT 23% gross-to-net scenario passes", "CIT 9% positive-profit scenario passes and loss cannot create negative CIT", "agent PIT 12% scenario passes", "threshold boundaries 49999/50000/99999/100000/125000 pass", "Slack/Marketing contributes to threshold turnover", "main is not modified"],
       "required_checks": ["Verify BEST56 executable financial scenarios"],
-      "result": {"workflow": 330, "commit": "8d0510cef2f4c56f7cd3687fe928cc690abf61e8", "gate": "PASS", "issue": "CLOSED_COMPLETED"},
+      "result": {"workflow": 337, "commit": "6b6a041d305489ba47e33e90c3ef2e60ac526811", "gate": "PASS", "issue": "CLOSED_COMPLETED"},
+      "lock": {"owner": null, "claimed_at": null}
+    },
+    {
+      "id": "P2-15-FINANCIAL-BACKLOG-SYNC",
+      "issue": 15,
+      "priority": "P2",
+      "title": "Synchronize financial test backlog state with executable CI contract",
+      "status": "DONE",
+      "owner": "SECOND_AUDIT",
+      "scope": ["BACKLOG.md", "tests/check_financial_scenarios.py"],
+      "acceptance": ["generic P2 financial unit-test backlog item is marked complete only with executable CI evidence", "no financial business rule changes", "routing of P0-7A remains unchanged"],
+      "required_checks": ["Verify BEST56 executable financial scenarios"],
+      "result": {"workflow": 337, "commit": "79a1a4a48978aebab32836056666ac04a4cec51f", "gate": "PASS_EVIDENCE_FROM_BASELINE_WORKFLOW", "backlog": "RECONCILED"},
       "lock": {"owner": null, "claimed_at": null}
     }
   ]
