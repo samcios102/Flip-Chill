@@ -4,29 +4,28 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 47,
-  "generated_at": "2026-08-27T13:15:10+02:00",
+  "iteration": 48,
+  "generated_at": "2026-08-27T14:20:10+02:00",
   "branch": "develop",
-  "change_head": "f601a95308e10c73930d916826adaa1967249f20",
-  "tested_commit": "5537361724a7fc8203243c6f571ab531fab9cd62",
+  "change_head": "f4761f4c3cfc945753eb7db8ac64b8c70673a43c",
+  "tested_commit": "f4761f4c3cfc945753eb7db8ac64b8c70673a43c",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority":"P0","area":"canonical app","result":"Exact BEST56 is available in the automation runtime: 857840 B, SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
-    {"priority":"P0","area":"canonical payload","result":"Deterministic packager executed successfully on the exact artifact: 4 canonical parts, 258528 encoded bytes, full round-trip SHA equals the audited BEST56 baseline."},
-    {"priority":"P0","area":"safe repository write","result":"This runtime has no binary-safe Git push path: container network cannot resolve github.com and the available GitHub write connector is UTF-8 text serialization, which is explicitly rejected for the large canonical payload after the prior SHA mismatch. P0-7A therefore remains READY instead of bypassing the safety policy."},
-    {"priority":"P1","area":"CI","result":"Workflow #367 is the newest completed CI evidence: all pre-application gates PASS; Static application checks alone FAIL because the canonical payload/app is absent; BEST40 gates remain downstream/skipped."},
-    {"priority":"P1","area":"finance/data integrity","result":"No new finance or data-integrity regression found; executable finance and schema 11->12 contracts remain protected."}
+    {"priority":"P0","area":"canonical app","result":"Exact BEST56 is present in the automation runtime: 857840 B, SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
+    {"priority":"P0","area":"safe repository transport","result":"Direct git transport from this runtime is unavailable: github.com DNS resolution fails. The verified text connector path remains intentionally excluded for the large canonical payload after prior SHA mismatch, so P0-7A remains READY for a local checkout with Git push access."},
+    {"priority":"P1","area":"CI","result":"Workflow #372 on current develop f4761f4c3cfc945753eb7db8ac64b8c70673a43c completed: all pre-application gates PASS; Static application checks alone FAIL because canonical payload/app is absent; BEST40 gates remain downstream/skipped."},
+    {"priority":"P1","area":"finance/data integrity","result":"No new finance, data-integrity or UX regression was found in this cycle; executable finance and schema 11->12 contracts remain green before the application gate."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7,11],
     "active_p1": [12],
     "source_of_truth_update_required": false,
-    "source_of_truth_update": "Blocker states and business rules did not change; iteration 47 adds stronger local runtime evidence for P0-7A."
+    "source_of_truth_update": "No business rule or blocker state changed. Iteration 48 refreshes exact runtime capability and current CI evidence."
   },
   "tests": {
-    "workflow_run": 367,
-    "workflow_commit": "5537361724a7fc8203243c6f571ab531fab9cd62",
+    "workflow_run": 372,
+    "workflow_commit": "f4761f4c3cfc945753eb7db8ac64b8c70673a43c",
     "best56_manifest": "PASS",
     "source_of_truth": "PASS",
     "crm_sync_current_state_contract": "PASS",
@@ -40,17 +39,17 @@
     "canonical_staging_safety": "PASS",
     "canonical_materializer_contract": "PASS_NO_PAYLOAD_PRESENT",
     "deterministic_best56_artifact_packager_ci": "PASS",
-    "deterministic_best56_artifact_packager_runtime": "PASS_4_PARTS_258528_ENCODED_BYTES_ROUNDTRIP_EXACT_SHA",
     "local_exact_best56_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "runtime_git_transport": "BLOCKED_DNS_GITHUB_COM",
     "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "BASELINE_WORKFLOW_367_FAILS_ONLY_AT_STATIC_APP_P0_7A"
+    "ci_overall": "WORKFLOW_372_FAILS_ONLY_AT_STATIC_APP_P0_7A"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No rule changed.",
     "data_integrity": "No new regression found.",
-    "automation": "P0-7A now has direct runtime proof that exact deterministic packaging succeeds; only a binary-safe repository push remains."
+    "automation": "Handoff now carries current workflow #372 and explicit runtime transport capability evidence; safe routing remains local PRIMARY."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -60,7 +59,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Exact BEST56 packaging is already proven in iteration 47. On a local repo with Git push access, generate/verify the same canonical 4-part payload directly from disk, git add artifacts/best56 and commit on develop. Never pass the payload through chat/connector text. CI then materializes app/FlippChill_Kalkulator.html and runs Static application checks.",
+    "primary": "Use a local repository checkout with Git push access. Run python scripts/package_best56_artifact.py --auto against the exact BEST56, verify SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92 and canonical contiguous parts, then git add artifacts/best56 and commit directly from disk on develop. Do not reserialize the payload through chat/connector text. CI then materializes the canonical app and runs Static application checks.",
     "second_audit": "After P0-7A is DONE, execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "After P0-7A is DONE, execute responsive/accessibility/visual audit without modifying financial semantics."
   },
