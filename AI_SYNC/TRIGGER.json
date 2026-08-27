@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T21:16:00+02:00",
+  "updated_at": "2026-08-27T22:18:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 55,
-  "reason": "Iteration 55 refreshed the handoff to workflow #415 evidence. Steps 4-24 are PASS and Static application checks remains the only FAIL because the canonical BEST56 repository payload is still missing. Routing and blocker semantics are unchanged; P0-7A remains the highest safe READY task.",
+  "source_iteration": 56,
+  "reason": "Iteration 56 refreshed the handoff to workflow #420 evidence. Steps 4-24 are PASS and Static application checks remains the only FAIL because the canonical BEST56 repository payload is still missing. Routing and blocker semantics are unchanged; P0-7A remains the highest safe READY task.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -29,7 +29,7 @@
     "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN",
     "canonical_app_ci_auto_materialization": true,
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "iteration_55_ci_evidence": "WORKFLOW_415_STEPS_4_24_PASS_STATIC_APPLICATION_CHECKS_FAIL_P0_7A_ONLY",
+    "iteration_56_ci_evidence": "WORKFLOW_420_STEPS_4_24_PASS_STATIC_APPLICATION_CHECKS_FAIL_P0_7A_ONLY",
     "financial_scenario_gate": "tests/check_financial_scenarios.py",
     "crm_sync_current_state_gate": "tests/check_crm_sync_current_state.py",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
