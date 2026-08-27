@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T01:31:00+02:00",
+  "updated_at": "2026-08-27T02:22:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 35,
-  "reason": "Canonical 3-agent read order including CRM_SYNC is CI-verified in workflow #257. PRIMARY remains assigned to persist exact BEST56 as canonical app on develop, then run Static application checks.",
+  "source_iteration": 36,
+  "reason": "Exact-hash canonical materializer contract is committed. PRIMARY remains assigned to persist exact BEST56 as canonical app, preferably through repository artifact materialization; local stager remains the verified fallback.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -19,16 +19,13 @@
     "require_resolved_dependencies_before_claim": true,
     "require_fresh_handoff_before_dispatch": true,
     "required_read_order_source": "sync/CRM_SOURCE_OF_TRUTH.json#sync_contract.required_read_order",
-    "required_read_order_ci_evidence": "PASS_WORKFLOW_257",
     "runtime_handoff_guard": "scripts/handoff_runtime_guard.py",
-    "runtime_handoff_guard_dispatcher_integration": "CI_PASS_BEFORE_CLAIM",
+    "canonical_app_materializer": "scripts/materialize_canonical_app.py",
+    "canonical_app_materializer_source_dir": "artifacts/best56",
     "canonical_app_stager": "scripts/stage_canonical_app.py",
-    "canonical_app_command": "python scripts/stage_canonical_app.py --auto",
+    "canonical_app_command_fallback": "python scripts/stage_canonical_app.py --auto",
     "canonical_app_artifact_roots_env": "FLIPPCHILL_ARTIFACT_ROOTS",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "canonical_app_stager_runtime_verified": true,
-    "canonical_app_auto_discovery_ci_verified": true,
-    "canonical_app_portable_roots_ci_verified": true,
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
