@@ -1,0 +1,34 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 47,
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "baseline_bytes": 857840,
+  "local_packager": {
+    "status": "PASS",
+    "parts": 4,
+    "encoded_bytes": 258528,
+    "part_names": [
+      "best56.html.gz.b64.part001",
+      "best56.html.gz.b64.part002",
+      "best56.html.gz.b64.part003",
+      "best56.html.gz.b64.part004"
+    ],
+    "roundtrip_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
+  },
+  "repository_write": {
+    "status": "PENDING_BINARY_SAFE_DIRECT_GIT_PUSH",
+    "reason": "container runtime has no network access to github.com; GitHub text write connector is intentionally not used for the canonical large payload after prior connector SHA mismatch"
+  },
+  "ci_baseline": {
+    "workflow": 367,
+    "commit": "5537361724a7fc8203243c6f571ab531fab9cd62",
+    "pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "active_blockers": [7, 11, 12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}
