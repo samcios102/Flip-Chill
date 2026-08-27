@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T13:15:20+02:00",
+  "updated_at": "2026-08-27T14:20:20+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 47,
-  "reason": "Iteration 47 proved exact BEST56 deterministic packaging locally: 4 canonical parts, 258528 encoded bytes, exact round-trip SHA. PRIMARY now only needs a binary-safe direct git commit of artifacts/best56 from a local repo with push access; text connector transfer remains forbidden.",
+  "source_iteration": 48,
+  "reason": "Iteration 48 confirms exact BEST56 is present and workflow #372 passes every pre-application gate. This runtime has no direct GitHub DNS transport, so PRIMARY on a local checkout with Git push access must persist the already verified canonical payload directly from disk; connector text transfer remains forbidden.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -28,7 +28,7 @@
     "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN",
     "canonical_app_ci_auto_materialization": true,
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "iteration_47_runtime_packager_evidence": "PASS_4_PARTS_258528_ENCODED_BYTES_EXACT_ROUNDTRIP",
+    "iteration_48_runtime_evidence": "EXACT_BEST56_PRESENT; WORKFLOW_372_PRE_APP_PASS; RUNTIME_GIT_TRANSPORT_BLOCKED_DNS_GITHUB_COM",
     "financial_scenario_gate": "tests/check_financial_scenarios.py",
     "crm_sync_current_state_gate": "tests/check_crm_sync_current_state.py",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
