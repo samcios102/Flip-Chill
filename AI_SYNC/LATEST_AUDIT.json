@@ -4,32 +4,31 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 36,
-  "generated_at": "2026-08-27T02:27:00+02:00",
+  "iteration": 37,
+  "generated_at": "2026-08-27T03:18:20+02:00",
   "branch": "develop",
-  "change_head": "e0e05c8174f222c05439a22ae4b5ca447ff7c50b",
-  "tested_commit": "95d659338b7c2ccaaeffce90d683620e24dff32b",
+  "change_head": "1e31a5bb110de640627f24cde85fb39b99403a68",
+  "tested_commit": "f2bd0f7861ce6b830e69a68ef2e0996ce4d28034",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P0", "area": "canonical app", "result": "Exact runtime BEST56 remains verified at SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
-    {"priority": "P0", "area": "reproducibility", "result": "scripts/materialize_canonical_app.py plus tests/check_materialize_canonical_app.py are committed; materializer requires exact decoded SHA and uses atomic write."},
-    {"priority": "P0", "area": "artifact transfer", "result": "Repository source payload under artifacts/best56 is still pending safe transfer. No partial or unverifiable payload was committed."},
-    {"priority": "P1", "area": "handoff freshness", "result": "Workflow #272 detected stale audit ordering; timestamps were corrected. Workflow #274 then passed the freshness gate and every automation/materializer gate before Static application checks."}
+    {"priority": "P1", "area": "agent entrypoint", "result": "Root OPENCODE.md skipped AI_SYNC/PROTOCOL.md even though Source of Truth requires it as read-order step 2; a local OpenCode session could therefore enter the queue without current lock/claim/freshness/runtime-guard rules."},
+    {"priority": "P1", "area": "protocol regression prevention", "result": "OPENCODE.md now follows the canonical seven-file required_read_order and tests/check_ai_sync_protocol.py verifies both AI_SYNC/PROTOCOL.md and OPENCODE.md."},
+    {"priority": "P0", "area": "canonical app", "result": "P0-7A remains the highest READY task; exact BEST56 baseline SHA-256 remains 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P0 #7 status is MATERIALIZER_CONTRACT_CI_PASS_SOURCE_ARTIFACT_PENDING; no business or financial rule changed."
+    "source_of_truth_update": "P1 #12 now records OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME; canonical read-order CI evidence advanced to workflow #282. No business or financial rule changed."
   },
   "tests": {
-    "workflow_run": 274,
-    "workflow_commit": "95d659338b7c2ccaaeffce90d683620e24dff32b",
+    "workflow_run": 282,
+    "workflow_commit": "f2bd0f7861ce6b830e69a68ef2e0996ce4d28034",
     "best56_manifest": "PASS",
     "source_of_truth": "PASS",
     "schema_11_12": "PASS",
-    "ai_sync_dispatch_protocol": "PASS",
+    "ai_sync_dispatch_protocol_and_opencode_entrypoint": "PASS",
     "queue_dependency_partition": "PASS",
     "handoff_freshness": "PASS",
     "runtime_and_dispatcher_gates": "PASS",
@@ -43,8 +42,8 @@
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule changed.",
-    "data_integrity": "Exact SHA-only materialization reduces risk of staging a wrong BEST56; #11 remains gated only by canonical 7A.",
-    "automation": "Repository materializer contract is CI-verified; PRIMARY has deterministic materializer plus runtime-verified local stager fallback."
+    "data_integrity": "Schema 11->12 fixture gate remains PASS; runtime verification still waits only for canonical 7A.",
+    "automation": "OpenCode root entrypoint can no longer silently skip AI_SYNC/PROTOCOL.md without failing the AI sync CI gate."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
