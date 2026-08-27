@@ -6,7 +6,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma runtime-verified stager exact BEST56 z przenośnym `FLIPPCHILL_ARTIFACT_ROOTS` i oczekuje wyłącznie na zapis canonical app do repo, 7B pozostaje BLOCKED na exact BEST40
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma exact-SHA packager + materializer + runtime-verified stager, workflow #293 potwierdza packager PASS i oczekuje już na lokalne wykonanie packaging → materialization → static check; 7B pozostaje BLOCKED na exact BEST40
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness, runtime handoff guard oraz root `OPENCODE.md` read-order są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - P1 #13: CLOSED / CI_VERIFIED — dependency partition 7A/7B potwierdzony workflow #202
@@ -224,3 +224,13 @@ Po zmianie:
 - P1 #12 ma stan `OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME`; pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND` pozostaje otwarty.
 - NEXT READY TASK pozostaje `P0-7A-CANONICAL-APP`; TARGET AGENT `PRIMARY`; TRIGGER `RUN_FIX / READY / iteration 37`.
 - Reguły biznesowe, finanse, UX, `main` i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`.
+
+### 2026-08-27 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 38
+
+- Exact baseline BEST56 jest dostępny w runtime: 857840 B, SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+- Dodano `scripts/package_best56_artifact.py`: exact-SHA-only, deterministyczny gzip `mtime=0`, base64, stałe części `partNNN`, atomowy zapis i pełny round-trip SHA przed zaakceptowaniem payloadu.
+- Dodano `tests/check_package_best56_artifact.py` i gate `Verify deterministic BEST56 artifact packager`.
+- Workflow #293 na `356180385a41cb35dccd01ebed6e2f0cf5adbb3c`: wszystkie gate'y przed aplikacją = PASS, packager = PASS; `Static application checks` nadal FAIL, bo canonical app nie jest jeszcze utrwalony w repo; BEST40 pozostaje SKIPPED downstream.
+- P0 #7 przeszedł do `PACKAGER_CONTRACT_CI_PASS_LOCAL_PAYLOAD_PENDING`; PRIMARY może teraz wykonać `package_best56_artifact.py --auto → materialize_canonical_app.py → check_app.py` bez ręcznego dzielenia payloadu.
+- P0 #11 nadal zależy wyłącznie od 7A; reguły biznesowe, finanse, UX, `main` i polityka wersji pozostają bez zmian.
+- NEXT READY TASK: `P0-7A-CANONICAL-APP`; TARGET AGENT: `PRIMARY`; TRIGGER: `RUN_FIX / READY / iteration 38`.
