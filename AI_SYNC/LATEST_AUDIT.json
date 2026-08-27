@@ -4,42 +4,38 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 35,
-  "generated_at": "2026-08-27T01:30:00+02:00",
+  "iteration": 36,
+  "generated_at": "2026-08-27T02:20:00+02:00",
   "branch": "develop",
-  "change_head": "67d6917da725a3c8a33123c5a6dd6b0f04317918",
-  "tested_commit": "4d4c1f7aee5d1cf26efeb6b5634134e9cc5d3873",
+  "change_head": "6f273423b8b0ab5c3de9727f73ae0e98cc3b3b42",
+  "tested_commit": "f189ba52a337fd3aaf441cb5ceaf245fcfc830d5",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P1", "area": "3-agent protocol", "result": "AI_SYNC/PROTOCOL.md omitted sync/CRM_SYNC.md from the mandatory read order, creating drift from the automation instruction and shared-state contract."},
-    {"priority": "P1", "area": "protocol fix", "result": "Source of Truth now defines sync_contract.required_read_order; PROTOCOL.md follows it exactly and tests/check_ai_sync_protocol.py deterministically enforces both the manifest value and markdown order."},
-    {"priority": "P0", "area": "canonical app", "result": "Exact local BEST56 remains available with SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92; P0-7A remains the highest READY implementation task."}
+    {"priority": "P0", "area": "canonical app", "result": "Exact runtime BEST56 was re-verified at SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
+    {"priority": "P0", "area": "reproducibility", "result": "scripts/materialize_canonical_app.py and tests/check_materialize_canonical_app.py were added; materializer rejects any decoded payload whose SHA differs from the BEST56 baseline and writes atomically."},
+    {"priority": "P0", "area": "artifact transfer", "result": "Repository source payload under artifacts/best56 is not yet committed. The GitHub connector available to this audit cannot safely attach the large local artifact as a file parameter, so no partial/corrupt payload was written."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "Canonical required_read_order added and CI-verified in workflow #257. No business or financial rule changed."
+    "source_of_truth_update": "P0 #7 now records the committed exact-hash canonical materializer contract; source payload remains pending."
   },
   "tests": {
-    "workflow_run": 257,
-    "workflow_commit": "4d4c1f7aee5d1cf26efeb6b5634134e9cc5d3873",
-    "best56_manifest": "PASS",
-    "source_of_truth": "PASS",
-    "schema_11_12": "PASS",
-    "ai_sync_dispatch_protocol_including_read_order": "PASS",
-    "handoff_freshness": "PASS",
-    "dispatcher_and_runtime_gates": "PASS",
-    "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
-    "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "FAIL_EXPECTED_P0_7"
+    "last_completed_workflow_run": 263,
+    "last_completed_workflow_commit": "f189ba52a337fd3aaf441cb5ceaf245fcfc830d5",
+    "previous_pre_application_gates": "PASS",
+    "previous_static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
+    "materializer_contract": "COMMITTED_CI_PENDING",
+    "source_artifact": "PENDING_SAFE_TRANSFER",
+    "ci_overall": "PENDING_NEW_HEAD"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule changed.",
-    "data_integrity": "No transaction data changed; #11 remains blocked only by canonical app 7A.",
-    "automation": "All three bots now have one canonical read order including CRM_SYNC, guarded by CI against future protocol drift."
+    "data_integrity": "Exact SHA-only materialization reduces risk of staging a wrong BEST56; #11 remains gated by canonical 7A.",
+    "automation": "PRIMARY now has a deterministic repository materializer contract in addition to the runtime-verified local stager."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -49,7 +45,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7A-CANONICAL-APP. If exact BEST56 is outside default roots set FLIPPCHILL_ARTIFACT_ROOTS, run python scripts/stage_canonical_app.py --auto, accept only exact SHA-256 3bb0756f...f4044e92, run Static application checks and commit on develop.",
+    "primary": "Claim P0-7A-CANONICAL-APP. Preferred repo path: commit exact BEST56 payload parts under artifacts/best56 then run python scripts/materialize_canonical_app.py and Static application checks. Existing safe fallback remains FLIPPCHILL_ARTIFACT_ROOTS + python scripts/stage_canonical_app.py --auto. Accept only exact SHA-256 3bb0756f...f4044e92.",
     "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
