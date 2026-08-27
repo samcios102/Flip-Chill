@@ -6,7 +6,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 - Źródło pracy: `develop`
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
-- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma exact-SHA packager + materializer + runtime-verified stager, workflow #293 potwierdza packager PASS i oczekuje już na lokalne wykonanie packaging → materialization → static check; 7B pozostaje BLOCKED na exact BEST40
+- P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma exact-SHA packager + materializer + runtime-verified stager, workflow #303 potwierdza materializer z kanonicznym ciągłym part-set guard PASS i oczekuje na lokalne wykonanie packaging → materialization → static check; 7B pozostaje BLOCKED na exact BEST40
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
 - P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness, runtime handoff guard oraz root `OPENCODE.md` read-order są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - P1 #13: CLOSED / CI_VERIFIED — dependency partition 7A/7B potwierdzony workflow #202
@@ -234,3 +234,13 @@ Po zmianie:
 - P0 #7 przeszedł do `PACKAGER_CONTRACT_CI_PASS_LOCAL_PAYLOAD_PENDING`; PRIMARY może teraz wykonać `package_best56_artifact.py --auto → materialize_canonical_app.py → check_app.py` bez ręcznego dzielenia payloadu.
 - P0 #11 nadal zależy wyłącznie od 7A; reguły biznesowe, finanse, UX, `main` i polityka wersji pozostają bez zmian.
 - NEXT READY TASK: `P0-7A-CANONICAL-APP`; TARGET AGENT: `PRIMARY`; TRIGGER: `RUN_FIX / READY / iteration 38`.
+
+### 2026-08-27 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 39
+
+- Przed zapisem realnego source payloadu wykryto lukę operacyjną materializera: akceptował dowolne nazwy pasujące do `best56.html.gz.b64.part*`, bez wymuszenia ciągłości numeracji.
+- `scripts/materialize_canonical_app.py` wymaga teraz dokładnego ciągu `best56.html.gz.b64.part001..NNN`; obce nazwy oraz luki są odrzucane przed base64 decode.
+- `tests/check_materialize_canonical_app.py` obejmuje teraz wrong SHA, niekanoniczną nazwę i lukę `001,003`.
+- Workflow #303 na `676d78bb8a59a637f3b7f97ef84d0ab711b93465`: wszystkie gate'y przed aplikacją PASS, `Verify canonical materializer contract` PASS z part-set guard; `Static application checks` nadal FAIL wyłącznie przez brak canonical app/source payloadu; BEST40 pozostaje SKIPPED downstream.
+- P0 #7 ma stan `MATERIALIZER_PART_SET_CI_PASS_LOCAL_PAYLOAD_PENDING`; 7A pozostaje READY dla PRIMARY, 7B BLOCKED na exact BEST40.
+- P0 #11 nadal zależy wyłącznie od 7A; reguły biznesowe, finanse, UX, `main` i polityka wersji pozostają bez zmian.
+- NEXT READY TASK: `P0-7A-CANONICAL-APP`; TARGET AGENT: `PRIMARY`; TRIGGER: `RUN_FIX / READY / iteration 39`.
