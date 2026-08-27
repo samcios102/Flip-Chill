@@ -5,15 +5,16 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 36,
-  "generated_at": "2026-08-27T02:20:00+02:00",
+  "generated_at": "2026-08-27T02:24:00+02:00",
   "branch": "develop",
-  "change_head": "6f273423b8b0ab5c3de9727f73ae0e98cc3b3b42",
+  "change_head": "b2727edae6c29e7b8bfd5ba9de39b8b8d0930bbf",
   "tested_commit": "f189ba52a337fd3aaf441cb5ceaf245fcfc830d5",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
     {"priority": "P0", "area": "canonical app", "result": "Exact runtime BEST56 was re-verified at SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
     {"priority": "P0", "area": "reproducibility", "result": "scripts/materialize_canonical_app.py and tests/check_materialize_canonical_app.py were added; materializer rejects any decoded payload whose SHA differs from the BEST56 baseline and writes atomically."},
-    {"priority": "P0", "area": "artifact transfer", "result": "Repository source payload under artifacts/best56 is not yet committed. The GitHub connector available to this audit cannot safely attach the large local artifact as a file parameter, so no partial/corrupt payload was written."}
+    {"priority": "P0", "area": "artifact transfer", "result": "Repository source payload under artifacts/best56 is not yet committed. The GitHub connector available to this audit cannot safely attach the large local artifact as a file parameter, so no partial/corrupt payload was written."},
+    {"priority": "P1", "area": "handoff freshness", "result": "Workflow #272 caught LATEST_AUDIT one minute older than BOT_QUEUE. generated_at was refreshed after the queue update; gate is functioning as intended."}
   ],
   "business_decisions": [],
   "p0_p1": {
@@ -23,11 +24,9 @@
     "source_of_truth_update": "P0 #7 now records the committed exact-hash canonical materializer contract; source payload remains pending."
   },
   "tests": {
-    "last_completed_workflow_run": 263,
-    "last_completed_workflow_commit": "f189ba52a337fd3aaf441cb5ceaf245fcfc830d5",
-    "previous_pre_application_gates": "PASS",
-    "previous_static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
-    "materializer_contract": "COMMITTED_CI_PENDING",
+    "workflow_272": "FAIL_HANDOFF_FRESHNESS_DETECTED_AND_FIXED",
+    "workflow_272_passed_before_failure": ["BEST56 manifest", "Source of Truth consistency", "schema 11->12", "AI sync dispatch protocol", "queue dependency partition"],
+    "materializer_contract": "COMMITTED_CI_RETRY_PENDING",
     "source_artifact": "PENDING_SAFE_TRANSFER",
     "ci_overall": "PENDING_NEW_HEAD"
   },
@@ -35,7 +34,7 @@
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule changed.",
     "data_integrity": "Exact SHA-only materialization reduces risk of staging a wrong BEST56; #11 remains gated by canonical 7A.",
-    "automation": "PRIMARY now has a deterministic repository materializer contract in addition to the runtime-verified local stager."
+    "automation": "PRIMARY has a deterministic repository materializer contract; freshness drift was detected by CI and corrected."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
