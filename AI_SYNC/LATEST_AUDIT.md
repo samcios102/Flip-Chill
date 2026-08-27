@@ -4,35 +4,34 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `36`
+- Iteracja: `37`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Exact BEST56 pozostaje potwierdzony: SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+Wykryto drift root entrypointu OpenCode: `OPENCODE.md` pomijał `AI_SYNC/PROTOCOL.md`, mimo że Source of Truth wymaga tego pliku jako kroku 2 kanonicznego read order. Lokalny bot mógł więc wejść w kolejkę bez najnowszych zasad lock/claim/freshness/runtime guard.
 
-Dodano i zweryfikowano w CI:
-- `scripts/materialize_canonical_app.py` — deterministyczny gzip+base64 materializer z exact SHA gate i atomowym zapisem;
-- `tests/check_materialize_canonical_app.py` — odrzuca błędny payload i pilnuje kontraktu exact-hash;
-- krok CI `Verify canonical materializer contract`.
-
-Repozytoryjny payload `artifacts/best56/` nadal oczekuje na bezpieczny transfer. NIE zapisano częściowego ani niezweryfikowanego artefaktu. Existing `stage_canonical_app.py` pozostaje runtime-verified fallbackiem.
+Naprawiono:
+- `OPENCODE.md` ma teraz pełny kanoniczny `required_read_order` 1:1;
+- `tests/check_ai_sync_protocol.py` sprawdza read order zarówno w `AI_SYNC/PROTOCOL.md`, jak i `OPENCODE.md`;
+- Source of Truth zapisuje dowód `PASS_WORKFLOW_282` dla kontraktu read order.
 
 ## Testy / CI
 
-Workflow #274 na `95d659338...` potwierdził PASS dla:
+Workflow #282 na `f2bd0f7861ce6b830e69a68ef2e0996ce4d28034` potwierdził PASS dla:
 - BEST56 manifest,
 - Source of Truth,
 - schema 11→12,
-- AI_SYNC protocol + dependency partition + freshness,
+- AI_SYNC protocol + **OpenCode entrypoint read order**,
+- dependency partition + freshness,
 - runtime/dispatcher gates,
 - artifact preflight,
 - canonical staging safety,
-- **canonical materializer contract**.
+- canonical materializer contract.
 
-`Static application checks` nadal FAIL przez aktywny P0-7A — canonical app nie jest jeszcze utrwalony w repo. BEST40 checksum/stable pozostają SKIPPED downstream.
+`Static application checks` nadal FAIL wyłącznie przez P0-7A — canonical app nie jest jeszcze utrwalony w repo. BEST40 checksum/stable pozostają SKIPPED downstream.
 
 Brak zmian zachowania aplikacji, danych i finansów.
 
@@ -40,7 +39,7 @@ Brak zmian zachowania aplikacji, danych i finansów.
 
 - P0 #7 — `MATERIALIZER_CONTRACT_CI_PASS_SOURCE_ARTIFACT_PENDING`; 7A READY, 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
-- P1 #12 — pełny lokalny bot runtime pozostaje otwarty.
+- P1 #12 — `OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME`; pełny lokalny bot runtime pozostaje otwarty.
 
 ## Handoff dla 3 botów
 
@@ -59,6 +58,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 36`
+- `source_iteration = 37`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
