@@ -4,24 +4,24 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `44`
+- Iteracja: `45`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Dodano deterministyczny guard semantyki sekcji `CRM_SYNC.md -> Aktualny stan`: `tests/check_crm_sync_current_state.py`. Gate pilnuje zgodności z Source of Truth dla `develop`, P0 #7, partycji 7A/7B, P0 #11, P1 #12, CIT 9%, VAT 23%, PIT 12% oraz progów 50 000 / 100 000. Nie przywiązuje poprawności projektu do szybko starzejących się numerów workflow.
+Wykryto lukę regresyjną w finansach: Source of Truth od dawna definiuje `search_bonus = 0.10`, ale wykonywalny `tests/check_financial_scenarios.py` nie sprawdzał tej reguły. Dodano twardą asercję 10% bez zmiany stawki ani logiki aplikacji.
 
-Issue #16 zamknięte jako completed po dowodzie CI. Reguły biznesowe i routing P0 nie zmieniły się.
+Issue #17 zostało zamknięte jako completed po dowodzie CI. Reguły biznesowe i routing P0 nie zmieniły się.
 
 ## Testy / CI
 
-Workflow #345 na `d1250ebab4aba26d12d8d5c1de05f107bd354fe9`:
+Workflow #352 na `9673f3958e1ffb6af17f1e03aa81718b4c89a4c8`:
 - BEST56 manifest = PASS;
 - Source of Truth = PASS;
 - CRM sync current-state contract = PASS;
-- executable financial scenarios = PASS;
+- executable financial scenarios = PASS, teraz także `search_bonus = 10%`;
 - schema 11→12 = PASS;
 - wszystkie gate’y AI_SYNC / dispatcher / artifact / materializer = PASS;
 - `Static application checks` = FAIL wyłącznie przez istniejący P0-7A — canonical app nadal nie jest utrwalony w repo;
@@ -33,7 +33,8 @@ Workflow #345 na `d1250ebab4aba26d12d8d5c1de05f107bd354fe9`:
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
 - P1 #12 — bez zmiany; pełny lokalny bot runtime pozostaje otwarty.
 - P1 #14 — DONE / CI PASS.
-- P1 #16 — DONE / CI PASS; current-state semantyka CRM_SYNC ma teraz osobny gate.
+- P1 #16 — DONE / CI PASS.
+- P1 #17 — DONE / CI PASS; search bonus 10% jest teraz częścią wykonywalnego kontraktu finansowego.
 - P2 #15 — DONE.
 
 ## Handoff dla 3 botów
@@ -53,6 +54,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 44`
+- `source_iteration = 45`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
