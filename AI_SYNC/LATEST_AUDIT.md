@@ -4,42 +4,47 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `48`
+- Iteracja: `49`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Exact BEST56 jest dostępny w runtime: 857840 B, SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`.
+Naprawiono drift świeżości handoffu z iteracji 48. Workflow #377 wykrył, że `LATEST_AUDIT.generated_at` był 5 sekund starszy niż `BOT_QUEUE.updated_at`, więc dispatch został poprawnie zatrzymany. Iteracja 49 odświeża stan w bezpiecznej kolejności: kolejka → raport → trigger.
 
-Aktualny runtime NIE ma bezpośredniego transportu Git do GitHub: DNS dla `github.com` nie rozwiązuje się. Po wcześniejszym SHA mismatch duży payload nadal NIE może być przepychany przez czat/konektor tekstowy. P0-7A pozostaje więc `READY` dla PRIMARY na lokalnym checkoutcie z Git push access.
+Nie zmieniono aplikacji, finansów, danych ani routingu blockerów.
 
 ## Testy / CI
 
-Workflow #372 na aktualnym `develop` `f4761f4c3cfc945753eb7db8ac64b8c70673a43c`:
-- wszystkie gate’y przed aplikacją = PASS;
-- Source of Truth / CRM sync / finanse / schema 11→12 = PASS;
-- AI_SYNC / dispatcher / materializer / packager = PASS;
-- `Static application checks` = FAIL wyłącznie przez brak canonical payload/app P0-7A;
-- BEST40 checks = SKIPPED downstream.
+Workflow #377 na `105d0608681daa774ce58ee7173cd195db08a191`:
+- BEST56 manifest = PASS;
+- Source of Truth = PASS;
+- CRM sync current state = PASS;
+- finanse = PASS;
+- schema 11→12 = PASS;
+- AI_SYNC protocol i dependency partition = PASS;
+- `Verify AI sync handoff freshness` = FAIL z powodu driftu timestampów;
+- dalsze kroki nie zostały uruchomione.
+
+Naprawa freshness iteracji 49 oczekuje na nowy dowód CI.
 
 ## P0 / P1
 
-- P0 #7 — 7A `READY`; pozostał bezpieczny direct local git commit payloadu. 7B BLOCKED na exact BEST40.
+- P0 #7 — 7A nadal `READY`; 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
 - P1 #12 — pełny lokalny bot runtime pozostaje otwarty.
 
 ## Handoff dla 3 botów
 
 ### PRIMARY
-Na lokalnym repo z Git push access uruchom `python scripts/package_best56_artifact.py --auto`, sprawdź exact SHA i kanoniczny part-set, następnie `git add artifacts/best56` i commit na `develop`. NIE przenoś payloadu przez czat/konektor tekstowy. CI samo materializuje canonical app i uruchomi static checks.
+Na lokalnym repo z Git push access uruchom `python scripts/package_best56_artifact.py --auto`, sprawdź exact SHA `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92`, następnie `git add artifacts/best56` i commit na `develop`. Nie przenoś payloadu przez czat/konektor tekstowy.
 
 ### SECOND_AUDIT
-Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`; NIE czekaj na BEST40.
+Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`; nie czekaj na BEST40.
 
 ### THIRD_UI
-Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression; NIE zmieniaj finansów.
+Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression; nie zmieniaj finansów.
 
 ## Auto-dispatch
 
@@ -47,6 +52,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 48`
+- `source_iteration = 49`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
