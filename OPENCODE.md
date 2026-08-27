@@ -3,13 +3,14 @@
 Before making any change in this repository:
 
 1. Read `sync/CRM_SOURCE_OF_TRUTH.json`.
-2. Read `AI_SYNC/LATEST_AUDIT.json`.
-3. Read `AI_SYNC/BOT_QUEUE.json`.
-4. Read `AI_SYNC/TRIGGER.json`.
-5. Read `sync/CRM_SYNC.md`.
-6. Read `BACKLOG.md`.
-7. Inspect open P0/P1 GitHub Issues.
-8. If a queue task is assigned to your role and is `READY`, claim only that task before implementation.
+2. Read `AI_SYNC/PROTOCOL.md`.
+3. Read `AI_SYNC/LATEST_AUDIT.json`.
+4. Read `AI_SYNC/BOT_QUEUE.json`.
+5. Read `AI_SYNC/TRIGGER.json`.
+6. Read `sync/CRM_SYNC.md`.
+7. Read `BACKLOG.md`.
+8. Inspect open P0/P1 GitHub Issues and current CI state.
+9. If a queue task is assigned to your role and is `READY`, claim only that task before implementation.
 
 Treat repository state as authoritative over conversational memory.
 
