@@ -40,6 +40,7 @@ def main() -> None:
     vat = float(rules.get("vat", -1))
     cit = float(rules.get("cit", -1))
     pit = float(rules.get("agent_pit_default", -1))
+    search_bonus = float(rules.get("search_bonus", -1))
     thresholds = rules.get("monthly_bonus_thresholds", [])
 
     # Tax arithmetic contracts on deliberately simple known bases.
@@ -55,6 +56,9 @@ def main() -> None:
 
     agent_tax_base = 10000.00
     assert_close(agent_tax_base * pit, 1200.00, "agent PIT default 12%")
+
+    # Search / buyer-side bonus is a business rule, not only documentation.
+    assert_close(search_bonus, 0.10, "search bonus must remain 10%")
 
     # Boundary tests catch off-by-one and wrong-threshold regressions.
     expected_bonus = {
@@ -79,7 +83,7 @@ def main() -> None:
     combined = ordinary_turnover + slack_marketing_turnover
     assert_close(bonus_for_turnover(combined, thresholds), 0.05, "Slack/Marketing threshold contribution")
 
-    print("PASS: executable BEST56 financial scenarios — VAT, CIT, PIT, threshold boundaries and Slack/Marketing turnover")
+    print("PASS: executable BEST56 financial scenarios — VAT, CIT, PIT, search bonus, threshold boundaries and Slack/Marketing turnover")
 
 
 if __name__ == "__main__":
