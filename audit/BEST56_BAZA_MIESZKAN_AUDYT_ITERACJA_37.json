@@ -1,0 +1,33 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 37,
+  "branch": "develop",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "scope": "OpenCode entrypoint / AI_SYNC read-order integrity",
+  "findings": [
+    "OPENCODE.md omitted AI_SYNC/PROTOCOL.md despite canonical required_read_order requiring it as step 2"
+  ],
+  "changes": [
+    "aligned OPENCODE.md to canonical seven-file required_read_order",
+    "extended tests/check_ai_sync_protocol.py to guard both AI_SYNC/PROTOCOL.md and OPENCODE.md",
+    "updated Source of Truth, BACKLOG, CRM_SYNC and AI_SYNC handoff"
+  ],
+  "safety": {
+    "main_modified": false,
+    "application_behavior_changed": false,
+    "financial_rules_changed": false,
+    "ux_changed": false,
+    "automatic_best_increment": false
+  },
+  "ci": {
+    "workflow_run": 282,
+    "tested_commit": "f2bd0f7861ce6b830e69a68ef2e0996ce4d28034",
+    "opencode_entrypoint_read_order": "PASS",
+    "pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_EXPECTED_P0_7_MISSING_CANONICAL_APP",
+    "frozen_best40_checks": "SKIPPED_DOWNSTREAM"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY"
+}
