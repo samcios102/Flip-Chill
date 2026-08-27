@@ -1,0 +1,33 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 53,
+  "branch": "develop",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "tested_commit": "b06fa076fd3a2fb5287c83576533256275d21068",
+  "workflow": 404,
+  "findings": [
+    "Workflow #404 is the newest completed CI evidence.",
+    "All pre-application steps 4-24 passed.",
+    "Static application checks remains the only failure because P0-7A repository payload is absent.",
+    "No finance, data-integrity, UX or business-rule regression was found."
+  ],
+  "active_blockers": [
+    {"issue": 7, "priority": "P0", "task": "P0-7A-CANONICAL-APP", "status": "READY", "owner": "PRIMARY"},
+    {"issue": 11, "priority": "P0", "task": "P0-11-RUNTIME-MIGRATION", "status": "BLOCKED", "owner": "SECOND_AUDIT", "blocked_by": ["P0-7A-CANONICAL-APP"]},
+    {"issue": 12, "priority": "P1", "task": "P1-12-LOCAL-DISPATCH-RUNTIME", "status": "BLOCKED", "owner": "PRIMARY"}
+  ],
+  "tests": {
+    "steps_4_24": "PASS_WORKFLOW_404",
+    "financial_scenarios": "PASS_WORKFLOW_404",
+    "schema_11_12": "PASS_WORKFLOW_404",
+    "ai_sync": "PASS_WORKFLOW_404",
+    "one_shot_helper": "PASS_WORKFLOW_404",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "command": "python scripts/primary_p0_7a_one_shot.py --auto --commit --push",
+  "version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
+}
