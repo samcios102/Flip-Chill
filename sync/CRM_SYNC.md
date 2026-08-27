@@ -8,7 +8,7 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 - Source of Truth jest zintegrowany bezpośrednio z `develop`
 - P0 #7: dwa niezależne artefakty release gate — bieżący `app/FlippChill_Kalkulator.html` oraz zamrożony `versions/FlippChill_Kalkulator_BEST40.html`; 7A ma runtime-verified stager exact BEST56 z przenośnym `FLIPPCHILL_ARTIFACT_ROOTS` i oczekuje wyłącznie na zapis canonical app do repo, 7B pozostaje BLOCKED na exact BEST40
 - P0 #11: migracja schema 11→12 ma zachować ręczne daty i dane biznesowe; runtime zależy tylko od canonical app 7A
-- P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness i runtime handoff guard integration są chronione CI; pełny lokalny bot runtime pozostaje otwarty
+- P1 #12: claim/lock, failure recovery, mutex, stale-mutex recovery, dependency guard, freshness, runtime handoff guard oraz root `OPENCODE.md` read-order są chronione CI; pełny lokalny bot runtime pozostaje otwarty
 - P1 #13: CLOSED / CI_VERIFIED — dependency partition 7A/7B potwierdzony workflow #202
 - DOM IDs: quality gate ma wymagać 0 duplikatów
 - ARIA: quality gate ma wymagać 0 uszkodzonych referencji
@@ -27,13 +27,16 @@ Ten plik jest ludzkim widokiem wspólnego stanu projektu. Każdy agent AI/OpenCo
 
 ## Protokół pracy OpenCode
 
-Przed zmianą:
+Przed zmianą stosuj dokładnie kanoniczny `sync_contract.required_read_order` z `sync/CRM_SOURCE_OF_TRUTH.json`:
 
-1. `git pull`
-2. przeczytaj `sync/CRM_SOURCE_OF_TRUTH.json`
-3. przeczytaj `sync/CRM_SYNC.md`
-4. przeczytaj `BACKLOG.md`
-5. sprawdź otwarte Issues P0/P1
+1. `sync/CRM_SOURCE_OF_TRUTH.json`
+2. `AI_SYNC/PROTOCOL.md`
+3. `AI_SYNC/LATEST_AUDIT.json`
+4. `AI_SYNC/BOT_QUEUE.json`
+5. `AI_SYNC/TRIGGER.json`
+6. `sync/CRM_SYNC.md`
+7. `BACKLOG.md`
+8. sprawdź otwarte Issues P0/P1 i aktualny CI
 
 Po zmianie:
 
@@ -211,3 +214,13 @@ Po zmianie:
 - P0 #7 ma stan `MATERIALIZER_CONTRACT_CI_PASS_SOURCE_ARTIFACT_PENDING`; `P0-7A-CANONICAL-APP` pozostaje READY dla PRIMARY, a P0 #11 nadal zależy wyłącznie od 7A.
 - NEXT READY TASK: `P0-7A-CANONICAL-APP`; TARGET AGENT: `PRIMARY`; TRIGGER: `RUN_FIX / READY / iteration 36`.
 - Reguły CRM, finanse, UX, `main` i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`, bez zwiększania numeru.
+
+### 2026-08-27 — AUDYT BEST56 BAZA MIESZKAŃ, iteracja 37
+
+- Wykryto drift root entrypointu: `OPENCODE.md` pomijał `AI_SYNC/PROTOCOL.md`, mimo że `sync_contract.required_read_order` wymaga go jako kroku 2.
+- Zsynchronizowano `OPENCODE.md` z pełnym kanonicznym read order.
+- Rozszerzono `tests/check_ai_sync_protocol.py`, aby CI sprawdzało kolejność zarówno w `AI_SYNC/PROTOCOL.md`, jak i `OPENCODE.md`.
+- Workflow #282 na `f2bd0f7861ce6b830e69a68ef2e0996ce4d28034`: wszystkie gate'y przed aplikacją, w tym nowy OpenCode entrypoint read-order guard = PASS; `Static application checks` nadal FAIL wyłącznie przez P0-7A; BEST40 checks pozostają SKIPPED downstream.
+- P1 #12 ma stan `OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME`; pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND` pozostaje otwarty.
+- NEXT READY TASK pozostaje `P0-7A-CANONICAL-APP`; TARGET AGENT `PRIMARY`; TRIGGER `RUN_FIX / READY / iteration 37`.
+- Reguły biznesowe, finanse, UX, `main` i polityka wersji pozostają bez zmian: `BEST56 BAZA MIESZKAŃ AUDYT`.
