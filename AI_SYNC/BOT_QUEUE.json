@@ -3,7 +3,7 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-27T14:20:15+02:00",
+  "updated_at": "2026-08-27T15:13:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -15,7 +15,7 @@
       "owner": "PRIMARY",
       "scope": ["scripts/package_best56_artifact.py", "scripts/materialize_canonical_app.py", "artifacts/best56", "scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_package_best56_artifact.py", "tests/check_materialize_canonical_app.py", "tests/check_stage_canonical_app.py", "tests/check_app.py", ".github/workflows/quality.yml"],
       "acceptance": ["accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "run deterministic packager locally against exact BEST56 and persist canonical contiguous artifacts/best56 part set without reserializing payload through chat/connector text", "artifact parts must be canonical contiguous best56.html.gz.b64.part001..NNN; non-canonical names or gaps are rejected before decode", "packager must use deterministic gzip mtime=0, atomic writes and round-trip exact SHA verification", "CI automatically materializes app/FlippChill_Kalkulator.html from repository payload before Static application checks", "Static application checks pass after payload persistence", "BEST56 audit naming policy remains unchanged", "main is not modified"],
-      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "CRM sync current-state contract", "BEST56 executable financial scenarios", "AI sync dispatch protocol", "deterministic BEST56 artifact packager", "canonical materializer contract + canonical part-set validation", "CI canonical auto-materialization ordering", "Static application checks"],
+      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "CRM sync current-state contract", "BEST56 executable financial scenarios", "AI sync dispatch protocol", "AI sync handoff freshness", "deterministic BEST56 artifact packager", "canonical materializer contract + canonical part-set validation", "CI canonical auto-materialization ordering", "Static application checks"],
       "runtime_evidence": {
         "stager": "PASS",
         "dry_run": "PASS",
@@ -30,8 +30,9 @@
         "bad_payload_cleanup_commit": "bc918d5a43174e1f9540010be4f6620757bb69f8",
         "repository_source_payload": "PENDING_BINARY_SAFE_REPO_WRITE",
         "runtime_git_transport": "BLOCKED_DNS_GITHUB_COM_ITERATION_48",
-        "crm_sync_current_state_contract": "PASS_WORKFLOW_372",
-        "latest_ci": "WORKFLOW_372_ALL_PRE_APP_GATES_PASS_STATIC_APP_FAILS_P0_7A"
+        "crm_sync_current_state_contract": "PASS_WORKFLOW_377",
+        "latest_ci": "WORKFLOW_377_FRESHNESS_FAIL_ONLY_AFTER_EARLY_GATES_PASS",
+        "handoff_freshness_repair": "ITERATION_49_PENDING_CI"
       },
       "work_order": "On a local repo with GitHub push access, run python scripts/package_best56_artifact.py --auto against exact BEST56, verify round-trip SHA 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92 and canonical contiguous parts, then git add artifacts/best56 and commit directly from disk on develop. Do NOT copy/base64-reserialize payload through chat or connector text. CI will materialize app/FlippChill_Kalkulator.html and run Static application checks. Do not modify main.",
       "lock": {"owner": null, "claimed_at": null}
