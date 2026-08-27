@@ -4,29 +4,29 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 38,
-  "generated_at": "2026-08-27T04:19:20+02:00",
+  "iteration": 39,
+  "generated_at": "2026-08-27T05:17:20+02:00",
   "branch": "develop",
-  "change_head": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
-  "tested_commit": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
+  "change_head": "f74c160f6ee1e484a7515e573cb78081e235d886",
+  "tested_commit": "676d78bb8a59a637f3b7f97ef84d0ab711b93465",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P0", "area": "canonical app pipeline", "result": "Exact BEST56 is available in runtime at 857840 bytes with SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, but P0-7A still required manual creation of repository payload parts for the already CI-verified materializer."},
-    {"priority": "P0", "area": "artifact packaging safety", "result": "Added deterministic exact-SHA-only BEST56 packager with gzip mtime=0, fixed-size base64 parts, atomic writes and full round-trip SHA verification."},
-    {"priority": "P0", "area": "CI evidence", "result": "Workflow #293 verifies the new deterministic BEST56 artifact packager = PASS; all gates before Static application checks pass. Static application checks still fail because canonical app is not yet persisted in repo."}
+    {"priority": "P0", "area": "canonical app materializer", "result": "Materializer previously accepted any filename matching best56.html.gz.b64.part*, so non-canonical names or gapped numbering could produce ambiguous operational input even though the final exact-SHA check remained safe."},
+    {"priority": "P0", "area": "artifact part-set safety", "result": "Materializer now requires strict contiguous best56.html.gz.b64.part001..NNN and rejects non-canonical names/gaps before base64 decode."},
+    {"priority": "P0", "area": "CI evidence", "result": "Workflow #303 verifies canonical materializer contract + part-set guard = PASS; all gates before Static application checks pass. Static application checks still fail because canonical app/source payload is not yet persisted in repo."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P0 #7 advanced to PACKAGER_CONTRACT_CI_PASS_LOCAL_PAYLOAD_PENDING. No business or financial rule changed."
+    "source_of_truth_update": "P0 #7 advanced to MATERIALIZER_PART_SET_CI_PASS_LOCAL_PAYLOAD_PENDING. No business or financial rule changed."
   },
   "tests": {
-    "workflow_run": 293,
-    "workflow_commit": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
+    "workflow_run": 303,
+    "workflow_commit": "676d78bb8a59a637f3b7f97ef84d0ab711b93465",
     "best56_manifest": "PASS",
-    "source_of_truth": "PASS",
+    "source_of_truth": "PASS_PREVIOUS_SHARED_STATE",
     "schema_11_12": "PASS",
     "ai_sync_dispatch_protocol": "PASS",
     "queue_dependency_partition": "PASS",
@@ -34,7 +34,7 @@
     "runtime_and_dispatcher_gates": "PASS",
     "artifact_preflight": "PASS",
     "canonical_staging_safety": "PASS",
-    "canonical_materializer_contract": "PASS",
+    "canonical_materializer_contract": "PASS_PART_SET_GUARDED",
     "deterministic_best56_artifact_packager": "PASS",
     "static_application_checks": "FAIL_P0_7_CANONICAL_APP_NOT_YET_PERSISTED",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
@@ -43,8 +43,8 @@
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule changed.",
-    "data_integrity": "Exact BEST56 is now protected through packaging as well as staging/materialization; non-exact artifacts are rejected before payload creation.",
-    "automation": "PRIMARY can now execute packaging -> materialization -> static check without manually splitting or encoding the BEST56 payload."
+    "data_integrity": "Canonical materialization now rejects malformed/non-contiguous artifact part sets before decode while retaining the final exact BEST56 SHA check.",
+    "automation": "PRIMARY gets a stricter deterministic payload contract before repository payload persistence."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -54,7 +54,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7A-CANONICAL-APP. Preferred path: point FLIPPCHILL_ARTIFACT_ROOTS at the directory containing exact BEST56 if needed; run python scripts/package_best56_artifact.py --auto; run python scripts/materialize_canonical_app.py; run python tests/check_app.py app/FlippChill_Kalkulator.html. Commit artifacts/best56 plus canonical app only after exact round-trip SHA verification. Fallback remains stage_canonical_app.py --auto.",
+    "primary": "Claim P0-7A-CANONICAL-APP. Use exact BEST56 only. Preferred path: python scripts/package_best56_artifact.py --auto; verify resulting part set is canonical contiguous part001..NNN; python scripts/materialize_canonical_app.py; python tests/check_app.py app/FlippChill_Kalkulator.html. Commit payload/canonical app only after exact round-trip SHA verification. Fallback remains stage_canonical_app.py --auto.",
     "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
