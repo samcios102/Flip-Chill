@@ -1,0 +1,28 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 49,
+  "date": "2026-08-27",
+  "branch": "develop",
+  "change_head_before_artifact_commit": "59638e4667295da3bef5d09a6f77c0be967190f8",
+  "scope": "AI_SYNC handoff freshness repair only",
+  "finding": {
+    "workflow": 377,
+    "failure": "Verify AI sync handoff freshness",
+    "cause": "LATEST_AUDIT.generated_at 14:20:10+02:00 < BOT_QUEUE.updated_at 14:20:15+02:00",
+    "trigger_at": "14:20:20+02:00"
+  },
+  "changes": [
+    "BOT_QUEUE updated_at -> 2026-08-27T15:13:00+02:00",
+    "LATEST_AUDIT iteration 49 generated_at -> 2026-08-27T15:13:05+02:00",
+    "TRIGGER iteration 49 updated_at -> 2026-08-27T15:13:10+02:00",
+    "routing remains P0-7A-CANONICAL-APP -> PRIMARY -> RUN_FIX/READY"
+  ],
+  "business_rules_changed": false,
+  "application_changed": false,
+  "main_changed": false,
+  "expected_gate": "Verify AI sync handoff freshness = PASS",
+  "ci_status": "PENDING_AFTER_ITERATION_49",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY"
+}
