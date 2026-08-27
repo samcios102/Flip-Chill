@@ -8,17 +8,38 @@ import gzip
 import hashlib
 import os
 from pathlib import Path
+import re
 import tempfile
 
 EXPECTED_SHA256 = "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
 DEFAULT_PARTS_DIR = Path("artifacts/best56")
 DEFAULT_OUTPUT = Path("app/FlippChill_Kalkulator.html")
+PART_RE = re.compile(r"^best56\.html\.gz\.b64\.part(\d{3})$")
+
+
+def validated_parts(parts_dir: Path) -> list[Path]:
+    candidates = sorted(parts_dir.glob("best56.html.gz.b64.part*"))
+    if not candidates:
+        raise SystemExit(f"no artifact parts found in {parts_dir}")
+
+    numbered: list[tuple[int, Path]] = []
+    for part in candidates:
+        match = PART_RE.fullmatch(part.name)
+        if not match:
+            raise SystemExit(f"invalid artifact part name: {part.name}")
+        numbered.append((int(match.group(1)), part))
+
+    numbered.sort(key=lambda item: item[0])
+    expected = list(range(1, len(numbered) + 1))
+    actual = [number for number, _ in numbered]
+    if actual != expected:
+        raise SystemExit(f"artifact parts must be contiguous part001..part{len(numbered):03d}; got {actual}")
+
+    return [part for _, part in numbered]
 
 
 def load_payload(parts_dir: Path) -> bytes:
-    parts = sorted(parts_dir.glob("best56.html.gz.b64.part*"))
-    if not parts:
-        raise SystemExit(f"no artifact parts found in {parts_dir}")
+    parts = validated_parts(parts_dir)
     encoded = b"".join(p.read_bytes().strip() for p in parts)
     try:
         compressed = base64.b64decode(encoded, validate=True)
