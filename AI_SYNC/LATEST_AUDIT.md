@@ -4,37 +4,33 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `45`
+- Iteracja: `46`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Wykryto lukę regresyjną w finansach: Source of Truth od dawna definiuje `search_bonus = 0.10`, ale wykonywalny `tests/check_financial_scenarios.py` nie sprawdzał tej reguły. Dodano twardą asercję 10% bez zmiany stawki ani logiki aplikacji.
-
-Issue #17 zostało zamknięte jako completed po dowodzie CI. Reguły biznesowe i routing P0 nie zmieniły się.
+Odświeżono warstwę dowodową do najnowszego ukończonego workflow #360. Stan blockerów i reguły biznesowe NIE zmieniły się. Wszystkie gate’y 4–23 przed kontrolą aplikacji przechodzą PASS; jedyny FAIL pozostaje na `Static application checks`, ponieważ exact canonical payload BEST56 nadal nie jest utrwalony w repo.
 
 ## Testy / CI
 
-Workflow #352 na `9673f3958e1ffb6af17f1e03aa81718b4c89a4c8`:
+Workflow #360 na `45a1929484ac6d63de66ea42df6ceae27d32f080`:
 - BEST56 manifest = PASS;
 - Source of Truth = PASS;
 - CRM sync current-state contract = PASS;
-- executable financial scenarios = PASS, teraz także `search_bonus = 10%`;
+- executable financial scenarios = PASS, w tym `search_bonus = 10%`;
 - schema 11→12 = PASS;
 - wszystkie gate’y AI_SYNC / dispatcher / artifact / materializer = PASS;
-- `Static application checks` = FAIL wyłącznie przez istniejący P0-7A — canonical app nadal nie jest utrwalony w repo;
+- `Static application checks` = FAIL wyłącznie przez istniejący P0-7A;
 - BEST40 checks = SKIPPED downstream.
 
 ## P0 / P1
 
 - P0 #7 — 7A `READY` wyłącznie lokalną ścieżką packager → direct git commit; 7B BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
-- P1 #12 — bez zmiany; pełny lokalny bot runtime pozostaje otwarty.
-- P1 #14 — DONE / CI PASS.
-- P1 #16 — DONE / CI PASS.
-- P1 #17 — DONE / CI PASS; search bonus 10% jest teraz częścią wykonywalnego kontraktu finansowego.
+- P1 #12 — pełny lokalny bot runtime pozostaje otwarty.
+- P1 #14 / #16 / #17 — DONE / CI PASS.
 - P2 #15 — DONE.
 
 ## Handoff dla 3 botów
@@ -54,6 +50,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 45`
+- `source_iteration = 46`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
