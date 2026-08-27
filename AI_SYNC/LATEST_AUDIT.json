@@ -4,33 +4,33 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 44,
-  "generated_at": "2026-08-27T10:15:30+02:00",
+  "iteration": 45,
+  "generated_at": "2026-08-27T11:19:30+02:00",
   "branch": "develop",
-  "change_head": "dbad3401c4b64c039c12289e1b03e7d42eb071c7",
-  "tested_commit": "d1250ebab4aba26d12d8d5c1de05f107bd354fe9",
+  "change_head": "fd3e19c557bcda2ba300e131e2c838d9c7b7c00b",
+  "tested_commit": "9673f3958e1ffb6af17f1e03aa81718b4c89a4c8",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P1", "area": "human sync integrity", "result": "CRM_SYNC current-state semantics had no deterministic CI guard against drift from Source of Truth."},
-    {"priority": "P1", "area": "sync contract", "result": "A semantic guard now verifies develop, P0 #7 with 7A/7B partition, P0 #11, P1 #12, core tax rules and 50k/100k thresholds without binding correctness to fast-aging workflow numbers."},
-    {"priority": "P0", "area": "canonical app", "result": "P0-7A remains the highest READY blocker; static application checks still fail because the exact local BEST56 payload/canonical app is not persisted in the repository."}
+    {"priority": "P1", "area": "finance regression coverage", "result": "Source of Truth defines search_bonus=0.10, but the executable financial scenario contract did not assert that rule."},
+    {"priority": "P1", "area": "finance regression coverage", "result": "tests/check_financial_scenarios.py now asserts search bonus 10%; workflow #352 proves the financial gate PASS with the new assertion."},
+    {"priority": "P0", "area": "canonical app", "result": "P0-7A remains the highest READY blocker; exact BEST56 is available in automation runtime with the expected SHA, but repository payload must still be committed directly from a local repo path, not reserialized through connector text."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
-    "completed_p1": [14, 16],
+    "completed_p1": [14, 16, 17],
     "completed_p2": [15],
     "source_of_truth_update_required": false,
-    "source_of_truth_update": "No business rule or active blocker changed. Issue #16 closed after CI proved the new semantic current-state guard."
+    "source_of_truth_update": "No business rule or blocker changed. Existing search bonus 10% is now explicitly covered by the executable financial CI contract; issue #17 is completed."
   },
   "tests": {
-    "workflow_run": 345,
-    "workflow_commit": "d1250ebab4aba26d12d8d5c1de05f107bd354fe9",
+    "workflow_run": 352,
+    "workflow_commit": "9673f3958e1ffb6af17f1e03aa81718b4c89a4c8",
     "best56_manifest": "PASS",
     "source_of_truth": "PASS",
     "crm_sync_current_state_contract": "PASS",
-    "financial_scenarios": "PASS",
+    "financial_scenarios": "PASS_INCLUDING_SEARCH_BONUS_10_PERCENT",
     "schema_11_12": "PASS",
     "ai_sync_dispatch_protocol": "PASS",
     "queue_dependency_partition": "PASS",
@@ -47,16 +47,16 @@
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
-    "finance": "No financial rule changed; the human sync guard now verifies the published CIT/VAT/PIT and threshold semantics.",
+    "finance": "Existing search bonus 10% is now protected by executable CI in addition to VAT, CIT, PIT, threshold boundaries and Slack/Marketing turnover.",
     "data_integrity": "No new data-integrity regression found; schema 11->12 contract remains PASS while runtime verification waits for canonical app.",
-    "automation": "Human sync semantics are now CI-guarded; routing remains P0-7A -> PRIMARY."
+    "automation": "Routing remains P0-7A -> PRIMARY; no lock or dependency state changed."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
     "active_p0": [7, 11],
     "ready_tasks": ["P0-7A-CANONICAL-APP"],
     "blocked_tasks": ["P0-7B-FROZEN-BEST40", "P0-11-RUNTIME-MIGRATION", "P1-12-LOCAL-DISPATCH-RUNTIME", "P1-UI-RESPONSIVE-AUDIT"],
-    "completed_tasks": ["P1-14-FINANCIAL-SCENARIOS", "P1-16-CRM-SYNC-GUARD", "P2-15-FINANCIAL-BACKLOG-SYNC"],
+    "completed_tasks": ["P1-14-FINANCIAL-SCENARIOS", "P1-16-CRM-SYNC-GUARD", "P1-17-SEARCH-BONUS-GUARD", "P2-15-FINANCIAL-BACKLOG-SYNC"],
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
