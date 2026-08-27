@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T04:19:30+02:00",
+  "updated_at": "2026-08-27T05:17:30+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 38,
-  "reason": "Workflow #293 verifies the deterministic exact-SHA BEST56 artifact packager plus all prior automation/materializer gates. PRIMARY can now create artifacts/best56 safely from the exact local baseline, materialize canonical app and run Static application checks without manual payload splitting.",
+  "source_iteration": 39,
+  "reason": "Workflow #303 verifies the stricter canonical materializer contract: artifact parts must be contiguous canonical part001..NNN and malformed/gapped sets are rejected before decode. PRIMARY can proceed with exact BEST56 packaging -> materialization -> static checks.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -24,12 +24,13 @@
     "canonical_app_packager_command": "python scripts/package_best56_artifact.py --auto",
     "canonical_app_materializer": "scripts/materialize_canonical_app.py",
     "canonical_app_materializer_source_dir": "artifacts/best56",
+    "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN",
     "canonical_app_stager": "scripts/stage_canonical_app.py",
     "canonical_app_command_fallback": "python scripts/stage_canonical_app.py --auto",
     "canonical_app_artifact_roots_env": "FLIPPCHILL_ARTIFACT_ROOTS",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
     "canonical_packager_ci_evidence": "PASS_WORKFLOW_293",
-    "canonical_materializer_ci_evidence": "PASS_WORKFLOW_274",
+    "canonical_materializer_ci_evidence": "PASS_WORKFLOW_303_PART_SET_GUARDED",
     "opencode_entrypoint_read_order_ci_evidence": "PASS_WORKFLOW_282",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
