@@ -28,6 +28,13 @@ def main() -> None:
         "id": "tx-56-audit",
         "startDate": "2026-08-01",
         "maxDealDate": "2026-12-31",
+        "property": "Warszawa, Testowa 56/12",
+        "clientName": "Klient Testowy",
+        "agent": "Agent Testowy",
+        "commissionGross": 24600,
+        "source": "Slack / Marketing",
+        "settlementStatus": "unsettled",
+        "notes": "manual business note",
         "paymentParts": [
             {"kind": "preliminary", "clientPaid": True, "agentPaid": False},
             {"kind": "sellerFinal", "clientPaid": False, "agentPaid": False},
@@ -35,6 +42,21 @@ def main() -> None:
             {"kind": "other", "clientPaid": False, "agentPaid": False},
         ],
     }
+    preserved_business_keys = (
+        "id",
+        "startDate",
+        "preliminaryDate",
+        "finalDate",
+        "maxDealDate",
+        "property",
+        "clientName",
+        "agent",
+        "commissionGross",
+        "source",
+        "settlementStatus",
+        "notes",
+        "paymentParts",
+    )
 
     ongoing_with_preliminary = {
         **common,
@@ -44,11 +66,7 @@ def main() -> None:
     }
     migrated = migrate_contract(ongoing_with_preliminary)
     assert migrated["status"] == "preliminary"
-    assert_preserved(
-        ongoing_with_preliminary,
-        migrated,
-        ("id", "startDate", "preliminaryDate", "finalDate", "maxDealDate", "paymentParts"),
-    )
+    assert_preserved(ongoing_with_preliminary, migrated, preserved_business_keys)
 
     stale_status_with_final = {
         **common,
@@ -59,11 +77,7 @@ def main() -> None:
     }
     migrated = migrate_contract(stale_status_with_final)
     assert migrated["status"] == "closed"
-    assert_preserved(
-        stale_status_with_final,
-        migrated,
-        ("id", "startDate", "preliminaryDate", "finalDate", "maxDealDate", "paymentParts"),
-    )
+    assert_preserved(stale_status_with_final, migrated, preserved_business_keys)
 
     ongoing_without_dates = {
         **common,
@@ -74,13 +88,12 @@ def main() -> None:
     }
     migrated = migrate_contract(ongoing_without_dates)
     assert migrated["status"] == "ongoing"
-    assert_preserved(
-        ongoing_without_dates,
-        migrated,
-        ("id", "startDate", "preliminaryDate", "finalDate", "maxDealDate", "paymentParts"),
-    )
+    assert_preserved(ongoing_without_dates, migrated, preserved_business_keys)
 
-    print("PASS: BEST56 schema 11→12 executable contract preserves business data across 3 status/date fixtures")
+    print(
+        "PASS: BEST56 schema 11→12 executable contract preserves dates, payment parts "
+        "and representative business fields across 3 status/date fixtures"
+    )
 
 
 if __name__ == "__main__":
