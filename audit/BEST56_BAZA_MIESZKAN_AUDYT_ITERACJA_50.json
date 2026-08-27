@@ -1,0 +1,29 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 50,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "recorded_at": "2026-08-27T16:16:55+02:00",
+  "branch": "develop",
+  "tested_commit": "66b89d6fc0ceb36f0751b255c3883cc8956bacb0",
+  "workflow": {
+    "run_number": 382,
+    "result": "FAIL_EXPECTED_P0_7A_ONLY",
+    "pre_application_gates": "PASS",
+    "handoff_freshness": "PASS",
+    "static_application_checks": "FAIL_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM"
+  },
+  "findings": [
+    "Iteration 49 freshness repair is CI-proven.",
+    "No new finance, migration-contract or UX regression was found.",
+    "P0-7A remains the highest implementation blocker."
+  ],
+  "business_decisions": [],
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "version_policy": "BEST56 plus AUDYT only; never increment automatically"
+}
