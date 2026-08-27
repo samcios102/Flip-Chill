@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T02:22:00+02:00",
+  "updated_at": "2026-08-27T02:28:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
   "source_iteration": 36,
-  "reason": "Exact-hash canonical materializer contract is committed. PRIMARY remains assigned to persist exact BEST56 as canonical app, preferably through repository artifact materialization; local stager remains the verified fallback.",
+  "reason": "Workflow #274 verifies the exact-hash canonical materializer contract and all automation gates before Static application checks. PRIMARY remains assigned to safely persist exact BEST56 as canonical app; repository source payload is the remaining preferred-path step.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -26,6 +26,7 @@
     "canonical_app_command_fallback": "python scripts/stage_canonical_app.py --auto",
     "canonical_app_artifact_roots_env": "FLIPPCHILL_ARTIFACT_ROOTS",
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "canonical_materializer_ci_evidence": "PASS_WORKFLOW_274",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
   }
 }
