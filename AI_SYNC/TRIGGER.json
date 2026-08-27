@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T19:15:00+02:00",
+  "updated_at": "2026-08-27T20:17:00+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 53,
-  "reason": "Iteration 53 refreshed the handoff to the newest completed CI evidence: workflow #404 confirms every pre-application gate passes and only P0-7A repository payload persistence remains before Static application checks can pass.",
+  "source_iteration": 54,
+  "reason": "Iteration 54 reconciled a stale Slack/Marketing threshold backlog item to the already-passing executable financial contract. Routing and blocker semantics remain unchanged; P0-7A is still the highest safe READY task.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -29,7 +29,7 @@
     "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN",
     "canonical_app_ci_auto_materialization": true,
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "iteration_53_ci_evidence": "WORKFLOW_404_PRE_APPLICATION_GATES_PASS_ONE_SHOT_HELPER_PASS_STATIC_APPLICATION_CHECKS_FAIL_P0_7A_ONLY",
+    "iteration_54_ci_evidence": "WORKFLOW_409_PRE_APPLICATION_GATES_PASS_FINANCIAL_SLACK_THRESHOLD_PASS_STATIC_APPLICATION_CHECKS_FAIL_P0_7A_ONLY",
     "financial_scenario_gate": "tests/check_financial_scenarios.py",
     "crm_sync_current_state_gate": "tests/check_crm_sync_current_state.py",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
