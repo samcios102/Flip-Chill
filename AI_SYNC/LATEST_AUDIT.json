@@ -4,52 +4,43 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 48,
-  "generated_at": "2026-08-27T14:20:10+02:00",
+  "iteration": 49,
+  "generated_at": "2026-08-27T15:13:05+02:00",
   "branch": "develop",
-  "change_head": "f4761f4c3cfc945753eb7db8ac64b8c70673a43c",
-  "tested_commit": "f4761f4c3cfc945753eb7db8ac64b8c70673a43c",
+  "change_head": "42a9cee2c5f89a509a263e51a9101bdbb6c1a4e6",
+  "tested_commit": "105d0608681daa774ce58ee7173cd195db08a191",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority":"P0","area":"canonical app","result":"Exact BEST56 is present in the automation runtime: 857840 B, SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."},
-    {"priority":"P0","area":"safe repository transport","result":"Direct git transport from this runtime is unavailable: github.com DNS resolution fails. The verified text connector path remains intentionally excluded for the large canonical payload after prior SHA mismatch, so P0-7A remains READY for a local checkout with Git push access."},
-    {"priority":"P1","area":"CI","result":"Workflow #372 on current develop f4761f4c3cfc945753eb7db8ac64b8c70673a43c completed: all pre-application gates PASS; Static application checks alone FAIL because canonical payload/app is absent; BEST40 gates remain downstream/skipped."},
-    {"priority":"P1","area":"finance/data integrity","result":"No new finance, data-integrity or UX regression was found in this cycle; executable finance and schema 11->12 contracts remain green before the application gate."}
+    {"priority":"P1","area":"AI_SYNC freshness","result":"Workflow #377 exposed a deterministic 5-second handoff drift: LATEST_AUDIT.generated_at=14:20:10 was older than BOT_QUEUE.updated_at=14:20:15 and TRIGGER.updated_at=14:20:20, so the freshness gate correctly blocked dispatch."},
+    {"priority":"P0","area":"canonical app","result":"P0-7A remains the highest real implementation blocker after freshness repair; exact BEST56 SHA-256 remains 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92 and must be persisted through direct local filesystem -> git commit."},
+    {"priority":"P1","area":"finance/data/UX","result":"No new finance, data-integrity or UX regression found; business rules and active blocker routing are unchanged."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7,11],
     "active_p1": [12],
     "source_of_truth_update_required": false,
-    "source_of_truth_update": "No business rule or blocker state changed. Iteration 48 refreshes exact runtime capability and current CI evidence."
+    "source_of_truth_update": "No business rule or blocker state changed; iteration 49 repairs only AI_SYNC freshness ordering."
   },
   "tests": {
-    "workflow_run": 372,
-    "workflow_commit": "f4761f4c3cfc945753eb7db8ac64b8c70673a43c",
-    "best56_manifest": "PASS",
-    "source_of_truth": "PASS",
-    "crm_sync_current_state_contract": "PASS",
-    "financial_scenarios": "PASS_INCLUDING_SEARCH_BONUS_10_PERCENT",
-    "schema_11_12": "PASS",
-    "ai_sync_dispatch_protocol": "PASS",
-    "queue_dependency_partition": "PASS",
-    "handoff_freshness": "PASS",
-    "runtime_and_dispatcher_gates": "PASS",
-    "artifact_preflight": "PASS",
-    "canonical_staging_safety": "PASS",
-    "canonical_materializer_contract": "PASS_NO_PAYLOAD_PRESENT",
-    "deterministic_best56_artifact_packager_ci": "PASS",
-    "local_exact_best56_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "runtime_git_transport": "BLOCKED_DNS_GITHUB_COM",
-    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
-    "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
-    "ci_overall": "WORKFLOW_372_FAILS_ONLY_AT_STATIC_APP_P0_7A"
+    "previous_workflow_run": 377,
+    "previous_workflow_commit": "105d0608681daa774ce58ee7173cd195db08a191",
+    "best56_manifest": "PASS_WORKFLOW_377",
+    "source_of_truth": "PASS_WORKFLOW_377",
+    "crm_sync_current_state_contract": "PASS_WORKFLOW_377",
+    "financial_scenarios": "PASS_WORKFLOW_377",
+    "schema_11_12": "PASS_WORKFLOW_377",
+    "ai_sync_dispatch_protocol": "PASS_WORKFLOW_377",
+    "queue_dependency_partition": "PASS_WORKFLOW_377",
+    "handoff_freshness": "FAIL_WORKFLOW_377_FIXED_IN_ITERATION_49_PENDING_CI",
+    "static_application_checks": "NOT_REACHED_IN_WORKFLOW_377_AFTER_FRESHNESS_FAILURE",
+    "ci_overall": "ITERATION_49_PENDING_CI"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No rule changed.",
     "data_integrity": "No new regression found.",
-    "automation": "Handoff now carries current workflow #372 and explicit runtime transport capability evidence; safe routing remains local PRIMARY."
+    "automation": "Handoff timestamps are re-ordered so machine report and trigger are not older than shared queue state."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -59,7 +50,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Use a local repository checkout with Git push access. Run python scripts/package_best56_artifact.py --auto against the exact BEST56, verify SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92 and canonical contiguous parts, then git add artifacts/best56 and commit directly from disk on develop. Do not reserialize the payload through chat/connector text. CI then materializes the canonical app and runs Static application checks.",
+    "primary": "Use a local repository checkout with Git push access. Run python scripts/package_best56_artifact.py --auto against exact BEST56, verify SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92 and canonical contiguous parts, then git add artifacts/best56 and commit directly from disk on develop. Do not reserialize payload through chat/connector text.",
     "second_audit": "After P0-7A is DONE, execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "After P0-7A is DONE, execute responsive/accessibility/visual audit without modifying financial semantics."
   },
