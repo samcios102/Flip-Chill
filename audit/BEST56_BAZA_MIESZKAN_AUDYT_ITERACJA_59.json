@@ -1,0 +1,27 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 59,
+  "branch": "develop",
+  "change_commit": "301d483d2bae20d8ee51789a37077280f43c41ce",
+  "backlog_commit": "045c9a29f9d8710e9001add0300d22a47649caa6",
+  "finding": "Schema 11->12 fixture contract protected dates and paymentParts but did not explicitly guard representative non-date business fields.",
+  "change": "Expanded tests/check_schema_11_12_contract.py to preserve property, clientName, agent, commissionGross, source, settlementStatus and notes across all three migration fixtures; no application logic changed.",
+  "evidence": {
+    "workflow": 436,
+    "workflow_run_id": 33125701777,
+    "schema_11_12_contract": "PASS",
+    "financial_scenarios": "PASS",
+    "source_of_truth": "PASS",
+    "handoff_freshness_before_iteration_59": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "blockers": {
+    "p0_7": "ACTIVE",
+    "p0_11": "ACTIVE_RUNTIME_BLOCKED_BY_P0_7A",
+    "p1_12": "ACTIVE_LOCAL_RUNTIME_PENDING"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "version_policy": "BEST56 + AUDYT only; never create BEST57 automatically"
+}
