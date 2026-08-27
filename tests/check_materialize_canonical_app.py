@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "materialize_canonical_app.py"
+WORKFLOW = ROOT / ".github" / "workflows" / "quality.yml"
 EXPECTED = "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
 
 
@@ -32,6 +33,14 @@ def main() -> int:
     ]
     for token in required:
         assert token in text, f"missing safety token: {token}"
+
+    workflow = WORKFLOW.read_text(encoding="utf-8")
+    materialize_step = "Materialize canonical BEST56 app when repository payload exists"
+    materialize_command = "python scripts/materialize_canonical_app.py"
+    static_step = "Static application checks"
+    assert materialize_step in workflow, "CI must declare canonical materialization step"
+    assert materialize_command in workflow, "CI materialization step must invoke repository materializer"
+    assert workflow.index(materialize_step) < workflow.index(static_step), "CI must materialize before static checks"
 
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td)
@@ -72,7 +81,7 @@ def main() -> int:
             assert proc.returncode == 0, proc.stderr or proc.stdout
             assert hashlib.sha256(target.read_bytes()).hexdigest() == EXPECTED
 
-    print("PASS: BEST56 canonical materializer contract + canonical part set")
+    print("PASS: BEST56 canonical materializer contract + canonical part set + CI ordering")
     return 0
 
 
