@@ -8,7 +8,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [x] Zweryfikować raport 28 zduplikowanych ID DOM — audyt wykazał false positive testu: regex liczył `id=` wewnątrz stringów JavaScript renderujących SVG. Parser realnych tagów HTML potwierdza 0 statycznych duplikatów; test sprawdza teraz również statyczne referencje `for`, `aria-labelledby`, `aria-describedby`, `aria-controls` i lokalne `href="#..."`. Lokalnie: BEST40 = 739 ID / 38 poprawnych referencji, BEST49 = 748 / 38. Issue #8 zamknięte.
 - [ ] P0 #11 — migracja schema 11→12 musi zachować ręczne `preliminaryDate`, `maxDealDate`, `paymentParts`, `id`, `startDate` i `finalDate`; status należy wyprowadzać z istniejących dat zamiast kasować dane. Kandydat AUDYT przechodzi test zachowania danych, ale issue pozostaje otwarte do czasu testu na kanonicznym artefakcie repo i realnym `localStorage`. Zależność runtime jest teraz wyłącznie od `P0-7A-CANONICAL-APP`; historyczny BEST40 NIE blokuje tego testu.
 - [ ] Każda nowa regresja blokująca logowanie, zapis danych, otwieranie Bazy mieszkań, Rozliczenia lub Dat.
-- [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT oraz podział prowizji muszą być kontrolowane testami liczbowymi.
+- [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT, search bonus 10% oraz podział prowizji muszą być kontrolowane testami liczbowymi.
 - [ ] Utrata danych lokalnych albo niezgodność danych między kolejnymi wersjami BEST.
 
 ## P1 — do naprawy / twarde testy
@@ -16,6 +16,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → guard → claim → wykonanie → test → handoff`. Claim/lock, failure recovery, mutex READY→CLAIMED, bezpieczne odzyskanie starego osieroconego mutexa, dependency guard, świeżość handoffu oraz bezpośrednia integracja runtime guardu z dispatcherem są deterministycznie wymuszane przez CI. Root `OPENCODE.md` jest zsynchronizowany z kanonicznym `sync_contract.required_read_order`, w tym `AI_SYNC/PROTOCOL.md` jako krokiem 2. Pozostał pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
 - [x] P1 #13 — rozdzielenie zależności #7 na `P0-7A-CANONICAL-APP` i `P0-7B-FROZEN-BEST40` zweryfikowane przez CI; P0 #11 oraz THIRD_UI zależą tylko od canonical app 7A. `tests/check_queue_dependency_partition.py` = PASS w workflow #202; issue #13 zamknięte jako completed.
 - [x] P1 #14 — wykonywalny kontrakt finansowy BEST56: `tests/check_financial_scenarios.py` sprawdza VAT 23%, CIT 9% na dodatnim dochodzie i 0 przy stracie, PIT 12%, granice progów 49 999 / 50 000 / 99 999 / 100 000 / 125 000 oraz wkład Slack/Marketing do obrotu progowego. Gate `Verify BEST56 executable financial scenarios` = PASS w workflow #330; issue #14 zamknięte jako completed.
+- [x] P1 #17 — wykonywalny kontrakt finansowy sprawdza teraz również `search_bonus = 10%`; gate `Verify BEST56 executable financial scenarios` = PASS w workflow #352. Reguła biznesowa nie została zmieniona, tylko objęta ochroną regresyjną.
 - [ ] Zbudować test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage`.
 - [ ] Zbudować automatyczny test: logowanie → Baza mieszkań → filtr → Rozlicz → Daty → status → zapis → ponowne otwarcie.
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
@@ -49,7 +50,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P2 — analityka i finanse
 
-- [x] Jednostkowe testy finansowe na kilku znanych scenariuszach prowizji i podatków — pokryte wykonywalnym kontraktem `tests/check_financial_scenarios.py`; PASS w workflow #337, issue #14 completed.
+- [x] Jednostkowe testy finansowe na kilku znanych scenariuszach prowizji i podatków — pokryte wykonywalnym kontraktem `tests/check_financial_scenarios.py`; PASS w workflow #352 obejmuje VAT, CIT, PIT, search bonus 10%, progi 50k/100k i Slack/Marketing.
 - [ ] Wskaźnik należności: klient → spółka oraz spółka → agent, rozdzielone liczbowo.
 - [ ] Prognoza cash-flow według faktycznych dat płatności, a nie tylko statusu transakcji.
 - [ ] Dashboard miesięczny: 100% przedwstępnych + 80% w toku, łączna kwota i tempo / 5 mies.
