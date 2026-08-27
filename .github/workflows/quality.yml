@@ -55,6 +55,8 @@ jobs:
         run: python tests/check_materialize_canonical_app.py
       - name: Verify deterministic BEST56 artifact packager
         run: python tests/check_package_best56_artifact.py
+      - name: Verify PRIMARY P0-7A one-shot helper
+        run: python tests/check_primary_p0_7a_one_shot.py
       - name: Materialize canonical BEST56 app when repository payload exists
         shell: bash
         run: |
