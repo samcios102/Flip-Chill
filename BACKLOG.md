@@ -22,7 +22,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
 - [ ] Sprawdzić responsywność Bazy mieszkań na iPhone 15 Pro i małych ekranach Android/Chrome.
 - [ ] Zweryfikować, czy wszystkie 4 części płatności klienta i 4 stany wypłaty agentowi zachowują się spójnie po duplikowaniu rekordu.
-- [ ] Dodać test i regułę biznesową: mieszkania / transakcje ze źródła `Slack / Marketing` mają zasilać miesięczny obrót liczony do progów 50 000 PLN i 100 000 PLN tak samo jak pozostałe źródła; odrębna stawka wynagrodzenia Slack nie może wyłączać ich z progu.
+- [x] Transakcje ze źródła `Slack / Marketing` zasilają miesięczny obrót liczony do progów 50 000 PLN i 100 000 PLN tak samo jak pozostałe źródła; odrębna stawka wynagrodzenia Slack nie wyłącza ich z progu. Pokryte wykonywalnym kontraktem `tests/check_financial_scenarios.py`; #14 completed, gate finansowy PASS.
 
 ## P1 — brakujące / niedokończone funkcje
 
