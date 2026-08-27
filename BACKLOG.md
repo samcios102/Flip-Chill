@@ -49,7 +49,7 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 
 ## P2 — analityka i finanse
 
-- [ ] Jednostkowe testy finansowe na kilku znanych scenariuszach prowizji i podatków.
+- [x] Jednostkowe testy finansowe na kilku znanych scenariuszach prowizji i podatków — pokryte wykonywalnym kontraktem `tests/check_financial_scenarios.py`; PASS w workflow #337, issue #14 completed.
 - [ ] Wskaźnik należności: klient → spółka oraz spółka → agent, rozdzielone liczbowo.
 - [ ] Prognoza cash-flow według faktycznych dat płatności, a nie tylko statusu transakcji.
 - [ ] Dashboard miesięczny: 100% przedwstępnych + 80% w toku, łączna kwota i tempo / 5 mies.
