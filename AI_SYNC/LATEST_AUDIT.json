@@ -4,52 +4,53 @@
   "project": "FlippChill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 51,
-  "generated_at": "2026-08-27T17:21:10+02:00",
+  "iteration": 52,
+  "generated_at": "2026-08-27T18:20:00+02:00",
   "branch": "develop",
-  "change_head": "4a45af7768d9145a1a48b3982af3601c713b9a6f",
-  "tested_commit": "05a05551b02b0a8c75523f5b015643b51ea4cb62",
+  "change_head": "00481fa14195779d7393a404dd71c6349febbb0c",
+  "tested_commit": "706a0a891d94e8454b8671d4df5616963fd245ee",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority":"P0","area":"canonical app","result":"P0-7A remains the highest blocker. The remaining local filesystem->git step is now reduced to one guarded command for PRIMARY."},
-    {"priority":"P1","area":"operator safety","result":"Added scripts/primary_p0_7a_one_shot.py: exact BEST56 only, refuses main/master, allows only develop/feature/*/fix/*/audit/*, stages only artifacts/best56, and requires explicit --push."},
-    {"priority":"P1","area":"finance/data/UX","result":"No new finance, data-integrity or UX regression found; business rules and blocker routing remain unchanged."}
+    {"priority":"P0","area":"canonical app","result":"P0-7A remains the highest blocker; workflow #397 confirms every pre-application gate including the PRIMARY one-shot helper passes, while Static application checks fails only because the repository payload is still absent."},
+    {"priority":"P1","area":"handoff consistency","result":"Source of Truth and BACKLOG lagged behind the current queue/trigger by still describing the older manual packager path. They are now aligned to the CI-guarded PRIMARY one-shot command."},
+    {"priority":"P1","area":"finance/data/UX","result":"No new finance, data-integrity or UX regression found; existing executable financial and schema 11->12 contracts remain green in workflow #397."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7,11],
     "active_p1": [12],
-    "source_of_truth_update_required": false,
-    "source_of_truth_update": "No business rule or blocker status changed; iteration 51 improves the deterministic local execution path for existing P0-7A."
+    "source_of_truth_update_required": true,
+    "source_of_truth_update": "Executed: P0 #7 operational status is ONE_SHOT_HELPER_CI_PASS_LOCAL_EXECUTION_PENDING and the authoritative execution path is scripts/primary_p0_7a_one_shot.py --auto --commit --push."
   },
   "tests": {
-    "workflow_run": 392,
-    "workflow_commit": "05a05551b02b0a8c75523f5b015643b51ea4cb62",
-    "best56_manifest": "PASS_WORKFLOW_392",
-    "source_of_truth": "PASS_WORKFLOW_392",
-    "crm_sync_current_state_contract": "PASS_WORKFLOW_392",
-    "financial_scenarios": "PASS_WORKFLOW_392",
-    "schema_11_12": "PASS_WORKFLOW_392",
-    "ai_sync_dispatch_protocol": "PASS_WORKFLOW_392",
-    "queue_dependency_partition": "PASS_WORKFLOW_392",
-    "handoff_freshness": "PASS_WORKFLOW_392",
-    "runtime_handoff_guard": "PASS_WORKFLOW_392",
-    "dispatcher_contracts": "PASS_WORKFLOW_392",
-    "artifact_preflight": "PASS_WORKFLOW_392",
-    "canonical_staging": "PASS_WORKFLOW_392",
-    "canonical_materializer": "PASS_WORKFLOW_392",
-    "deterministic_packager": "PASS_WORKFLOW_392",
-    "primary_p0_7a_one_shot_helper": "PASS_WORKFLOW_392",
-    "ci_auto_materialization": "PASS_WORKFLOW_392_NO_PAYLOAD_PRESENT",
-    "static_application_checks": "FAIL_WORKFLOW_392_P0_7A_CANONICAL_APP_MISSING",
-    "best40_checks": "SKIPPED_DOWNSTREAM_WORKFLOW_392",
-    "ci_overall": "FAIL_EXPECTED_P0_7A_ONLY"
+    "workflow_run": 397,
+    "workflow_commit": "706a0a891d94e8454b8671d4df5616963fd245ee",
+    "best56_manifest": "PASS_WORKFLOW_397",
+    "source_of_truth": "PASS_WORKFLOW_397_BEFORE_ITERATION_52_SYNC",
+    "crm_sync_current_state_contract": "PASS_WORKFLOW_397",
+    "financial_scenarios": "PASS_WORKFLOW_397",
+    "schema_11_12": "PASS_WORKFLOW_397",
+    "ai_sync_dispatch_protocol": "PASS_WORKFLOW_397",
+    "queue_dependency_partition": "PASS_WORKFLOW_397",
+    "handoff_freshness": "PASS_WORKFLOW_397",
+    "runtime_handoff_guard": "PASS_WORKFLOW_397",
+    "dispatcher_contracts": "PASS_WORKFLOW_397",
+    "artifact_preflight": "PASS_WORKFLOW_397",
+    "canonical_staging": "PASS_WORKFLOW_397",
+    "canonical_materializer": "PASS_WORKFLOW_397",
+    "deterministic_packager": "PASS_WORKFLOW_397",
+    "primary_p0_7a_one_shot_helper": "PASS_WORKFLOW_397",
+    "ci_auto_materialization": "PASS_WORKFLOW_397_NO_PAYLOAD_PRESENT",
+    "static_application_checks": "FAIL_WORKFLOW_397_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM_WORKFLOW_397",
+    "ci_overall": "FAIL_EXPECTED_P0_7A_ONLY",
+    "iteration_52_ci": "PENDING_AFTER_HANDOFF_SYNC"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No rule changed; executable financial scenarios remain green.",
     "data_integrity": "No new regression found; schema 11->12 fixture contract remains green.",
-    "automation": "PRIMARY now has a CI-guarded one-shot command that packages, verifies, stages, commits and optionally pushes only the exact BEST56 payload from a safe branch."
+    "automation": "All bot-facing sources now use one authoritative PRIMARY one-shot command for P0-7A instead of mixing manual and one-shot execution paths."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -59,7 +60,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "On a local repo with GitHub push access run exactly: python scripts/primary_p0_7a_one_shot.py --auto --commit --push. The helper refuses main/master, accepts only exact BEST56 SHA 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, stages only artifacts/best56 and pushes only explicitly. CI then materializes the canonical app and runs Static application checks.",
+    "primary": "On a local repo with GitHub push access run exactly: python scripts/primary_p0_7a_one_shot.py --auto --commit --push. This is now the authoritative Source-of-Truth path. CI then materializes the canonical app and runs Static application checks.",
     "second_audit": "After P0-7A is DONE, execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "After P0-7A is DONE, execute responsive/accessibility/visual audit without modifying financial semantics."
   },
