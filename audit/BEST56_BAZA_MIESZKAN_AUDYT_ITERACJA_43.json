@@ -1,0 +1,26 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 43,
+  "timestamp": "2026-08-27T09:17:10+02:00",
+  "branch": "develop",
+  "baseline": {
+    "name": "BEST56 BAZA MIESZKAŃ",
+    "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
+  },
+  "finding": "BACKLOG contained a stale open P2 financial unit-test item although executable financial scenarios were already completed and CI-verified.",
+  "change": "Reconciled the generic financial unit-test backlog item to DONE using issue #14 and workflow #337 evidence; refreshed AI_SYNC iteration 43 without changing business rules or P0 routing.",
+  "tests": {
+    "evidence_workflow": 337,
+    "tested_commit": "6b6a041d305489ba47e33e90c3ef2e60ac526811",
+    "financial_scenarios": "PASS",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_EXISTING_P0_7A",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "business_rules_changed": false,
+  "source_of_truth_update_required": false,
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}
