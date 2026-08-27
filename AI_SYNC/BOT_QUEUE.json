@@ -3,7 +3,7 @@
   "project": "FlippChill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-27T17:21:00+02:00",
+  "updated_at": "2026-08-27T18:19:00+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -25,17 +25,17 @@
         "local_exact_payload_roundtrip": "PASS_AUTOMATION_ITERATION_47",
         "local_packager_runtime": "PASS_AUTOMATION_ITERATION_47_4_PARTS_258528_ENCODED_BYTES",
         "local_part_names": ["best56.html.gz.b64.part001", "best56.html.gz.b64.part002", "best56.html.gz.b64.part003", "best56.html.gz.b64.part004"],
-        "materializer_contract": "PASS_WORKFLOW_392_NO_PAYLOAD_PRESENT",
-        "one_shot_helper_contract": "PASS_WORKFLOW_392",
+        "materializer_contract": "PASS_WORKFLOW_397_NO_PAYLOAD_PRESENT",
+        "one_shot_helper_contract": "PASS_WORKFLOW_397",
         "connector_payload_attempt": "REJECTED_SHA_MISMATCH_WORKFLOW_321",
         "bad_payload_cleanup_commit": "bc918d5a43174e1f9540010be4f6620757bb69f8",
         "repository_source_payload": "PENDING_BINARY_SAFE_REPO_WRITE",
         "runtime_git_transport": "REQUIRES_LOCAL_GIT_PUSH_ACCESS",
-        "crm_sync_current_state_contract": "PASS_WORKFLOW_392",
-        "handoff_freshness": "PASS_WORKFLOW_392",
-        "latest_ci": "WORKFLOW_392_ONE_SHOT_HELPER_PASS_STATIC_APPLICATION_CHECKS_FAIL_ONLY"
+        "crm_sync_current_state_contract": "PASS_WORKFLOW_397",
+        "handoff_freshness": "PASS_WORKFLOW_397",
+        "latest_ci": "WORKFLOW_397_ONE_SHOT_HELPER_PASS_STATIC_APPLICATION_CHECKS_FAIL_ONLY"
       },
-      "work_order": "On a local repo with GitHub push access run exactly: python scripts/primary_p0_7a_one_shot.py --auto --commit --push. The helper refuses main/master, accepts only the exact BEST56 SHA, validates canonical contiguous parts, stages only artifacts/best56, commits and explicitly pushes the safe current branch. CI then materializes app/FlippChill_Kalkulator.html and runs Static application checks. Do not copy/base64-reserialize payload through chat or connector text.",
+      "work_order": "On a local repo with GitHub push access run exactly: python scripts/primary_p0_7a_one_shot.py --auto --commit --push. This is the authoritative P0-7A execution path. The helper refuses main/master, accepts only the exact BEST56 SHA, validates canonical contiguous parts, stages only artifacts/best56, commits and explicitly pushes the safe current branch. CI then materializes app/FlippChill_Kalkulator.html and runs Static application checks. Do not copy/base64-reserialize payload through chat or connector text.",
       "lock": {"owner": null, "claimed_at": null}
     },
     {
@@ -75,7 +75,7 @@
       "scope": ["OPENCODE.md", "AI_SYNC/PROTOCOL.md", "scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
       "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard is invoked before real subprocess", "stale/mismatched handoff blocks dispatch", "OPENCODE.md and AI_SYNC/PROTOCOL.md both follow canonical required_read_order", "mutex/dependency/claim/failure recovery contracts hold", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
       "required_checks": ["AI sync dispatch protocol including canonical OpenCode entrypoint read order", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim/failure/mutex/dependency contracts", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
-      "runtime_evidence": {"opencode_entrypoint_read_order": "PASS_WORKFLOW_392"},
+      "runtime_evidence": {"opencode_entrypoint_read_order": "PASS_WORKFLOW_397"},
       "lock": {"owner": null, "claimed_at": null}
     },
     {
