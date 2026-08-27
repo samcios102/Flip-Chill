@@ -4,46 +4,47 @@
   "project": "Flipp&Chill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "iteration": 37,
-  "generated_at": "2026-08-27T03:18:20+02:00",
+  "iteration": 38,
+  "generated_at": "2026-08-27T04:19:20+02:00",
   "branch": "develop",
-  "change_head": "1e31a5bb110de640627f24cde85fb39b99403a68",
-  "tested_commit": "f2bd0f7861ce6b830e69a68ef2e0996ce4d28034",
+  "change_head": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
+  "tested_commit": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
   "version_policy": "automatic audit never increments BEST number",
   "findings": [
-    {"priority": "P1", "area": "agent entrypoint", "result": "Root OPENCODE.md skipped AI_SYNC/PROTOCOL.md even though Source of Truth requires it as read-order step 2; a local OpenCode session could therefore enter the queue without current lock/claim/freshness/runtime-guard rules."},
-    {"priority": "P1", "area": "protocol regression prevention", "result": "OPENCODE.md now follows the canonical seven-file required_read_order and tests/check_ai_sync_protocol.py verifies both AI_SYNC/PROTOCOL.md and OPENCODE.md."},
-    {"priority": "P0", "area": "canonical app", "result": "P0-7A remains the highest READY task; exact BEST56 baseline SHA-256 remains 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92."}
+    {"priority": "P0", "area": "canonical app pipeline", "result": "Exact BEST56 is available in runtime at 857840 bytes with SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92, but P0-7A still required manual creation of repository payload parts for the already CI-verified materializer."},
+    {"priority": "P0", "area": "artifact packaging safety", "result": "Added deterministic exact-SHA-only BEST56 packager with gzip mtime=0, fixed-size base64 parts, atomic writes and full round-trip SHA verification."},
+    {"priority": "P0", "area": "CI evidence", "result": "Workflow #293 verifies the new deterministic BEST56 artifact packager = PASS; all gates before Static application checks pass. Static application checks still fail because canonical app is not yet persisted in repo."}
   ],
   "business_decisions": [],
   "p0_p1": {
     "active_p0": [7, 11],
     "active_p1": [12],
     "source_of_truth_update_required": true,
-    "source_of_truth_update": "P1 #12 now records OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME; canonical read-order CI evidence advanced to workflow #282. No business or financial rule changed."
+    "source_of_truth_update": "P0 #7 advanced to PACKAGER_CONTRACT_CI_PASS_LOCAL_PAYLOAD_PENDING. No business or financial rule changed."
   },
   "tests": {
-    "workflow_run": 282,
-    "workflow_commit": "f2bd0f7861ce6b830e69a68ef2e0996ce4d28034",
+    "workflow_run": 293,
+    "workflow_commit": "356180385a41cb35dccd01ebed6e2f0cf5adbb3c",
     "best56_manifest": "PASS",
     "source_of_truth": "PASS",
     "schema_11_12": "PASS",
-    "ai_sync_dispatch_protocol_and_opencode_entrypoint": "PASS",
+    "ai_sync_dispatch_protocol": "PASS",
     "queue_dependency_partition": "PASS",
     "handoff_freshness": "PASS",
     "runtime_and_dispatcher_gates": "PASS",
     "artifact_preflight": "PASS",
     "canonical_staging_safety": "PASS",
     "canonical_materializer_contract": "PASS",
-    "static_application_checks": "FAIL_P0_7_MISSING_CANONICAL_APP_IN_REPO",
+    "deterministic_best56_artifact_packager": "PASS",
+    "static_application_checks": "FAIL_P0_7_CANONICAL_APP_NOT_YET_PERSISTED",
     "frozen_best40_checks": "SKIPPED_DOWNSTREAM",
     "ci_overall": "FAIL_EXPECTED_P0_7"
   },
   "impact": {
     "baza_mieszkan": "No application behavior changed.",
     "finance": "No financial rule changed.",
-    "data_integrity": "Schema 11->12 fixture gate remains PASS; runtime verification still waits only for canonical 7A.",
-    "automation": "OpenCode root entrypoint can no longer silently skip AI_SYNC/PROTOCOL.md without failing the AI sync CI gate."
+    "data_integrity": "Exact BEST56 is now protected through packaging as well as staging/materialization; non-exact artifacts are rejected before payload creation.",
+    "automation": "PRIMARY can now execute packaging -> materialization -> static check without manually splitting or encoding the BEST56 payload."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
@@ -53,7 +54,7 @@
     "dispatch": "READY_TO_FIX"
   },
   "handoff": {
-    "primary": "Claim P0-7A-CANONICAL-APP. Preferred path: safely persist exact BEST56 source parts under artifacts/best56, run python scripts/materialize_canonical_app.py, then python tests/check_app.py app/FlippChill_Kalkulator.html. Fallback remains FLIPPCHILL_ARTIFACT_ROOTS + python scripts/stage_canonical_app.py --auto. Accept only exact SHA-256 3bb0756f...f4044e92.",
+    "primary": "Claim P0-7A-CANONICAL-APP. Preferred path: point FLIPPCHILL_ARTIFACT_ROOTS at the directory containing exact BEST56 if needed; run python scripts/package_best56_artifact.py --auto; run python scripts/materialize_canonical_app.py; run python tests/check_app.py app/FlippChill_Kalkulator.html. Commit artifacts/best56 plus canonical app only after exact round-trip SHA verification. Fallback remains stage_canonical_app.py --auto.",
     "second_audit": "Wait only for P0-7A-CANONICAL-APP, then execute real localStorage schema 11->12 migration verification for issue #11; do not wait for BEST40.",
     "third_ui": "Wait only for canonical app 7A, then execute responsive/accessibility/visual audit without modifying financial semantics."
   },
