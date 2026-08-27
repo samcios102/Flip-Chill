@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "project": "Flipp&Chill CRM / Baza mieszkań",
-  "updated_at": "2026-08-27T15:13:10+02:00",
+  "project": "FlippChill CRM / Baza mieszkań",
+  "updated_at": "2026-08-27T16:16:50+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-7A-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 49,
-  "reason": "Iteration 49 repairs handoff freshness ordering after workflow #377 detected that the machine report predated BOT_QUEUE by 5 seconds. Routing is unchanged: PRIMARY on a local checkout with Git push access must persist the exact BEST56 payload directly from disk.",
+  "source_iteration": 50,
+  "reason": "Workflow #382 confirms the iteration 49 freshness repair: every pre-application gate passed. Routing remains unchanged; PRIMARY must persist the exact BEST56 payload directly from a local filesystem into git.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -28,7 +28,7 @@
     "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN",
     "canonical_app_ci_auto_materialization": true,
     "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "iteration_49_freshness_repair": "BOT_QUEUE_15:13:00 -> LATEST_AUDIT_15:13:05 -> TRIGGER_15:13:10; CI evidence pending",
+    "iteration_50_ci_evidence": "WORKFLOW_382_PRE_APPLICATION_GATES_PASS_STATIC_APPLICATION_CHECKS_FAIL_P0_7A_ONLY",
     "financial_scenario_gate": "tests/check_financial_scenarios.py",
     "crm_sync_current_state_gate": "tests/check_crm_sync_current_state.py",
     "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
