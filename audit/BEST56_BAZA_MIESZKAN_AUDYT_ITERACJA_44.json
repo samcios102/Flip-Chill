@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 44,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "implementation_commit": "d1250ebab4aba26d12d8d5c1de05f107bd354fe9",
+  "workflow_run": 345,
+  "finding": "CRM_SYNC current-state semantics had no deterministic CI guard against Source of Truth drift.",
+  "change": "Added tests/check_crm_sync_current_state.py and the Verify CRM sync current-state contract CI gate.",
+  "evidence": {
+    "crm_sync_current_state_contract": "PASS",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_EXISTING_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM"
+  },
+  "business_rules_changed": false,
+  "application_changed": false,
+  "main_modified": false,
+  "issue": 16,
+  "issue_state": "CLOSED_COMPLETED",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX"
+}
