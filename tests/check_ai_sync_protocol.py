@@ -35,6 +35,22 @@ def load(path: str) -> dict:
         fail(f"cannot read {path}: {exc}")
 
 
+def assert_read_order(path: str, label: str) -> None:
+    text_path = Path(path)
+    if not text_path.is_file():
+        fail(f"missing {label}: {path}")
+    text = text_path.read_text(encoding="utf-8")
+    positions = []
+    for item in REQUIRED_READ_ORDER:
+        marker = f"`{item}`"
+        pos = text.find(marker)
+        if pos < 0:
+            fail(f"{label} missing required read-order entry: {item}")
+        positions.append(pos)
+    if positions != sorted(positions):
+        fail(f"{label} read-order entries are not in canonical order")
+
+
 def main() -> None:
     source = load("sync/CRM_SOURCE_OF_TRUTH.json")
     audit = load("AI_SYNC/LATEST_AUDIT.json")
@@ -119,19 +135,10 @@ def main() -> None:
     if read_order != REQUIRED_READ_ORDER:
         fail(f"canonical read order drifted: {read_order!r}")
 
-    protocol_path = Path("AI_SYNC/PROTOCOL.md")
-    protocol = protocol_path.read_text(encoding="utf-8")
-    positions = []
-    for item in REQUIRED_READ_ORDER:
-        marker = f"`{item}`"
-        pos = protocol.find(marker)
-        if pos < 0:
-            fail(f"protocol missing required read-order entry: {item}")
-        positions.append(pos)
-    if positions != sorted(positions):
-        fail("protocol read-order entries are not in canonical order")
+    assert_read_order("AI_SYNC/PROTOCOL.md", "AI_SYNC protocol")
+    assert_read_order("OPENCODE.md", "OpenCode entrypoint")
 
-    print("PASS: AI_SYNC report, queue, trigger, read order, P0 state and dispatcher contract are consistent")
+    print("PASS: AI_SYNC report, queue, trigger, canonical read order, OpenCode entrypoint, P0 state and dispatcher contract are consistent")
 
 
 if __name__ == "__main__":
