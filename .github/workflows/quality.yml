@@ -49,6 +49,8 @@ jobs:
         run: python tests/check_stage_canonical_app.py
       - name: Verify canonical materializer contract
         run: python tests/check_materialize_canonical_app.py
+      - name: Verify deterministic BEST56 artifact packager
+        run: python tests/check_package_best56_artifact.py
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
       - name: Verify frozen BEST40 checksum
