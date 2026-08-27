@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-27T08:18:00+02:00",
+  "updated_at": "2026-08-27T11:18:30+02:00",
   "source_branch": "develop",
   "release_target": "BEST56 BAZA MIESZKAŃ",
   "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
@@ -43,8 +43,8 @@
       "search_bonus": 0.10,
       "executable_scenario_contract": {
         "test": "tests/check_financial_scenarios.py",
-        "status": "CI_PASS_WORKFLOW_330",
-        "coverage": ["VAT gross-to-net", "CIT 9% positive profit and zero on loss", "agent PIT 12%", "bonus boundaries 49999/50000/99999/100000/125000", "Slack/Marketing threshold contribution"]
+        "status": "CI_PASS_WORKFLOW_352",
+        "coverage": ["VAT gross-to-net", "CIT 9% positive profit and zero on loss", "agent PIT 12%", "search bonus 10%", "bonus boundaries 49999/50000/99999/100000/125000", "Slack/Marketing threshold contribution"]
       }
     }
   },
