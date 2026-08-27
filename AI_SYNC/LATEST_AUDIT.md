@@ -4,35 +4,28 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `53`
+- Iteracja: `54`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Najnowszy zakończony workflow przeszedł z #397 do #404. Workflow #404 dla `b06fa076fd3a2fb5287c83576533256275d21068` potwierdza, że wszystkie gate’y przed aplikacją nadal przechodzą, a jedyny FAIL pozostaje na `Static application checks` z powodu braku repository payloadu P0-7A.
+Wykryto drift BACKLOGU: punkt wymagający, aby `Slack / Marketing` zasilał progi 50 000 / 100 000 PLN, pozostawał otwarty mimo że zakończone issue #14 i wykonywalny `tests/check_financial_scenarios.py` już dokładnie to weryfikują.
 
-Aplikacja, finanse, dane, blocker semantics i routing nie zostały zmienione.
+Punkt został oznaczony jako wykonany i powiązany z istniejącym kontraktem finansowym. Reguła finansowa NIE została zmieniona; poprawiono wyłącznie stan backlogu.
 
 ## Testy / CI
 
-Workflow #404:
-- kroki 4–24 = PASS;
-- BEST56 manifest = PASS;
-- Source of Truth = PASS;
-- CRM sync current state = PASS;
-- finanse = PASS;
+Najnowszy zakończony dowód to workflow #409 dla `e0354ed55c87064c4aa8fa8f577d820430829b4f`:
+- wszystkie gate’y przed aplikacją = PASS;
+- kontrakt finansowy = PASS, w tym Slack/Marketing → obrót progowy 50k/100k;
 - schema 11→12 = PASS;
-- AI_SYNC protocol, dependency partition, freshness i runtime guard = PASS;
-- dispatcher claim/failure/mutex/dependency contracts = PASS;
-- artifact preflight, canonical staging, materializer i packager = PASS;
-- `PRIMARY P0-7A one-shot helper` = PASS;
-- auto-materialization ordering = PASS bez payloadu;
+- AI_SYNC / dispatcher / materializer / packager / one-shot = PASS;
 - `Static application checks` = FAIL wyłącznie przez brak payloadu P0-7A;
-- BEST40 checks = SKIPPED downstream.
+- BEST40 = SKIPPED downstream.
 
-CI dla końcowego handoffu iteracji 53 oczekuje na wynik po commitach synchronizacyjnych; nowego PASS nie deklarujemy bez dowodu.
+CI dla końcowego handoffu iteracji 54 oczekuje na nowy wynik po commitach synchronizacyjnych; nowego PASS nie deklarujemy bez dowodu.
 
 ## P0 / P1
 
@@ -59,6 +52,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 53`
+- `source_iteration = 54`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
