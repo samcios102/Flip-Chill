@@ -1,0 +1,35 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 36,
+  "branch": "develop",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "scope": "canonical app reproducibility",
+  "changes": [
+    "added scripts/materialize_canonical_app.py",
+    "added tests/check_materialize_canonical_app.py",
+    "added CI gate Verify canonical materializer contract",
+    "updated Source of Truth, BACKLOG and AI_SYNC handoff"
+  ],
+  "safety": {
+    "exact_sha_only": true,
+    "atomic_write": true,
+    "main_modified": false,
+    "financial_rules_changed": false,
+    "ux_changed": false,
+    "automatic_best_increment": false
+  },
+  "runtime_evidence": {
+    "exact_best56_present": true,
+    "exact_best56_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "repository_source_payload": "PENDING_SAFE_TRANSFER"
+  },
+  "ci": {
+    "last_completed_before_change": 263,
+    "last_completed_before_change_result": "FAIL_EXPECTED_P0_7",
+    "materializer_contract": "COMMITTED_CI_PENDING",
+    "new_head": "PENDING_WORKFLOW"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY"
+}
