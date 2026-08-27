@@ -4,24 +4,23 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `52`
+- Iteracja: `53`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Wykryto drift operacyjny: kolejka i trigger już używały one-shot helpera, natomiast Source of Truth i BACKLOG nadal opisywały starszą ręczną ścieżkę packagera. Source of Truth i BACKLOG są teraz zsynchronizowane: preferowana i autorytatywna ścieżka P0-7A to:
+Najnowszy zakończony workflow przeszedł z #397 do #404. Workflow #404 dla `b06fa076fd3a2fb5287c83576533256275d21068` potwierdza, że wszystkie gate’y przed aplikacją nadal przechodzą, a jedyny FAIL pozostaje na `Static application checks` z powodu braku repository payloadu P0-7A.
 
-`python scripts/primary_p0_7a_one_shot.py --auto --commit --push`
-
-Aplikacja, finanse, dane i routing blockerów nie zostały zmienione.
+Aplikacja, finanse, dane, blocker semantics i routing nie zostały zmienione.
 
 ## Testy / CI
 
-Workflow #397 na `706a0a891d94e8454b8671d4df5616963fd245ee`:
+Workflow #404:
+- kroki 4–24 = PASS;
 - BEST56 manifest = PASS;
-- Source of Truth = PASS dla stanu przed synchronizacją iteracji 52;
+- Source of Truth = PASS;
 - CRM sync current state = PASS;
 - finanse = PASS;
 - schema 11→12 = PASS;
@@ -33,11 +32,11 @@ Workflow #397 na `706a0a891d94e8454b8671d4df5616963fd245ee`:
 - `Static application checks` = FAIL wyłącznie przez brak payloadu P0-7A;
 - BEST40 checks = SKIPPED downstream.
 
-CI dla końcowego handoffu iteracji 52: oczekuje na wynik po commitach synchronizacyjnych; nowego PASS nie deklarujemy bez dowodu.
+CI dla końcowego handoffu iteracji 53 oczekuje na wynik po commitach synchronizacyjnych; nowego PASS nie deklarujemy bez dowodu.
 
 ## P0 / P1
 
-- P0 #7 — stan operacyjny: `ONE_SHOT_HELPER_CI_PASS_LOCAL_EXECUTION_PENDING`; 7A nadal `READY`, 7B BLOCKED na exact BEST40.
+- P0 #7 — `P0-7A-CANONICAL-APP` nadal `READY`; 7B pozostaje BLOCKED na exact BEST40.
 - P0 #11 — aktywny, BLOCKED wyłącznie przez 7A.
 - P1 #12 — pełny lokalny bot runtime pozostaje otwarty.
 
@@ -47,8 +46,6 @@ CI dla końcowego handoffu iteracji 52: oczekuje na wynik po commitach synchroni
 Na lokalnym repo z GitHub push access uruchom dokładnie:
 
 `python scripts/primary_p0_7a_one_shot.py --auto --commit --push`
-
-To jest teraz autorytatywna ścieżka Source of Truth. Helper sam wykonuje exact-hash packaging, canonical part validation, `git add artifacts/best56`, commit i jawny push bez dotykania `main`.
 
 ### SECOND_AUDIT
 Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`; nie czekaj na BEST40.
@@ -62,6 +59,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 52`
+- `source_iteration = 53`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
