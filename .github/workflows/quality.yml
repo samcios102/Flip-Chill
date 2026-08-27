@@ -51,6 +51,14 @@ jobs:
         run: python tests/check_materialize_canonical_app.py
       - name: Verify deterministic BEST56 artifact packager
         run: python tests/check_package_best56_artifact.py
+      - name: Materialize canonical BEST56 app when repository payload exists
+        shell: bash
+        run: |
+          if compgen -G 'artifacts/best56/best56.html.gz.b64.part*' > /dev/null; then
+            python scripts/materialize_canonical_app.py
+          else
+            echo 'BEST56 repository payload not present yet; canonical app remains blocked by P0-7A.'
+          fi
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
       - name: Verify frozen BEST40 checksum
