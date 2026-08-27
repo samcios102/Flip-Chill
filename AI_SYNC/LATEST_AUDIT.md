@@ -4,30 +4,30 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `49`
+- Iteracja: `50`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Naprawiono drift świeżości handoffu z iteracji 48. Workflow #377 wykrył, że `LATEST_AUDIT.generated_at` był 5 sekund starszy niż `BOT_QUEUE.updated_at`, więc dispatch został poprawnie zatrzymany. Iteracja 49 odświeża stan w bezpiecznej kolejności: kolejka → raport → trigger.
+Workflow #382 potwierdził naprawę freshness z iteracji 49. Wszystkie gate’y przed aplikacją przeszły PASS; jedyny FAIL pozostaje na `Static application checks`, ponieważ exact BEST56 payload nie został jeszcze utrwalony w repo przez bezpieczną lokalną ścieżkę.
 
 Nie zmieniono aplikacji, finansów, danych ani routingu blockerów.
 
 ## Testy / CI
 
-Workflow #377 na `105d0608681daa774ce58ee7173cd195db08a191`:
+Workflow #382 na `66b89d6fc0ceb36f0751b255c3883cc8956bacb0`:
 - BEST56 manifest = PASS;
 - Source of Truth = PASS;
 - CRM sync current state = PASS;
 - finanse = PASS;
 - schema 11→12 = PASS;
-- AI_SYNC protocol i dependency partition = PASS;
-- `Verify AI sync handoff freshness` = FAIL z powodu driftu timestampów;
-- dalsze kroki nie zostały uruchomione.
-
-Naprawa freshness iteracji 49 oczekuje na nowy dowód CI.
+- AI_SYNC protocol, dependency partition, freshness i runtime guard = PASS;
+- dispatcher claim/failure/mutex/dependency contracts = PASS;
+- artifact preflight, canonical staging, materializer, packager i CI auto-materialization ordering = PASS;
+- `Static application checks` = FAIL przez P0-7A;
+- BEST40 checks = SKIPPED downstream.
 
 ## P0 / P1
 
@@ -52,6 +52,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 49`
+- `source_iteration = 50`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
