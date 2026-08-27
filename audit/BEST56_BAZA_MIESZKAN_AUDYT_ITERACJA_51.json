@@ -1,0 +1,29 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 51,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "finding": "P0-7A remains the highest blocker; local payload persistence was reduced to one guarded command for PRIMARY.",
+  "change": {
+    "script": "scripts/primary_p0_7a_one_shot.py",
+    "contract_test": "tests/check_primary_p0_7a_one_shot.py",
+    "ci_gate": "Verify PRIMARY P0-7A one-shot helper",
+    "command": "python scripts/primary_p0_7a_one_shot.py --auto --commit --push",
+    "safety": ["exact BEST56 SHA only", "main/master refused", "safe branch allowlist", "stage only artifacts/best56", "push requires explicit --push"]
+  },
+  "tests": {
+    "workflow": 392,
+    "tested_commit": "05a05551b02b0a8c75523f5b015643b51ea4cb62",
+    "one_shot_helper": "PASS",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "business_decisions": [],
+  "blockers": {"P0": [7, 11], "P1": [12]},
+  "impact": "No CRM/finance/data behavior changed. Automation/operator safety improved.",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "version_policy": "BEST56 + AUDYT only; never increment automatically"
+}
