@@ -5,7 +5,7 @@
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
   "iteration": 64,
-  "generated_at": "2026-08-28T06:18:20+02:00",
+  "generated_at": "2026-08-28T06:20:00+02:00",
   "branch": "develop",
   "change_head": "a8dac29669f73c9f00895076e09730958daab3e8",
   "tested_commit": "a8dac29669f73c9f00895076e09730958daab3e8",
@@ -15,7 +15,8 @@
     {"priority":"P0","area":"canonical app","result":"P0-7A remains the highest READY blocker. Workflow #465 passes steps 4-24 and fails only at Static application checks because the canonical BEST56 repository payload is still missing."},
     {"priority":"P0","area":"data integrity / schema 11->12","result":"Expanded business-field preservation contract remains PASS in workflow #465; real localStorage runtime migration remains blocked only by P0-7A."},
     {"priority":"P1","area":"finance","result":"Executable BEST56 financial scenarios remain PASS in workflow #465; no financial rule regression was detected."},
-    {"priority":"P1","area":"UX","result":"No canonical application payload is available in repo, so no new runtime UX assertion is promoted; THIRD_UI remains correctly blocked by P0-7A."}
+    {"priority":"P1","area":"UX","result":"No canonical application payload is available in repo, so no new runtime UX assertion is promoted; THIRD_UI remains correctly blocked by P0-7A."},
+    {"priority":"P1","area":"handoff freshness","result":"An intermediate iteration-64 commit exposed audit timestamp older than BOT_QUEUE.updated_at; timestamps were corrected before final handoff so generated_at is not older than shared queue state."}
   ],
   "business_decisions": [],
   "p0_p1": {
@@ -48,14 +49,14 @@
     "static_application_checks": "FAIL_WORKFLOW_465_P0_7A_CANONICAL_APP_MISSING",
     "best40_checks": "SKIPPED_DOWNSTREAM_WORKFLOW_465",
     "ci_overall": "FAIL_EXPECTED_P0_7A_ONLY",
-    "iteration_64_ci": "PENDING_AFTER_HANDOFF_SYNC"
+    "iteration_64_ci": "PENDING_AFTER_FINAL_FRESHNESS_SYNC"
   },
   "impact": {
-    "baza_mieszkan": "No application behavior changed; only audit verification metadata was synchronized.",
+    "baza_mieszkan": "No application behavior changed; only audit verification metadata and handoff freshness timestamps were synchronized.",
     "finance": "No financial rule changed; executable financial scenarios remain PASS in workflow #465.",
     "data_integrity": "No migration semantics changed; expanded schema 11->12 preservation contract remains PASS in workflow #465.",
     "ux": "No runtime UX change was made; THIRD_UI remains blocked until canonical app 7A is available.",
-    "automation": "Per-iteration audit evidence now points to workflow #465; routing remains unchanged."
+    "automation": "Per-iteration evidence points to workflow #465; freshness timestamps were normalized; routing remains unchanged."
   },
   "summary": {
     "highest_priority": "P0-7A-CANONICAL-APP",
