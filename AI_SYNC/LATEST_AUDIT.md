@@ -4,20 +4,20 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `69`
+- Iteracja: `70`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Najnowszym zakończonym zweryfikowanym runem jest workflow #488 na commicie `dcc8dac02cc3e34ec0fb3dc67b17fa30a79c7248`.
+Najnowszym zakończonym zweryfikowanym runem jest workflow #494 na commicie `2a1d9165658754b0eacfc3233e89bc668aabfe5e`.
 
-Iteracja 69 odświeża dowody audytowe bez zmiany logiki aplikacji, danych, finansów, UX ani routingu blockerów.
+Iteracja 70 odświeża dowody audytowe bez zmiany logiki aplikacji, danych, finansów, UX ani routingu blockerów.
 
 ## Testy / CI
 
-Workflow #488:
+Workflow #494:
 - kroki 4–24 = PASS;
 - BEST56 manifest / Source of Truth / CRM sync = PASS;
 - finanse = PASS;
@@ -51,6 +51,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 69`
+- `source_iteration = 70`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
