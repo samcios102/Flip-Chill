@@ -4,30 +4,30 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `60`
+- Iteracja: `61`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Audyt wykrył drift metadanych dowodowych: część wspólnego stanu nadal wskazywała starsze workflow #303/#397, mimo że najnowszym zakończonym zweryfikowanym runem jest #442.
+Najnowszym zakończonym zweryfikowanym runem jest workflow #448 na commicie `ea8fbb23cb8c26e6af5346bb03df7255c4f543e2`.
 
-Iteracja 60 odświeża machine-authoritative evidence do workflow #442. Logika aplikacji, dane, finanse, UX i routing blockerów nie zostały zmienione.
+Iteracja 61 odświeża machine/human evidence do workflow #448. Logika aplikacji, dane, finanse, UX i routing blockerów nie zostały zmienione.
 
 ## Testy / CI
 
-Workflow #442 na commicie `dd0247209e05e2d4312083a564bf124c5ec1627e`:
+Workflow #448:
 - kroki 4–24 = PASS;
-- rozszerzony schema 11→12 contract = PASS;
 - BEST56 manifest / Source of Truth / CRM sync = PASS;
 - finanse = PASS;
+- schema 11→12 = PASS;
 - AI_SYNC / freshness / runtime guard / dispatcher = PASS;
 - preflight / stager / materializer / packager / one-shot PRIMARY / auto-materialization = PASS;
 - `Static application checks` = FAIL wyłącznie przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
 - BEST40 = SKIPPED downstream.
 
-CI dla zmian iteracji 60 jest uruchomione; nowego PASS nie deklarujemy przed wynikiem.
+CI dla commitów handoffu iteracji 61 jest uruchamiane osobno; pełnego PASS nie deklarujemy przed wynikiem.
 
 ## P0 / P1
 
@@ -54,6 +54,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 60`
+- `source_iteration = 61`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
