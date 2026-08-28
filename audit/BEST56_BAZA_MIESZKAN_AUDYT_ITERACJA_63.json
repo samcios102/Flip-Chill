@@ -1,0 +1,25 @@
+{
+  "name": "AUDYT BEST56 BAZA MIESZKAŃ",
+  "iteration": 63,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "audited_head": "47ae2d015822ebe49f39f2e3a64031c4ec0ba91b",
+  "evidence": {
+    "workflow": 460,
+    "run_id": 33135510671,
+    "steps_4_24": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "findings": {
+    "data_integrity": "No new regression detected; schema 11->12 expanded preservation contract PASS.",
+    "finance": "No new regression detected; executable financial scenarios PASS.",
+    "ux": "No new runtime UX assertion promoted because canonical app remains unavailable in repo.",
+    "automation": "Handoff evidence advanced to workflow #460; routing unchanged."
+  },
+  "business_decisions": [],
+  "source_of_truth_update_required": false,
+  "ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never create BEST57 automatically"
+}
