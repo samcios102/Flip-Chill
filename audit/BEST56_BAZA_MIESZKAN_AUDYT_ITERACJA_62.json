@@ -1,0 +1,25 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 62,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "evidence": {
+    "workflow": 454,
+    "workflow_run_id": 33132408363,
+    "tested_commit": "02b7a3a3e8b524e93843e35d545ae95a0a09735a",
+    "steps_4_24": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "findings": [
+    "No new application, data, finance or UX regression detected in the latest completed CI evidence.",
+    "Shared-state CI evidence was stale relative to workflow #454 and was refreshed.",
+    "P0-7A remains the highest safe READY blocker."
+  ],
+  "business_decisions": [],
+  "impact": "Evidence-only synchronization; no application behavior or business semantics changed.",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": {"action":"RUN_FIX","status":"READY"},
+  "version_policy": "BEST56 + AUDYT only; never BEST57"
+}
