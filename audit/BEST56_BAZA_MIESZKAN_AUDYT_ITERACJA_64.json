@@ -1,0 +1,27 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 64,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "tested_commit": "a8dac29669f73c9f00895076e09730958daab3e8",
+  "evidence_workflow": 465,
+  "evidence_workflow_id": 33138339787,
+  "result": {
+    "steps_4_24": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM",
+    "finance": "PASS",
+    "schema_11_12_contract": "PASS",
+    "data_integrity_regression_detected": false,
+    "financial_regression_detected": false,
+    "ux_runtime_change": false
+  },
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": {"action":"RUN_FIX","status":"READY"},
+  "business_decisions": [],
+  "source_of_truth_update_required": false,
+  "version_policy": "BEST56 + AUDYT only; never create BEST57 automatically"
+}
