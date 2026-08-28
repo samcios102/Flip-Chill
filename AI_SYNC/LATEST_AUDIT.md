@@ -4,20 +4,20 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `63`
+- Iteracja: `64`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Najnowszym zakończonym zweryfikowanym runem jest workflow #460 na commicie `47ae2d015822ebe49f39f2e3a64031c4ec0ba91b`.
+Najnowszym zakończonym zweryfikowanym runem jest workflow #465 na commicie `a8dac29669f73c9f00895076e09730958daab3e8`.
 
-Iteracja 63 odświeża handoff do workflow #460. Logika aplikacji, dane, finanse, UX i routing blockerów nie zostały zmienione.
+Iteracja 64 odświeża handoff do workflow #465. Logika aplikacji, dane, finanse, UX i routing blockerów nie zostały zmienione.
 
 ## Testy / CI
 
-Workflow #460:
+Workflow #465:
 - kroki 4–24 = PASS;
 - BEST56 manifest / Source of Truth / CRM sync = PASS;
 - finanse = PASS;
@@ -27,7 +27,7 @@ Workflow #460:
 - `Static application checks` = FAIL wyłącznie przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
 - BEST40 = SKIPPED downstream.
 
-CI dla commitów handoffu iteracji 63 jest uruchamiane osobno; pełnego PASS nie deklarujemy przed wynikiem.
+CI dla commitów handoffu iteracji 64 jest uruchamiane osobno; pełnego PASS nie deklarujemy przed wynikiem.
 
 ## P0 / P1
 
@@ -54,6 +54,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 63`
+- `source_iteration = 64`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
