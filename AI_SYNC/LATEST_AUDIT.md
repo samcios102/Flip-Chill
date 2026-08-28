@@ -4,21 +4,21 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `82`
+- Iteracja: `83`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Workflow #539 jest zakończonym dowodem dla develop `8e270094da463e457f99c2cd539a697e859b55b7` i potwierdza ten sam stan blockerów co iteracja 81.
+Workflow #545 jest zakończonym dowodem dla develop `66b691121d6625a523650e1373ac65ac0271c65c` i potwierdza ten sam stan blockerów co iteracja 82.
 
-Iteracja 82 odświeża dowody audytu i dispatchu do najnowszego zakończonego CI. Nie zmieniono logiki aplikacji, danych, finansów, UX ani routingu blockerów.
+Iteracja 83 odświeża dowody audytu i dispatchu do najnowszego zakończonego CI. Nie zmieniono logiki aplikacji, danych, finansów, UX ani routingu blockerów.
 
 ## Testy / CI
 
-Workflow #539:
-- gate'y 4–24 przed aplikacją = PASS;
+Workflow #545:
+- gate'y przed aplikacją = PASS;
 - BEST56 manifest / Source of Truth / CRM sync = PASS;
 - finanse = PASS;
 - schema 11→12 = PASS;
@@ -27,7 +27,7 @@ Workflow #539:
 - `Static application checks` = FAIL przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
 - BEST40 = SKIPPED downstream.
 
-CI dla commitów handoffu iteracji 82 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu.
+CI dla commitów handoffu iteracji 83 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu.
 
 ## P0 / P1
 
@@ -53,6 +53,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 82`
+- `source_iteration = 83`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
