@@ -3,7 +3,7 @@
   "project": "FlippChill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-28T22:18:10+02:00",
+  "updated_at": "2026-08-28T23:13:10+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -13,10 +13,10 @@
       "title": "Persist exact BEST56 repository payload for automatic canonical materialization",
       "status": "READY",
       "owner": "PRIMARY",
-      "scope": ["scripts/primary_p0_7a_one_shot.py","scripts/package_best56_artifact.py","scripts/materialize_canonical_app.py","artifacts/best56","scripts/stage_canonical_app.py","app/FlippChill_Kalkulator.html","tests/check_primary_p0_7a_one_shot.py","tests/check_package_best56_artifact.py","tests/check_materialize_canonical_app.py","tests/check_stage_canonical_app.py","tests/check_app.py",".github/workflows/quality.yml"],
-      "acceptance": ["accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92","one-shot helper must refuse main/master and only allow develop/feature/*/fix/*/audit/*","one-shot helper may stage and commit only artifacts/best56 and push only with explicit --push","artifact parts must be canonical contiguous best56.html.gz.b64.part001..NNN; non-canonical names or gaps are rejected before decode","packager must use deterministic gzip mtime=0, atomic writes and round-trip exact SHA verification","CI automatically materializes app/FlippChill_Kalkulator.html from repository payload before Static application checks","Static application checks pass after payload persistence","BEST56 audit naming policy remains unchanged","main is not modified"],
-      "required_checks": ["BEST56 audit manifest","Source of Truth consistency","CRM sync current-state contract","BEST56 executable financial scenarios","AI sync dispatch protocol","AI sync handoff freshness","deterministic BEST56 artifact packager","canonical materializer contract + canonical part-set validation","PRIMARY P0-7A one-shot helper","CI canonical auto-materialization ordering","Static application checks"],
-      "runtime_evidence": {"stager":"PASS","candidate_sha256":"3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92","materializer_contract":"PASS_WORKFLOW_531_NO_PAYLOAD_PRESENT","one_shot_helper_contract":"PASS_WORKFLOW_531","repository_source_payload":"PENDING_BINARY_SAFE_REPO_WRITE","runtime_git_transport":"REQUIRES_LOCAL_GIT_PUSH_ACCESS","crm_sync_current_state_contract":"PASS_WORKFLOW_531","handoff_freshness":"PASS_WORKFLOW_531","latest_ci":"WORKFLOW_531_GATES_4_24_PASS_STATIC_APPLICATION_CHECKS_FAIL_ONLY"},
+      "scope": ["scripts/primary_p0_7a_one_shot.py", "scripts/package_best56_artifact.py", "scripts/materialize_canonical_app.py", "artifacts/best56", "scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_primary_p0_7a_one_shot.py", "tests/check_package_best56_artifact.py", "tests/check_materialize_canonical_app.py", "tests/check_stage_canonical_app.py", "tests/check_app.py", ".github/workflows/quality.yml"],
+      "acceptance": ["accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "one-shot helper must refuse main/master and only allow develop/feature/*/fix/*/audit/*", "one-shot helper may stage and commit only artifacts/best56 and push only with explicit --push", "artifact parts must be canonical contiguous best56.html.gz.b64.part001..NNN; non-canonical names or gaps are rejected before decode", "packager must use deterministic gzip mtime=0, atomic writes and round-trip exact SHA verification", "CI automatically materializes app/FlippChill_Kalkulator.html from repository payload before Static application checks", "Static application checks pass after payload persistence", "BEST56 audit naming policy remains unchanged", "main is not modified"],
+      "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "CRM sync current-state contract", "BEST56 executable financial scenarios", "AI sync dispatch protocol", "AI sync handoff freshness", "deterministic BEST56 artifact packager", "canonical materializer contract + canonical part-set validation", "PRIMARY P0-7A one-shot helper", "CI canonical auto-materialization ordering", "Static application checks"],
+      "runtime_evidence": {"stager": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "materializer_contract": "PASS_WORKFLOW_535_NO_PAYLOAD_PRESENT", "one_shot_helper_contract": "PASS_WORKFLOW_535", "repository_source_payload": "PENDING_BINARY_SAFE_REPO_WRITE", "runtime_git_transport": "REQUIRES_LOCAL_GIT_PUSH_ACCESS", "crm_sync_current_state_contract": "PASS_WORKFLOW_535", "handoff_freshness": "PASS_WORKFLOW_535", "latest_ci": "WORKFLOW_535_GATES_4_24_PASS_STATIC_APPLICATION_CHECKS_FAIL_ONLY"},
       "work_order": "On a local repo with GitHub push access run exactly: python scripts/primary_p0_7a_one_shot.py --auto --commit --push. Do not reserialize payload through chat or connector text.",
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null}
@@ -28,9 +28,9 @@
       "title": "Import and verify frozen historical BEST40",
       "status": "BLOCKED",
       "owner": "PRIMARY",
-      "scope": ["scripts/artifact_preflight.py","versions/FlippChill_Kalkulator_BEST40.html","tests/check_release_baseline.py",".github/workflows/quality.yml"],
-      "acceptance": ["exact SHA-256 c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708 only","if unavailable remain BLOCKED","BEST40 checksum gate passes","main is not modified"],
-      "required_checks": ["artifact discovery preflight safety","BEST40 checksum","frozen stable version"],
+      "scope": ["scripts/artifact_preflight.py", "versions/FlippChill_Kalkulator_BEST40.html", "tests/check_release_baseline.py", ".github/workflows/quality.yml"],
+      "acceptance": ["exact SHA-256 c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708 only", "if unavailable remain BLOCKED", "BEST40 checksum gate passes", "main is not modified"],
+      "required_checks": ["artifact discovery preflight safety", "BEST40 checksum", "frozen stable version"],
       "blocked_by": ["EXACT_BEST40_LOCAL_ARTIFACT"],
       "lock": {"owner": null, "claimed_at": null}
     },
@@ -41,10 +41,10 @@
       "title": "Run real schema 11->12 localStorage migration against canonical app",
       "status": "BLOCKED",
       "owner": "SECOND_AUDIT",
-      "scope": ["localStorage migration","paymentParts","transaction dates","status derivation","business field preservation"],
-      "acceptance": ["id preserved","startDate preserved","preliminaryDate preserved","finalDate preserved","maxDealDate preserved","paymentParts preserved","property/client/agent/commission/source/settlement/notes preserved","status derived consistently from dates"],
-      "required_checks": ["schema 11->12 fixture contract including representative business fields","runtime localStorage migration"],
-      "runtime_evidence": {"expanded_fixture_contract":"PASS_WORKFLOW_531","tested_commit":"c7541a5fc26324ebe5c8feca9363cf4a9574514c","runtime_localstorage":"PENDING_P0_7A"},
+      "scope": ["localStorage migration", "paymentParts", "transaction dates", "status derivation", "business field preservation"],
+      "acceptance": ["id preserved", "startDate preserved", "preliminaryDate preserved", "finalDate preserved", "maxDealDate preserved", "paymentParts preserved", "property/client/agent/commission/source/settlement/notes preserved", "status derived consistently from dates"],
+      "required_checks": ["schema 11->12 fixture contract including representative business fields", "runtime localStorage migration"],
+      "runtime_evidence": {"expanded_fixture_contract": "PASS_WORKFLOW_535", "tested_commit": "91f78e415d8f616b9e92c69353e7fba6261f062a", "runtime_localstorage": "PENDING_P0_7A"},
       "blocked_by": ["P0-7A-CANONICAL-APP"],
       "lock": {"owner": null, "claimed_at": null}
     },
@@ -55,10 +55,10 @@
       "title": "Verify full local dispatcher RUN_FIX cycle with integrated runtime guard",
       "status": "BLOCKED",
       "owner": "PRIMARY",
-      "scope": ["OPENCODE.md","AI_SYNC/PROTOCOL.md","scripts/agent_dispatch.py","scripts/handoff_runtime_guard.py","AI_SYNC/TRIGGER.json","AI_SYNC/BOT_INBOX.md","local OpenCode/bot command"],
-      "acceptance": ["watcher detects RUN_FIX+READY","runtime handoff guard before subprocess","stale/mismatched handoff blocks dispatch","mutex/dependency/claim/failure recovery contracts hold","configured local bot command runs","result returns to queue/audit handoff without touching main"],
-      "required_checks": ["AI sync dispatch protocol","AI sync handoff freshness","runtime handoff guard contract","dispatcher runtime guard integration","dispatcher claim/failure/mutex/dependency contracts","local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
-      "runtime_evidence": {"opencode_entrypoint_read_order":"PASS_WORKFLOW_531"},
+      "scope": ["OPENCODE.md", "AI_SYNC/PROTOCOL.md", "scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
+      "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard before subprocess", "stale/mismatched handoff blocks dispatch", "mutex/dependency/claim/failure recovery contracts hold", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
+      "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim/failure/mutex/dependency contracts", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
+      "runtime_evidence": {"opencode_entrypoint_read_order": "PASS_WORKFLOW_535"},
       "blocked_by": ["LOCAL_FLIPPCHILL_BOT_COMMAND"],
       "lock": {"owner": null, "claimed_at": null}
     },
@@ -68,9 +68,9 @@
       "title": "Responsive and interaction audit for Baza mieszkań",
       "status": "BLOCKED",
       "owner": "THIRD_UI",
-      "scope": ["Baza mieszkań","mobile","responsive","accessibility","visual regression"],
-      "acceptance": ["no critical overflow","status/payment controls remain usable","desktop layout preserved","keyboard/focus issues documented"],
-      "required_checks": ["390px","768px","1366x768","1440x900"],
+      "scope": ["Baza mieszkań", "mobile", "responsive", "accessibility", "visual regression"],
+      "acceptance": ["no critical overflow", "status/payment controls remain usable", "desktop layout preserved", "keyboard/focus issues documented"],
+      "required_checks": ["390px", "768px", "1366x768", "1440x900"],
       "blocked_by": ["P0-7A-CANONICAL-APP"],
       "lock": {"owner": null, "claimed_at": null}
     },
@@ -86,7 +86,7 @@
       "required_checks": ["Verify BEST56 executable financial scenarios"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow":531,"gate":"PASS"}
+      "result": {"workflow": 535, "gate": "PASS"}
     },
     {
       "id": "P1-16-CRM-SYNC-GUARD",
@@ -95,12 +95,12 @@
       "title": "Guard CRM_SYNC current-state semantics against Source of Truth drift",
       "status": "DONE",
       "owner": "SECOND_AUDIT",
-      "scope": ["sync/CRM_SYNC.md","tests/check_crm_sync_current_state.py"],
+      "scope": ["sync/CRM_SYNC.md", "tests/check_crm_sync_current_state.py"],
       "acceptance": ["current state guarded"],
       "required_checks": ["Verify CRM sync current-state contract"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow":531,"gate":"PASS"}
+      "result": {"workflow": 535, "gate": "PASS"}
     },
     {
       "id": "P1-17-SEARCH-BONUS-GUARD",
@@ -114,7 +114,7 @@
       "required_checks": ["Verify BEST56 executable financial scenarios"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow":531,"gate":"PASS"}
+      "result": {"workflow": 535, "gate": "PASS"}
     },
     {
       "id": "P2-15-FINANCIAL-BACKLOG-SYNC",
@@ -128,7 +128,7 @@
       "required_checks": ["Verify BEST56 executable financial scenarios"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow":531,"gate":"PASS"}
+      "result": {"workflow": 535, "gate": "PASS"}
     }
   ]
 }
