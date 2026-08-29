@@ -4,20 +4,20 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `83`
+- Iteracja: `84`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Workflow #545 jest zakończonym dowodem dla develop `66b691121d6625a523650e1373ac65ac0271c65c` i potwierdza ten sam stan blockerów co iteracja 82.
+Naprawiono niespójność handoffu: poprzedni raport nadal wskazywał workflow #545 / commit `66b691121d6625a523650e1373ac65ac0271c65c` oraz CI pending, mimo że `develop` osiągnął `80f86185ddce2779d7e4cf3a3804058eef5fdd1b` i workflow #549 zakończył się failure.
 
-Iteracja 83 odświeża dowody audytu i dispatchu do najnowszego zakończonego CI. Nie zmieniono logiki aplikacji, danych, finansów, UX ani routingu blockerów.
+Iteracja 84 synchronizuje wyłącznie dowody audytu i dispatchu. Nie zmieniono aplikacji, danych, finansów, UX, reguł biznesowych ani routingu blockerów.
 
 ## Testy / CI
 
-Workflow #545:
+Workflow #549 dla `80f86185ddce2779d7e4cf3a3804058eef5fdd1b`:
 - gate'y przed aplikacją = PASS;
 - BEST56 manifest / Source of Truth / CRM sync = PASS;
 - finanse = PASS;
@@ -27,7 +27,7 @@ Workflow #545:
 - `Static application checks` = FAIL przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
 - BEST40 = SKIPPED downstream.
 
-CI dla commitów handoffu iteracji 83 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu.
+CI commitów handoffu iteracji 84 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu.
 
 ## P0 / P1
 
@@ -53,6 +53,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 83`
+- `source_iteration = 84`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
