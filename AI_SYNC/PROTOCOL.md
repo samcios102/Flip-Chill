@@ -28,6 +28,37 @@ Repository state is authoritative over conversational memory.
 Automation baseline remains `BEST56 BAZA MIESZKAŃ`.
 Automatic audit artifacts use `BEST56 BAZA MIESZKAŃ AUDYT` and NEVER increment the BEST number.
 
+## Human report format — persistent conversation contract
+
+User-facing reports in this ChatGPT conversation and `AI_SYNC/LATEST_AUDIT.md` MUST be optimized for fast scanning and understanding. This format is persistent until the user explicitly changes it; any later explicit user instruction updates this contract.
+
+Default full-cycle report:
+
+1. Header: `BEST56 BAZA MIESZKAŃ AUDYT — ITERACJA <N>`.
+2. One-line status banner using one of: `🟢 GOTOWE`, `🟡 W TOKU`, `🔴 BLOKER`.
+3. `CO SIĘ ZMIENIŁO` — only new facts from this cycle, plain Polish, maximum 3 concise bullets.
+4. `CO TO ZNACZY` — one short explanation of practical impact on CRM/Baza mieszkań.
+5. `TESTY / CI` — compact PASS/FAIL/WAITING counts or the smallest useful checklist; clearly identify the failing gate and reason. Never claim PASS without evidence.
+6. `NASTĘPNY RUCH` — visually prominent task, target agent and trigger status.
+7. Footer metadata — commit, PR and branch on one compact line.
+
+Default delta report:
+
+- Show ONLY changed sections since the immediately previous report.
+- If only CI changed, show only `TESTY / CI` plus any consequence for `NASTĘPNY RUCH`.
+- If nothing material changed, output exactly `BRAK NOWYCH ZMIAN`.
+- Use `SOURCE-OF-TRUTH UPDATE REQUIRED` only when a shared rule or blocker state truly changed.
+
+Readability rules:
+
+- Polish user-facing language; explain machine identifiers in human terms on first relevant occurrence.
+- Prefer short sections, whitespace, bold key state, and compact symbols/status markers over dense prose.
+- Do not repeat unchanged blocker descriptions, business decisions, queue state or historical test detail.
+- Surface the practical consequence before implementation detail.
+- Preserve exact task IDs, commit SHAs, workflow IDs, branch names and trigger values.
+- Keep machine-readable truth in `LATEST_AUDIT.json`, `BOT_QUEUE.json`, `TRIGGER.json`; the Markdown/user report is the human layer.
+- The report format itself is part of repository protocol so future agents/bots can reproduce it consistently.
+
 ## Queue lifecycle
 
 Task states:
