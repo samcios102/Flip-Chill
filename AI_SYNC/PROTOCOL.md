@@ -2,9 +2,50 @@
 
 `AI_SYNC/` is the shared mailbox for PRIMARY, SECOND_AUDIT, THIRD_UI, ChatGPT automations, OpenCode and the local watcher/supervisor.
 
-## Read order before any work
+## MANDATORY STEP 0 — VERSION + MISSION DISCOVERY
 
-The canonical order is defined by `sync/CRM_SOURCE_OF_TRUTH.json -> sync_contract.required_read_order` and MUST be followed exactly:
+Before reading the normal project queue and before doing ANY implementation/audit fix, every cycle must first determine the highest verified standard BEST and the newest mission state from all sources that are actually available in the runtime.
+
+Required discovery order:
+
+1. live GitHub: branches, recent commits, release/source-of-truth files, CHANGELOG, release manifests and repository tree;
+2. current conversation attachments and ChatGPT Library artifacts when available;
+3. local/runtime artifact roots when the executing agent has access;
+4. open P0/P1 issues and newest mission/handoff documents.
+
+For every candidate version record:
+
+- filename,
+- internal `<title>` / version marker,
+- standard BEST number,
+- whether it is STANDARD / AUDYT / TEST / BACKUP / CRM_AUTO,
+- source location,
+- byte size when available,
+- SHA-256 when bytes are available,
+- parent/version lineage when available.
+
+Then publish four separate values and NEVER silently collapse them:
+
+- `HIGHEST_VERIFIED_STANDARD_BEST` — highest fully identified standard artifact found;
+- `REPO_RELEASE_TARGET` — what current repo Source of Truth says;
+- `STABLE_MAIN_BASE` — stable main/release baseline;
+- `AUDIT_BASE` — version the current audit is actually allowed to operate on.
+
+If these disagree, mark `VERSION_RECONCILIATION_REQUIRED`, stop implementation on the older base, open/update a blocker issue, and reconcile before continuing feature/fix work. Never choose an older version merely because Source of Truth is stale.
+
+Current discovery evidence as of 2026-08-29:
+
+- repo `README.md` describes BEST40 as stable start;
+- repo `CHANGELOG.md` contains standard entries through BEST49;
+- `sync/CRM_SOURCE_OF_TRUTH.json` currently says BEST56;
+- ChatGPT Library contains `FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN(1).html` with internal title `BEST73 BAZA MIESZKAŃ`; materialized bytes = 986881 and SHA-256 = `492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4`;
+- issue #19 tracks reconciliation and therefore BEST56 must not be treated as automatically authoritative highest version until reconciliation is completed.
+
+Mission discovery must also identify the newest active mission/task state, including current routing, blockers, unfinished work, and latest user instruction. The newest explicit user instruction overrides older mission text and must be persisted into this protocol / Source of Truth as appropriate.
+
+## Read order before normal work
+
+After STEP 0, follow the canonical repository order defined by `sync/CRM_SOURCE_OF_TRUTH.json -> sync_contract.required_read_order`:
 
 1. `sync/CRM_SOURCE_OF_TRUTH.json`
 2. `AI_SYNC/PROTOCOL.md`
@@ -15,7 +56,7 @@ The canonical order is defined by `sync/CRM_SOURCE_OF_TRUTH.json -> sync_contrac
 7. `BACKLOG.md`
 8. relevant open GitHub P0/P1 issues and current CI state
 
-Repository state is authoritative over conversational memory.
+Repository state is authoritative only after checking whether its version metadata is stale versus a newer verified artifact found in STEP 0.
 
 ## Roles
 
@@ -25,8 +66,14 @@ Repository state is authoritative over conversational memory.
 
 ## Audit output naming
 
-Automation baseline remains `BEST56 BAZA MIESZKAŃ`.
-Automatic audit artifacts use `BEST56 BAZA MIESZKAŃ AUDYT` and NEVER increment the BEST number.
+Audit output is always tied to the actual `AUDIT_BASE` discovered in STEP 0.
+
+Examples:
+- if `AUDIT_BASE = BEST73 BAZA MIESZKAŃ`, audit output = `BEST73 BAZA MIESZKAŃ AUDYT`;
+- an audit/test/report alone NEVER increments the standard BEST number;
+- only a real approved product change may create the next standard BEST.
+
+Do not hardcode BEST56, BEST57 or any other number before discovery.
 
 ## Human report format — persistent conversation contract
 
@@ -34,18 +81,20 @@ User-facing reports in this ChatGPT conversation and `AI_SYNC/LATEST_AUDIT.md` M
 
 Default full-cycle report:
 
-1. Header: `BEST56 BAZA MIESZKAŃ AUDYT — ITERACJA <N>`.
+1. Header: `<AUDIT_BASE> AUDYT — ITERACJA <N>`.
 2. One-line status banner using one of: `🟢 GOTOWE`, `🟡 W TOKU`, `🔴 BLOKER`.
-3. `CO SIĘ ZMIENIŁO` — only new facts from this cycle, plain Polish, maximum 3 concise bullets.
-4. `CO TO ZNACZY` — one short explanation of practical impact on CRM/Baza mieszkań.
-5. `TESTY / CI` — compact PASS/FAIL/WAITING counts or the smallest useful checklist; clearly identify the failing gate and reason. Never claim PASS without evidence.
-6. `NASTĘPNY RUCH` — visually prominent task, target agent and trigger status.
-7. Footer metadata — commit, PR and branch on one compact line.
+3. `WERSJA / MISJA` — `HIGHEST_VERIFIED_STANDARD_BEST`, `AUDIT_BASE`, source and mission status when relevant.
+4. `CO SIĘ ZMIENIŁO` — only new facts from this cycle, plain Polish, maximum 3 concise bullets.
+5. `CO TO ZNACZY` — one short explanation of practical impact on CRM/Baza mieszkań.
+6. `TESTY / CI` — compact PASS/FAIL/WAITING counts or the smallest useful checklist; clearly identify the failing gate and reason. Never claim PASS without evidence.
+7. `NASTĘPNY RUCH` — visually prominent task, target agent and trigger status.
+8. Footer metadata — commit, PR and branch on one compact line.
 
 Default delta report:
 
 - Show ONLY changed sections since the immediately previous report.
 - If only CI changed, show only `TESTY / CI` plus any consequence for `NASTĘPNY RUCH`.
+- If version/mission discovery changed, always show `WERSJA / MISJA`.
 - If nothing material changed, output exactly `BRAK NOWYCH ZMIAN`.
 - Use `SOURCE-OF-TRUTH UPDATE REQUIRED` only when a shared rule or blocker state truly changed.
 
@@ -77,36 +126,37 @@ The automation must keep the project moving whenever safe work exists. This is a
 
 After EVERY audit iteration and after EVERY bot completion/failure/handoff:
 
-1. Re-read `AI_SYNC/BOT_QUEUE.json`, open P0/P1 issues and current CI.
-2. Detect:
+1. Run VERSION + MISSION DISCOVERY again when new artifacts/mission information may have appeared.
+2. Re-read `AI_SYNC/BOT_QUEUE.json`, open P0/P1 issues and current CI.
+3. Detect:
    - newly found errors/regressions,
    - unfinished work,
    - READY tasks,
    - tasks that became unblocked because dependencies reached DONE/SUPERSEDED,
    - independent work that can continue even if another task is BLOCKED.
-3. Convert each actionable finding into a queue task if it does not already exist; preserve one canonical task ID per problem.
-4. Assign by domain:
+4. Convert each actionable finding into a queue task if it does not already exist; preserve one canonical task ID per problem.
+5. Assign by domain:
    - `PRIMARY` → implementation, integration, canonical app/build/repo changes;
    - `SECOND_AUDIT` → data integrity, finance, migration, regression verification;
    - `THIRD_UI` → UI/UX, responsive, accessibility, visual regression.
-5. Never leave an agent idle if that agent has a safe, dependency-resolved READY task within its role.
-6. If the current highest-priority task is BLOCKED, scan for the next independent safe READY task instead of stopping the whole system.
-7. Different agents may work in parallel only when scopes are independent and locks do not overlap. Never allow two agents to modify the same locked scope/task.
-8. After a task reaches DONE, TESTING or BLOCKED, immediately recompute the queue and publish the next valid dispatch action.
-9. Continue the loop `AUDYT → QUEUE → DISPATCH → BOT → TEST → HANDOFF → NEXT TASK` for as long as safe actionable work exists.
-10. Only enter `IDLE` when there is genuinely no dependency-resolved safe READY task. A later audit/queue change must wake the system again.
+6. Never leave an agent idle if that agent has a safe, dependency-resolved READY task within its role.
+7. If the current highest-priority task is BLOCKED, scan for the next independent safe READY task instead of stopping the whole system.
+8. Different agents may work in parallel only when scopes are independent and locks do not overlap. Never allow two agents to modify the same locked scope/task.
+9. After a task reaches DONE, TESTING or BLOCKED, immediately recompute the queue and publish the next valid dispatch action.
+10. Continue the loop `DISCOVERY → AUDYT → QUEUE → DISPATCH → BOT → TEST → HANDOFF → NEXT TASK` for as long as safe actionable work exists.
+11. Only enter `IDLE` when there is genuinely no dependency-resolved safe READY task. A later audit/queue/version change must wake the system again.
 
 Continuous mode safety:
 
-- priority order remains: data/financial integrity > regressions > UX/performance > new features;
+- priority order remains: version/source reconciliation + data/financial integrity > regressions > UX/performance > new features;
 - `main` is never modified automatically;
 - normal autonomous work stays on `develop` / feature / fix / audit branches;
 - red CI blocks stable promotion, but does NOT block unrelated safe audit/fix work on independent scopes;
 - a bot may not self-reassign another agent's active locked task;
 - failed subprocesses release claims according to failure-recovery rules, then the scheduler must look for another independent READY task;
-- automatic iterations and automatic bot work NEVER increment BEST; output remains `BEST56 BAZA MIESZKAŃ AUDYT`.
+- automatic audits never increment BEST; their AUDYT number follows the reconciled `AUDIT_BASE`.
 
-This policy is tracked by GitHub issue #18 and is part of the stable conversation/repository instruction set.
+Continuous bot policy is tracked by issue #18. Version/source reconciliation is tracked by issue #19.
 
 ## Trigger lifecycle
 
@@ -137,14 +187,14 @@ A report can therefore create work by publishing a READY queue item and setting 
 - Normal work uses `develop` or a feature branch based on develop.
 - Never merge to main while CI is red.
 - Never mark a task DONE without deterministic verification/test evidence.
-- P0 integrity/financial/data-loss issues outrank UI and feature work.
-- Automation never creates BEST57; it stays BEST56 + AUDYT.
+- P0 version/source reconciliation, integrity, financial and data-loss issues outrank UI and feature work.
+- Automation never invents the next BEST from an audit cycle.
 
 ## Handoff contract
 
 Every completed bot cycle updates:
 
-- `AI_SYNC/LATEST_AUDIT.json` — current machine state and evidence,
+- `AI_SYNC/LATEST_AUDIT.json` — current machine state and evidence, including discovered version/mission metadata,
 - `AI_SYNC/LATEST_AUDIT.md` — compact human-readable handoff,
 - `AI_SYNC/BOT_QUEUE.json` — task status/owner/result,
 - `AI_SYNC/TRIGGER.json` — next action,
