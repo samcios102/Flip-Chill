@@ -1,33 +1,39 @@
 # BEST73 BAZA MIESZKAŃ AUDYT — ITERACJA 92
 
-## 🟡 W TOKU — WERSJA WYRÓWNANA, APLIKACJA JESZCZE NIE
+## 🟡 W TOKU — WERSJA JUŻ WYRÓWNANA
 
 ### WERSJA / MISJA
 
 - **Najwyższy zweryfikowany standard:** `BEST73 BAZA MIESZKAŃ`
 - **Repo release target:** `BEST73 BAZA MIESZKAŃ`
 - **Baza audytu:** `BEST73 BAZA MIESZKAŃ`
-- **SHA-256:** `492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4`
+- **Exact SHA-256:** `492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4`
 - **BEST56:** zachowany jako historia; nie jest już bieżącym targetem.
 
 ## CO SIĘ ZMIENIŁO
 
-- Rozjazd wersji został rozstrzygnięty zgodnie z najnowszą decyzją użytkownika: bieżący projekt jest wyrównany do **BEST73**.
-- Powstało P0 **#20**: import exact BEST73 + uogólnienie starego BEST56-specific pipeline na `current standard`.
-- Kolejka i trigger nie wysyłają już PRIMARY do starego `P0-7A-CANONICAL-APP`; następny realny krok to `P0-20-BEST73-CANONICAL-APP`.
+- Rozjazd BEST56 ↔ BEST73 został usunięty w Source of Truth, handoffie, kolejce, triggerze, BACKLOG i CI; issue #19 jest zamknięte jako completed.
+- CI nie zatrzymuje się już na błędnej konfiguracji wersji ani na starym BEST56 pipeline.
+- Jedyny realny bieżący P0 to teraz **#20 — canonical exact BEST73 + current-standard pipeline**.
 
 ## CO TO ZNACZY
 
-Metadane, misja i routing są już ustawione na właściwą wersję. Nadal nie wolno udawać, że aplikacja jest gotowa: exact BEST73 istnieje i jest zweryfikowany, ale musi jeszcze zostać bezpiecznie zmaterializowany w repo jako canonical app. Dopiero wtedy uruchamiamy realne testy BEST73 danych, finansów i UI.
+Projekt wie już jednoznacznie, że pracuje na BEST73. Nie udajemy jednak, że sama aplikacja została już podmieniona: exact BEST73 musi jeszcze zostać bezpiecznie zapisany/materializowany w repo. Dopiero po tym SECOND_AUDIT może wykonać runtime danych/finansów, a THIRD_UI realny audyt UI.
 
 ## TESTY / CI
 
-- Poprzedni workflow **#584**: **FAIL** na starej niespójności Source of Truth.
-- Current-standard manifest BEST73: **DODANY / CI PENDING**.
-- Source of Truth + AI_SYNC gates: **ZAKTUALIZOWANE / CI PENDING**.
-- Static app / finanse / runtime migracji / UI dla BEST73: **BLOCKED** do canonicalizacji exact BEST73.
+Workflow **#600** dla `6210a7ddae1303fd5138d0503c12bb46b1518720`:
 
-Pełnego PASS nie deklarujemy bez zakończonego CI i canonical BEST73.
+- historyczny BEST56 manifest — **PASS**
+- current Source of Truth — **PASS**
+- CRM_SYNC — **PASS**
+- core finance scenarios — **PASS**
+- schema 11→12 preservation contract — **PASS**
+- AI_SYNC / queue / freshness / runtime guards / dispatcher / preflight — **PASS**
+- **current canonical BEST73 exact SHA — FAIL**
+- Static app oraz BEST40 — **SKIPPED downstream**
+
+To jest prawidłowy obecny blocker: CI doszło dokładnie do brakującego canonical BEST73. Pełnego PASS nie deklarujemy.
 
 ## ▶ NASTĘPNY RUCH
 
@@ -35,6 +41,6 @@ Pełnego PASS nie deklarujemy bez zakończonego CI i canonical BEST73.
 **TARGET AGENT:** `PRIMARY`  
 **TRIGGER:** `RUN_FIX → READY`
 
-Po DONE #20 kolejka automatycznie odblokowuje SECOND_AUDIT dla migracji/finansów oraz THIRD_UI dla audytu responsywności.
+Po DONE #20 automatycznie odblokuj SECOND_AUDIT (`P0-11-RUNTIME-MIGRATION`, `P1-73-FINANCIAL-REGRESSION`) oraz THIRD_UI (`P1-UI-RESPONSIVE-AUDIT`).
 
-`develop` · iteracja 92 · `main` bez zmian
+`develop` · iteration 92 · tested `6210a7dd…` · `main` bez zmian
