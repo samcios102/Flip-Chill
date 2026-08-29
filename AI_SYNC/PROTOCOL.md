@@ -71,6 +71,43 @@ Alternative terminal states:
 
 Each task has exactly one `owner` while CLAIMED/WORKING/TESTING. `lock.owner` + `lock.claimed_at` prevent two bots from modifying the same scope simultaneously.
 
+## Continuous work / automatic bot reactivation — persistent user contract
+
+The automation must keep the project moving whenever safe work exists. This is a persistent rule until the user explicitly changes it.
+
+After EVERY audit iteration and after EVERY bot completion/failure/handoff:
+
+1. Re-read `AI_SYNC/BOT_QUEUE.json`, open P0/P1 issues and current CI.
+2. Detect:
+   - newly found errors/regressions,
+   - unfinished work,
+   - READY tasks,
+   - tasks that became unblocked because dependencies reached DONE/SUPERSEDED,
+   - independent work that can continue even if another task is BLOCKED.
+3. Convert each actionable finding into a queue task if it does not already exist; preserve one canonical task ID per problem.
+4. Assign by domain:
+   - `PRIMARY` → implementation, integration, canonical app/build/repo changes;
+   - `SECOND_AUDIT` → data integrity, finance, migration, regression verification;
+   - `THIRD_UI` → UI/UX, responsive, accessibility, visual regression.
+5. Never leave an agent idle if that agent has a safe, dependency-resolved READY task within its role.
+6. If the current highest-priority task is BLOCKED, scan for the next independent safe READY task instead of stopping the whole system.
+7. Different agents may work in parallel only when scopes are independent and locks do not overlap. Never allow two agents to modify the same locked scope/task.
+8. After a task reaches DONE, TESTING or BLOCKED, immediately recompute the queue and publish the next valid dispatch action.
+9. Continue the loop `AUDYT → QUEUE → DISPATCH → BOT → TEST → HANDOFF → NEXT TASK` for as long as safe actionable work exists.
+10. Only enter `IDLE` when there is genuinely no dependency-resolved safe READY task. A later audit/queue change must wake the system again.
+
+Continuous mode safety:
+
+- priority order remains: data/financial integrity > regressions > UX/performance > new features;
+- `main` is never modified automatically;
+- normal autonomous work stays on `develop` / feature / fix / audit branches;
+- red CI blocks stable promotion, but does NOT block unrelated safe audit/fix work on independent scopes;
+- a bot may not self-reassign another agent's active locked task;
+- failed subprocesses release claims according to failure-recovery rules, then the scheduler must look for another independent READY task;
+- automatic iterations and automatic bot work NEVER increment BEST; output remains `BEST56 BAZA MIESZKAŃ AUDYT`.
+
+This policy is tracked by GitHub issue #18 and is part of the stable conversation/repository instruction set.
+
 ## Trigger lifecycle
 
 `AI_SYNC/TRIGGER.json` is the machine dispatch signal.
