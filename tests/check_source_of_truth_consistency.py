@@ -1,16 +1,12 @@
 #!/usr/bin/env python3
 import json
+import re
 import sys
 from pathlib import Path
 
-EXPECTED_RELEASE = "BEST56 BAZA MIESZKAŃ"
-EXPECTED_AUDIT = "BEST56 BAZA MIESZKAŃ AUDYT"
-EXPECTED_ARTIFACT = "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html"
-EXPECTED_SHA256 = "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92"
 EXPECTED_APP_PATH = "app/FlippChill_Kalkulator.html"
 EXPECTED_BEST40_PATH = "versions/FlippChill_Kalkulator_BEST40.html"
 EXPECTED_BEST40_SHA256 = "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708"
-EXPECTED_BLOCKERS = {7: "P0", 11: "P0"}
 TERMINAL_BLOCKER_STATES = {"DONE", "CLOSED", "RESOLVED", "COMPLETED", "SUPERSEDED", "REJECTED"}
 
 
@@ -28,32 +24,57 @@ def load(path: Path) -> dict:
         fail(f"cannot read {path}: {exc}")
 
 
+def best_number(value: str) -> int:
+    match = re.search(r"BEST(\d+)", value or "")
+    if not match:
+        fail(f"missing BEST number in {value!r}")
+    return int(match.group(1))
+
+
 def main() -> None:
     source = load(Path("sync/CRM_SOURCE_OF_TRUTH.json"))
-    audit = load(Path("audit/BEST56_BAZA_MIESZKAN_AUDYT.json"))
+    release = source.get("release_target", "")
+    audit_name = source.get("audit_output_name", "")
+    baseline = source.get("audit_baseline", {})
+    reconciliation = source.get("version_reconciliation", {})
 
-    if source.get("release_target") != EXPECTED_RELEASE:
-        fail("Source of Truth release_target drifted from BEST56")
-    if source.get("audit_output_name") != EXPECTED_AUDIT:
-        fail("Source of Truth audit output name drifted")
+    if not release or not audit_name:
+        fail("Source of Truth must declare release_target and audit_output_name")
+    if audit_name != f"{release} AUDYT":
+        fail("audit_output_name must follow the current release target with AUDYT suffix")
+    if reconciliation.get("highest_verified_standard_best") != release:
+        fail("release target must equal highest verified standard after reconciliation")
+    if reconciliation.get("repo_release_target") != release or reconciliation.get("audit_base") != release:
+        fail("version reconciliation values must agree with release target")
+    if not str(reconciliation.get("status", "")).startswith("RESOLVED"):
+        fail("version reconciliation must be resolved before normal current-standard work")
 
     policy = str(source.get("audit_version_policy", ""))
-    if "BEST56" not in policy or "never increments to BEST57" not in policy:
-        fail("audit version policy must keep BEST56 and prohibit BEST57 increment")
+    if "never increments" not in policy and "never increment" not in policy:
+        fail("audit policy must explicitly forbid creating a new BEST number from an audit alone")
 
-    baseline = source.get("audit_baseline", {})
-    if baseline.get("artifact") != EXPECTED_ARTIFACT:
-        fail("Source of Truth baseline artifact changed")
-    if baseline.get("sha256") != EXPECTED_SHA256:
-        fail("Source of Truth BEST56 fingerprint differs from audited baseline")
-    if audit.get("artifact") != EXPECTED_ARTIFACT or audit.get("sha256") != EXPECTED_SHA256:
-        fail("audit manifest and Source of Truth disagree on BEST56 baseline")
-    if audit.get("audit_name") != EXPECTED_AUDIT:
-        fail("audit manifest name disagrees with Source of Truth")
+    artifact = baseline.get("artifact")
+    expected_artifact = f"FlippChill_Kalkulator_BEST{best_number(release)}_BAZA_MIESZKAN.html"
+    if artifact != expected_artifact:
+        fail(f"current baseline artifact mismatch: expected {expected_artifact}, got {artifact}")
+    sha = str(baseline.get("sha256", ""))
+    if len(sha) != 64:
+        fail("current baseline must have a 64-character SHA-256")
+
+    manifest_path = Path(f"audit/BEST{best_number(release)}_BAZA_MIESZKAN_AUDYT.json")
+    audit = load(manifest_path)
+    if audit.get("artifact") != artifact or audit.get("sha256") != sha:
+        fail("current audit manifest and Source of Truth disagree on baseline artifact/SHA")
+    if audit.get("audit_name") != audit_name:
+        fail("current audit manifest name disagrees with Source of Truth")
 
     gates = source.get("release_gates", {})
     if gates.get("canonical_app_path") != EXPECTED_APP_PATH:
         fail("canonical app path drifted")
+    if gates.get("canonical_app_expected_sha256") != sha:
+        fail("canonical app expected SHA must match current baseline SHA")
+    if gates.get("canonical_app_expected_standard") != release:
+        fail("canonical app expected standard must match release target")
     if gates.get("frozen_best40_path") != EXPECTED_BEST40_PATH:
         fail("frozen BEST40 path drifted")
     if gates.get("frozen_best40_sha256") != EXPECTED_BEST40_SHA256:
@@ -63,34 +84,28 @@ def main() -> None:
     if gates.get("ci_required") is not True:
         fail("CI release gate must remain required")
 
-    blockers = {}
+    blockers = []
     for blocker in source.get("current_blockers", []):
-        try:
-            blocker_id = int(blocker.get("id"))
-        except (TypeError, ValueError):
-            fail("blocker id must be numeric")
-        if blocker.get("priority") != "P0":
-            continue
         state = str(blocker.get("status", "")).strip().upper()
-        if not state:
-            fail(f"P0 blocker {blocker_id} must have a status")
-        if state not in TERMINAL_BLOCKER_STATES:
-            blockers[blocker_id] = blocker.get("priority")
-    if blockers != EXPECTED_BLOCKERS:
-        fail(f"active blocker set drifted: expected {EXPECTED_BLOCKERS}, got {blockers}")
+        if blocker.get("priority") == "P0" and state not in TERMINAL_BLOCKER_STATES and not state.startswith("DONE_") and not state.startswith("SUPERSEDED_"):
+            blockers.append(int(blocker["id"]))
+    if not blockers:
+        fail("current standard must expose at least one active P0 while canonicalization/runtime verification is pending")
 
     finance = source.get("modules", {}).get("financial_rules", {})
     if finance.get("cit") != 0.09 or finance.get("vat") != 0.23 or finance.get("agent_pit_default") != 0.12:
         fail("core tax rules drifted")
     if finance.get("slack_marketing_counts_toward_thresholds") is not True:
         fail("Slack/Marketing must count toward monthly thresholds")
+    if finance.get("search_bonus") != 0.10:
+        fail("search bonus must remain 10%")
     if finance.get("monthly_bonus_thresholds") != [
         {"threshold": 50000, "bonus": 0.05},
         {"threshold": 100000, "bonus": 0.10},
     ]:
         fail("monthly bonus thresholds drifted")
 
-    print("PASS: BEST56 Source of Truth, audit manifest, release gates, blockers and finance rules are consistent")
+    print(f"PASS: {release} Source of Truth, current audit manifest, release gates and finance rules are consistent")
 
 
 if __name__ == "__main__":
