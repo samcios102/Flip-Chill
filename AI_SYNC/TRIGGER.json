@@ -1,14 +1,14 @@
 {
   "schema_version": 2,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-29T09:33:27+02:00",
+  "updated_at": "2026-08-29T09:42:30+02:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-20-BEST73-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
   "source_iteration": 92,
-  "reason": "Version reconciliation is resolved to BEST73. The highest safe unblocked task is importing the exact BEST73 canonical app and generalizing the old BEST56-specific pipeline to current-standard metadata.",
+  "reason": "BEST73 reconciliation is CI-confirmed. Workflow #600 passes all current-standard metadata/automation gates and fails exactly at the canonical BEST73 SHA gate, so P0-20 is the highest safe unblocked implementation task.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -22,10 +22,12 @@
     "runtime_handoff_guard": "scripts/handoff_runtime_guard.py",
     "audit_version_policy": "BEST73 BAZA MIESZKAŃ AUDYT; audit never creates BEST74 automatically",
     "version_reconciliation_issue": 19,
+    "version_reconciliation_state": "CLOSED_COMPLETED_CI_CONFIRMED",
     "canonicalization_issue": 20,
     "highest_verified_standard_best": "BEST73 BAZA MIESZKAŃ",
     "repo_release_target": "BEST73 BAZA MIESZKAŃ",
     "audit_base": "BEST73 BAZA MIESZKAŃ",
-    "expected_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4"
+    "expected_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
+    "ci_evidence": "WORKFLOW_600_PRE_CANONICAL_GATES_PASS_CANONICAL_SHA_FAIL"
   }
 }
