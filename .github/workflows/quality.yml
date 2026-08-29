@@ -17,19 +17,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Verify BEST56 Baza Mieszkań audit manifest
+      - name: Verify historical BEST56 audit manifest
         run: python tests/check_best56_audit_manifest.py audit/BEST56_BAZA_MIESZKAN_AUDYT.json
-      - name: Verify BEST56 Source of Truth consistency
+      - name: Verify current-standard Source of Truth consistency
         run: python tests/check_source_of_truth_consistency.py
       - name: Verify CRM sync current-state contract
         run: python tests/check_crm_sync_current_state.py
-      - name: Verify BEST56 executable financial scenarios
+      - name: Verify core executable financial scenarios
         run: python tests/check_financial_scenarios.py
-      - name: Verify BEST56 schema 11 to 12 migration contract
+      - name: Verify schema 11 to 12 preservation contract
         run: python tests/check_schema_11_12_contract.py
       - name: Verify AI sync dispatch protocol
         run: python tests/check_ai_sync_protocol.py
-      - name: Verify BEST56 queue dependency partition
+      - name: Verify current-standard queue dependency partition
         run: python tests/check_queue_dependency_partition.py
       - name: Verify AI sync handoff freshness
         run: python tests/check_ai_sync_freshness.py
@@ -49,22 +49,16 @@ jobs:
         run: python tests/check_agent_dispatch_dependencies.py
       - name: Verify artifact discovery preflight safety
         run: python tests/check_artifact_preflight.py
-      - name: Verify canonical app staging safety
+      - name: Verify legacy BEST56 staging safety
         run: python tests/check_stage_canonical_app.py
-      - name: Verify canonical materializer contract
+      - name: Verify legacy BEST56 materializer contract
         run: python tests/check_materialize_canonical_app.py
-      - name: Verify deterministic BEST56 artifact packager
+      - name: Verify legacy BEST56 deterministic artifact packager
         run: python tests/check_package_best56_artifact.py
-      - name: Verify PRIMARY P0-7A one-shot helper
+      - name: Verify legacy BEST56 PRIMARY one-shot helper
         run: python tests/check_primary_p0_7a_one_shot.py
-      - name: Materialize canonical BEST56 app when repository payload exists
-        shell: bash
-        run: |
-          if compgen -G 'artifacts/best56/best56.html.gz.b64.part*' > /dev/null; then
-            python scripts/materialize_canonical_app.py
-          else
-            echo 'BEST56 repository payload not present yet; canonical app remains blocked by P0-7A.'
-          fi
+      - name: Verify current-standard canonical app exact SHA
+        run: python tests/check_current_canonical.py
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
       - name: Verify frozen BEST40 checksum
