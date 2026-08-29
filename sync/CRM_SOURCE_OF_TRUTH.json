@@ -1,24 +1,41 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-29T09:12:18+02:00",
+  "updated_at": "2026-08-29T09:33:27+02:00",
   "source_branch": "develop",
-  "release_target": "BEST56 BAZA MIESZKAŃ",
-  "audit_output_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "audit_version_policy": "this automation is explicitly pinned to BEST56 BAZA MIESZKAŃ and never increments to BEST57; version discovery is reported separately and cannot silently promote the audit base",
+  "release_target": "BEST73 BAZA MIESZKAŃ",
+  "audit_output_name": "BEST73 BAZA MIESZKAŃ AUDYT",
+  "audit_version_policy": "audit follows the reconciled current standard and never increments the standard BEST number by audit alone; BEST56 remains historical and BEST74 may only appear after a real approved product change or a separately verified newer standard artifact",
   "version_reconciliation": {
-    "status": "OPEN_P0_19",
+    "status": "RESOLVED_TO_BEST73",
+    "issue": 19,
     "highest_verified_standard_best": "BEST73 BAZA MIESZKAŃ",
-    "highest_verified_source": "ChatGPT Library evidence recorded in issue #19",
+    "highest_verified_source": "ChatGPT Library: FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN(1).html",
+    "highest_verified_size_bytes": 986881,
     "highest_verified_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
-    "repo_release_target": "BEST56 BAZA MIESZKAŃ",
-    "audit_base": "BEST56 BAZA MIESZKAŃ",
-    "policy": "keep the current BEST56 audit pinned by explicit mission; reconcile global version lineage before any automatic promotion or implementation based on a different BEST"
+    "repo_release_target": "BEST73 BAZA MIESZKAŃ",
+    "audit_base": "BEST73 BAZA MIESZKAŃ",
+    "decision": "explicit user instruction on 2026-08-29 superseded the earlier BEST56 audit pin and requested alignment to the newest verified version",
+    "promotion_policy": "run VERSION + MISSION DISCOVERY before every mission; never silently promote an unverified candidate"
   },
   "audit_baseline": {
-    "artifact": "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html",
-    "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "status": "AUDITED_STATICALLY_AND_STAGER_RUNTIME_VERIFIED"
+    "artifact": "FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN.html",
+    "source_artifact_name": "FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN(1).html",
+    "sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
+    "size_bytes": 986881,
+    "status": "VERIFIED_EXTERNAL_ARTIFACT_PENDING_REPOSITORY_CANONICALIZATION"
+  },
+  "historical_baselines": {
+    "BEST56 BAZA MIESZKAŃ": {
+      "artifact": "FlippChill_Kalkulator_BEST56_BAZA_MIESZKAN.html",
+      "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+      "status": "HISTORICAL_AUDITED_BASELINE"
+    },
+    "BEST40": {
+      "artifact": "versions/FlippChill_Kalkulator_BEST40.html",
+      "sha256": "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
+      "status": "HISTORICAL_FROZEN_BASELINE_PENDING_REPO_ARTIFACT"
+    }
   },
   "modules": {
     "baza_mieszkan": {
@@ -50,59 +67,32 @@
       ],
       "slack_marketing_counts_toward_thresholds": true,
       "search_bonus": 0.10,
-      "executable_scenario_contract": {
-        "test": "tests/check_financial_scenarios.py",
-        "status": "CI_PASS_WORKFLOW_454",
-        "coverage": ["VAT gross-to-net", "CIT 9% positive profit and zero on loss", "agent PIT 12%", "search bonus 10%", "bonus boundaries 49999/50000/99999/100000/125000", "Slack/Marketing threshold contribution"]
-      }
+      "current_standard_runtime_verification": "PENDING_CANONICAL_BEST73",
+      "historical_best56_contract": "tests/check_financial_scenarios.py"
     }
   },
   "release_gates": {
     "canonical_app_path": "app/FlippChill_Kalkulator.html",
-    "canonical_app_one_shot": "scripts/primary_p0_7a_one_shot.py",
-    "canonical_app_one_shot_command": "python scripts/primary_p0_7a_one_shot.py --auto --commit --push",
-    "canonical_app_one_shot_contract_test": "tests/check_primary_p0_7a_one_shot.py",
-    "canonical_app_one_shot_status": "CI_PASS_WORKFLOW_454_LOCAL_EXECUTION_PENDING",
-    "canonical_app_stager": "scripts/stage_canonical_app.py",
-    "canonical_app_packager": "scripts/package_best56_artifact.py",
-    "canonical_app_packager_contract_test": "tests/check_package_best56_artifact.py",
-    "canonical_app_packager_status": "CI_PASS_WORKFLOW_454_LOCAL_PAYLOAD_WRITE_PENDING",
-    "canonical_app_materializer": "scripts/materialize_canonical_app.py",
-    "canonical_app_materializer_source_dir": "artifacts/best56",
-    "canonical_app_materializer_contract_test": "tests/check_materialize_canonical_app.py",
-    "canonical_app_materializer_status": "CI_PASS_WORKFLOW_454_AUTO_MATERIALIZATION_GUARDED_PAYLOAD_PENDING",
-    "canonical_app_ci_auto_materialization": true,
-    "canonical_app_ci_auto_materialization_evidence": "PASS_WORKFLOW_454",
-    "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN; non-canonical names and gaps are rejected before decode",
-    "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "canonical_app_payload_transfer": {
-      "connector_large_text_transfer": "REJECTED_AFTER_SHA_MISMATCH_WORKFLOW_321",
-      "safe_path": "run scripts/primary_p0_7a_one_shot.py --auto --commit --push in a local repo with exact BEST56 and GitHub push access",
-      "failed_transfer_commit_reverted_by": "bc918d5a43174e1f9540010be4f6620757bb69f8"
-    },
-    "canonical_app_auto_discovery": {
-      "enabled": true,
-      "exact_sha_only": true,
-      "mode": "bounded deterministic local search",
-      "artifact_roots_env": "FLIPPCHILL_ARTIFACT_ROOTS",
-      "artifact_roots_env_priority": "before cwd/downloads/desktop/onedrive",
-      "ci_status": "PASS_WORKFLOW_454"
-    },
-    "canonical_app_stager_runtime_evidence": {
-      "status": "PASS",
-      "verified_at": "2026-08-26T22:18:00+02:00",
-      "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-      "staged_target_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-      "mode": "dry-run + atomic staging to temporary target"
-    },
+    "canonical_task": "P0-20-BEST73-CANONICAL-APP",
+    "canonical_issue": 20,
+    "canonical_app_expected_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
+    "canonical_app_expected_standard": "BEST73 BAZA MIESZKAŃ",
+    "canonical_app_status": "PENDING_EXACT_BEST73_REPOSITORY_PAYLOAD_AND_PIPELINE_GENERALIZATION",
+    "pipeline_policy": "active packager/materializer/one-shot must read current standard metadata instead of hardcoding BEST56",
+    "legacy_best56_tooling": [
+      "scripts/primary_p0_7a_one_shot.py",
+      "scripts/package_best56_artifact.py",
+      "scripts/materialize_canonical_app.py",
+      "scripts/stage_canonical_app.py"
+    ],
     "frozen_best40_path": "versions/FlippChill_Kalkulator_BEST40.html",
     "frozen_best40_sha256": "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
     "artifact_preflight": "scripts/artifact_preflight.py",
     "dependency_partition": {
-      "canonical_task": "P0-7A-CANONICAL-APP",
+      "canonical_task": "P0-20-BEST73-CANONICAL-APP",
       "best40_task": "P0-7B-FROZEN-BEST40",
-      "runtime_migration_depends_only_on": "P0-7A-CANONICAL-APP",
-      "status": "CI_VERIFIED"
+      "runtime_migration_depends_only_on": "P0-20-BEST73-CANONICAL-APP",
+      "status": "RECONCILED_TO_CURRENT_STANDARD"
     },
     "duplicate_dom_ids": 0,
     "broken_aria_refs": 0,
@@ -110,18 +100,18 @@
     "ci_required": true
   },
   "current_blockers": [
-    {"id": 19, "priority": "P0", "title": "Reconcile highest BEST baseline before further automation", "status": "READY_VERSION_RECONCILIATION; CURRENT AUDIT REMAINS EXPLICITLY PINNED TO BEST56"},
-    {"id": 7, "priority": "P0", "title": "Reprodukowalny bieżący app + zweryfikowany zamrożony BEST40", "status": "ONE_SHOT_HELPER_CI_PASS_LOCAL_EXECUTION_PENDING"},
-    {"id": 11, "priority": "P0", "title": "schema 11→12 must preserve manual preliminaryDate and business data", "status": "OPEN"},
-    {"id": 12, "priority": "P1", "title": "Agent handoff + self-dispatch protocol for 3 bots", "status": "OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME"},
-    {"id": 18, "priority": "P1", "title": "Continuous multi-bot auto-continuation from audit findings", "status": "OPEN_PROTOCOL_DEFINED_RUNTIME_CONTINUATION_PENDING"}
+    {"id": 20, "priority": "P0", "title": "Import canonical BEST73 and generalize current-standard pipeline", "status": "READY"},
+    {"id": 11, "priority": "P0", "title": "schema 11→12 must preserve manual preliminaryDate and business data", "status": "BLOCKED_BY_P0_20_CANONICAL_BEST73"},
+    {"id": 7, "priority": "P0", "title": "Historical BEST56/BEST40 release-gate work", "status": "SUPERSEDED_FOR_CURRENT_STANDARD; 7B historical BEST40 remains independently blocked"},
+    {"id": 12, "priority": "P1", "title": "Agent handoff + self-dispatch protocol for 3 bots", "status": "PENDING_LOCAL_RUNTIME"},
+    {"id": 18, "priority": "P1", "title": "Continuous multi-bot auto-continuation from audit findings", "status": "PENDING_LOCAL_RUNTIME_CONTINUATION"},
+    {"id": 19, "priority": "P0", "title": "Reconcile highest BEST baseline before further automation", "status": "DONE_RECONCILED_TO_BEST73_PENDING_CI_CONFIRMATION"}
   ],
   "sync_contract": {
     "read_before_work": true,
     "update_after_change": true,
     "never_duplicate_business_rules": true,
     "required_read_order": ["sync/CRM_SOURCE_OF_TRUTH.json", "AI_SYNC/PROTOCOL.md", "AI_SYNC/LATEST_AUDIT.json", "AI_SYNC/BOT_QUEUE.json", "AI_SYNC/TRIGGER.json", "sync/CRM_SYNC.md", "BACKLOG.md"],
-    "required_read_order_ci_evidence": "PASS_WORKFLOW_577",
     "opencode_entrypoint_file": "OPENCODE.md",
     "opencode_entrypoint_read_order_guarded": true,
     "backlog_file": "BACKLOG.md",
@@ -143,10 +133,7 @@
     "queue_dependency_partition_gate": "tests/check_queue_dependency_partition.py",
     "handoff_must_not_predate_shared_state": true,
     "artifact_preflight": "scripts/artifact_preflight.py",
-    "canonical_app_one_shot": "scripts/primary_p0_7a_one_shot.py",
-    "canonical_app_stager": "scripts/stage_canonical_app.py",
-    "canonical_app_packager": "scripts/package_best56_artifact.py",
-    "canonical_app_materializer": "scripts/materialize_canonical_app.py",
+    "canonical_current_task": "P0-20-BEST73-CANONICAL-APP",
     "canonical_app_auto_discovery": true,
     "canonical_app_artifact_roots_env": "FLIPPCHILL_ARTIFACT_ROOTS",
     "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"]
