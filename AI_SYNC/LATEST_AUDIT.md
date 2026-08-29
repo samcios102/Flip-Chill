@@ -1,58 +1,45 @@
-# AUDYT BEST56 BAZA MIESZKAŃ — LATEST HANDOFF
+# BEST56 BAZA MIESZKAŃ AUDYT — ITERACJA 91
 
-## Stan
+## 🔴 BLOKER WERSJI / ŹRÓDŁA
 
-- Baseline: `BEST56 BAZA MIESZKAŃ`
-- Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `90`
-- Branch roboczy: `develop`
-- Najwyższy priorytet: `P0-7A-CANONICAL-APP`
-- Automatyczne podbijanie numeru BEST: zabronione
+Audyt pozostaje **BEST56 BAZA MIESZKAŃ AUDYT**, ale globalna linia wersji wymaga uzgodnienia przed dalszą implementacją aplikacji.
 
-## Nowa zmiana
+## WERSJA / MISJA
 
-Iteracja 90 synchronizuje handoff z zakończonym workflow #570 dla `develop = 3291c7045c0990e13ef33cea9097d148f7038cb6`.
+- **Najwyższy zweryfikowany standard:** `BEST73 BAZA MIESZKAŃ`
+- **Repo release target:** `BEST56 BAZA MIESZKAŃ`
+- **Baza tego automatu:** `BEST56 BAZA MIESZKAŃ`
+- **Zasada:** ten automat NIE tworzy BEST57 i NIE promuje samodzielnie znalezionej wyższej wersji.
 
-Nie wykryto nowej regresji aplikacji, danych, finansów ani UX. Routing blockerów pozostaje bez zmian: repo nadal nie zawiera canonical payloadu BEST56 wymaganego przez `P0-7A-CANONICAL-APP`.
+## CO SIĘ ZMIENIŁO
 
-## Testy / CI
+- P0 **#19** został włączony do wspólnej kolejki jako najwyższe READY zadanie.
+- `P0-7A-CANONICAL-APP` został bezpiecznie zatrzymany za #19, żeby PRIMARY najpierw uzgodnił lineage wersji.
+- P1 **#18** ciągłej pracy wielobotowej jest teraz jawnie reprezentowany w kolejce i zależy od pełnego lokalnego runtime dispatchera #12.
 
-Workflow #570 dla `3291c7045c0990e13ef33cea9097d148f7038cb6`:
-- kroki 4–24 = PASS;
-- BEST56 manifest / Source of Truth / CRM sync = PASS;
-- finanse = PASS;
-- schema 11→12 = PASS;
-- AI_SYNC / freshness / runtime guard / dispatcher = PASS;
-- preflight / stager / materializer / packager / one-shot PRIMARY / auto-materialization = PASS;
-- `Static application checks` = FAIL przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
-- BEST40 = SKIPPED downstream.
+## CO TO ZNACZY
 
-CI commitu handoffu iteracji 90 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu i canonical payloadu.
+System nie miesza już dwóch różnych decyzji: **co audytujemy teraz** oraz **jaka jest najwyższa globalna wersja produktu**. Audyt pracuje na BEST56 zgodnie z misją, a PRIMARY osobno rozstrzyga BEST73 / BEST74+ i aktualny release target.
 
-## P0 / P1
+## TESTY / CI
 
-- P0 #7 — `P0-7A-CANONICAL-APP` nadal `READY`; 7B pozostaje BLOCKED na exact BEST40.
-- P0 #11 — nadal aktywny i BLOCKED wyłącznie przez 7A.
-- P1 #12 — pełny lokalny bot runtime pozostaje otwarty.
+Ostatni zakończony workflow **#577** dla `289c08269cc315ad542c6cc743ad260a34fde3f6`:
 
-## Handoff dla 3 botów
+- kroki 4–24: **PASS**
+- finanse BEST56: **PASS**
+- schema 11→12: **PASS**
+- AI_SYNC / dispatcher / guardy: **PASS**
+- `Static application checks`: **FAIL** — canonical BEST56 nadal nie znajduje się w repo
+- BEST40 downstream: **SKIPPED**
 
-### PRIMARY
-Na lokalnym repo z GitHub push access uruchom dokładnie:
-`python scripts/primary_p0_7a_one_shot.py --auto --commit --push`
+CI zmian iteracji 91 jest sprawdzany po zapisaniu pełnego handoffu; pełnego PASS nie deklarujemy bez dowodu.
 
-### SECOND_AUDIT
-Po DONE 7A wykonaj realny test migracji schema 11→12 na `localStorage`. Nie czekaj na BEST40.
+## NASTĘPNY RUCH
 
-### THIRD_UI
-Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i visual regression; nie zmieniaj finansów.
+**TASK:** `P0-19-VERSION-RECONCILIATION`  
+**TARGET AGENT:** `PRIMARY`  
+**TRIGGER:** `RUN_FIX → READY`
 
-## Auto-dispatch
+Po zamknięciu #19 kolejka ma ponownie ocenić `P0-7A-CANONICAL-APP` i uruchomić następne bezpieczne zadanie bez ręcznego zatrzymywania procesu.
 
-- `action = RUN_FIX`
-- `status = READY`
-- `task_id = P0-7A-CANONICAL-APP`
-- `target_agent = PRIMARY`
-- `source_iteration = 90`
-
-Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
+`develop` · handoff iteracji 91 · `main` bez zmian
