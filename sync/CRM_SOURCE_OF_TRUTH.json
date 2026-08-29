@@ -1,20 +1,22 @@
 {
   "schema_version": 2,
   "project": "Flipp&Chill CRM / Kalkulator",
-  "updated_at": "2026-08-29T09:33:27+02:00",
+  "updated_at": "2026-08-29T09:42:00+02:00",
   "source_branch": "develop",
   "release_target": "BEST73 BAZA MIESZKAŃ",
   "audit_output_name": "BEST73 BAZA MIESZKAŃ AUDYT",
   "audit_version_policy": "audit follows the reconciled current standard and never increments the standard BEST number by audit alone; BEST56 remains historical and BEST74 may only appear after a real approved product change or a separately verified newer standard artifact",
   "version_reconciliation": {
-    "status": "RESOLVED_TO_BEST73",
+    "status": "RESOLVED_TO_BEST73_CI_CONFIRMED",
     "issue": 19,
+    "issue_state": "CLOSED_COMPLETED",
     "highest_verified_standard_best": "BEST73 BAZA MIESZKAŃ",
     "highest_verified_source": "ChatGPT Library: FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN(1).html",
     "highest_verified_size_bytes": 986881,
     "highest_verified_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
     "repo_release_target": "BEST73 BAZA MIESZKAŃ",
     "audit_base": "BEST73 BAZA MIESZKAŃ",
+    "ci_evidence": "WORKFLOW_600_CURRENT_STANDARD_METADATA_GATES_PASS",
     "decision": "explicit user instruction on 2026-08-29 superseded the earlier BEST56 audit pin and requested alignment to the newest verified version",
     "promotion_policy": "run VERSION + MISSION DISCOVERY before every mission; never silently promote an unverified candidate"
   },
@@ -77,7 +79,7 @@
     "canonical_issue": 20,
     "canonical_app_expected_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
     "canonical_app_expected_standard": "BEST73 BAZA MIESZKAŃ",
-    "canonical_app_status": "PENDING_EXACT_BEST73_REPOSITORY_PAYLOAD_AND_PIPELINE_GENERALIZATION",
+    "canonical_app_status": "BLOCKED_EXACT_BEST73_NOT_YET_CANONICAL_IN_REPO_WORKFLOW_600",
     "pipeline_policy": "active packager/materializer/one-shot must read current standard metadata instead of hardcoding BEST56",
     "legacy_best56_tooling": [
       "scripts/primary_p0_7a_one_shot.py",
@@ -105,7 +107,7 @@
     {"id": 7, "priority": "P0", "title": "Historical BEST56/BEST40 release-gate work", "status": "SUPERSEDED_FOR_CURRENT_STANDARD; 7B historical BEST40 remains independently blocked"},
     {"id": 12, "priority": "P1", "title": "Agent handoff + self-dispatch protocol for 3 bots", "status": "PENDING_LOCAL_RUNTIME"},
     {"id": 18, "priority": "P1", "title": "Continuous multi-bot auto-continuation from audit findings", "status": "PENDING_LOCAL_RUNTIME_CONTINUATION"},
-    {"id": 19, "priority": "P0", "title": "Reconcile highest BEST baseline before further automation", "status": "DONE_RECONCILED_TO_BEST73_PENDING_CI_CONFIRMATION"}
+    {"id": 19, "priority": "P0", "title": "Reconcile highest BEST baseline before further automation", "status": "DONE_CI_CONFIRMED_CLOSED"}
   ],
   "sync_contract": {
     "read_before_work": true,
