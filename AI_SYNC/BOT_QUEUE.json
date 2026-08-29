@@ -24,7 +24,7 @@
       "issue": 7,
       "priority": "P0",
       "title": "Persist exact BEST56 repository payload for automatic canonical materialization",
-      "status": "READY",
+      "status": "BLOCKED",
       "owner": "PRIMARY",
       "scope": ["scripts/primary_p0_7a_one_shot.py", "scripts/package_best56_artifact.py", "scripts/materialize_canonical_app.py", "artifacts/best56", "scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_primary_p0_7a_one_shot.py", "tests/check_package_best56_artifact.py", "tests/check_materialize_canonical_app.py", "tests/check_stage_canonical_app.py", "tests/check_app.py", ".github/workflows/quality.yml"],
       "acceptance": ["accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "one-shot helper must refuse main/master and only allow develop/feature/*/fix/*/audit/*", "one-shot helper may stage and commit only artifacts/best56 and push only with explicit --push", "artifact parts must be canonical contiguous best56.html.gz.b64.part001..NNN; non-canonical names or gaps are rejected before decode", "packager must use deterministic gzip mtime=0, atomic writes and round-trip exact SHA verification", "CI automatically materializes app/FlippChill_Kalkulator.html from repository payload before Static application checks", "Static application checks pass after payload persistence", "BEST56 audit naming policy remains unchanged", "main is not modified"],
