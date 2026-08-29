@@ -3,7 +3,7 @@
   "project": "FlippChill CRM / Baza mieszkań",
   "baseline": "BEST56 BAZA MIESZKAŃ",
   "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-29T05:16:10+02:00",
+  "updated_at": "2026-08-29T06:12:10+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -16,7 +16,7 @@
       "scope": ["scripts/primary_p0_7a_one_shot.py", "scripts/package_best56_artifact.py", "scripts/materialize_canonical_app.py", "artifacts/best56", "scripts/stage_canonical_app.py", "app/FlippChill_Kalkulator.html", "tests/check_primary_p0_7a_one_shot.py", "tests/check_package_best56_artifact.py", "tests/check_materialize_canonical_app.py", "tests/check_stage_canonical_app.py", "tests/check_app.py", ".github/workflows/quality.yml"],
       "acceptance": ["accept only SHA-256 3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "one-shot helper must refuse main/master and only allow develop/feature/*/fix/*/audit/*", "one-shot helper may stage and commit only artifacts/best56 and push only with explicit --push", "artifact parts must be canonical contiguous best56.html.gz.b64.part001..NNN; non-canonical names or gaps are rejected before decode", "packager must use deterministic gzip mtime=0, atomic writes and round-trip exact SHA verification", "CI automatically materializes app/FlippChill_Kalkulator.html from repository payload before Static application checks", "Static application checks pass after payload persistence", "BEST56 audit naming policy remains unchanged", "main is not modified"],
       "required_checks": ["BEST56 audit manifest", "Source of Truth consistency", "CRM sync current-state contract", "BEST56 executable financial scenarios", "AI sync dispatch protocol", "AI sync handoff freshness", "deterministic BEST56 artifact packager", "canonical materializer contract + canonical part-set validation", "PRIMARY P0-7A one-shot helper", "CI canonical auto-materialization ordering", "Static application checks"],
-      "runtime_evidence": {"stager": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "materializer_contract": "PASS_WORKFLOW_561_NO_PAYLOAD_PRESENT", "one_shot_helper_contract": "PASS_WORKFLOW_561", "repository_source_payload": "PENDING_BINARY_SAFE_REPO_WRITE", "runtime_git_transport": "REQUIRES_LOCAL_GIT_PUSH_ACCESS", "crm_sync_current_state_contract": "PASS_WORKFLOW_561", "handoff_freshness": "PASS_WORKFLOW_561", "latest_ci": "WORKFLOW_561_PRE_APPLICATION_GATES_PASS_STATIC_APPLICATION_CHECKS_FAIL_ONLY"},
+      "runtime_evidence": {"stager": "PASS", "candidate_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92", "materializer_contract": "PASS_WORKFLOW_565_NO_PAYLOAD_PRESENT", "one_shot_helper_contract": "PASS_WORKFLOW_565", "repository_source_payload": "PENDING_BINARY_SAFE_REPO_WRITE", "runtime_git_transport": "REQUIRES_LOCAL_GIT_PUSH_ACCESS", "crm_sync_current_state_contract": "PASS_WORKFLOW_565", "handoff_freshness": "PASS_WORKFLOW_565", "latest_ci": "WORKFLOW_565_PRE_APPLICATION_GATES_PASS_STATIC_APPLICATION_CHECKS_FAIL_ONLY"},
       "work_order": "On a local repo with GitHub push access run exactly: python scripts/primary_p0_7a_one_shot.py --auto --commit --push. Do not reserialize payload through chat or connector text.",
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null}
@@ -44,7 +44,7 @@
       "scope": ["localStorage migration", "paymentParts", "transaction dates", "status derivation", "business field preservation"],
       "acceptance": ["id preserved", "startDate preserved", "preliminaryDate preserved", "finalDate preserved", "maxDealDate preserved", "paymentParts preserved", "property/client/agent/commission/source/settlement/notes preserved", "status derived consistently from dates"],
       "required_checks": ["schema 11->12 fixture contract including representative business fields", "runtime localStorage migration"],
-      "runtime_evidence": {"expanded_fixture_contract": "PASS_WORKFLOW_561", "tested_commit": "93737fb6f83af5b6d22b7aa2508c74e5fd46046e", "runtime_localstorage": "PENDING_P0_7A"},
+      "runtime_evidence": {"expanded_fixture_contract": "PASS_WORKFLOW_565", "tested_commit": "9f6b6c28d06bf8f17727f299d9cdf415137efa47", "runtime_localstorage": "PENDING_P0_7A"},
       "blocked_by": ["P0-7A-CANONICAL-APP"],
       "lock": {"owner": null, "claimed_at": null}
     },
@@ -58,7 +58,7 @@
       "scope": ["OPENCODE.md", "AI_SYNC/PROTOCOL.md", "scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "AI_SYNC/TRIGGER.json", "AI_SYNC/BOT_INBOX.md", "local OpenCode/bot command"],
       "acceptance": ["watcher detects RUN_FIX+READY", "runtime handoff guard before subprocess", "stale/mismatched handoff blocks dispatch", "mutex/dependency/claim/failure recovery contracts hold", "configured local bot command runs", "result returns to queue/audit handoff without touching main"],
       "required_checks": ["AI sync dispatch protocol", "AI sync handoff freshness", "runtime handoff guard contract", "dispatcher runtime guard integration", "dispatcher claim/failure/mutex/dependency contracts", "local dispatcher runtime smoke with real FLIPPCHILL_BOT_COMMAND"],
-      "runtime_evidence": {"opencode_entrypoint_read_order": "PASS_WORKFLOW_561"},
+      "runtime_evidence": {"opencode_entrypoint_read_order": "PASS_WORKFLOW_565"},
       "blocked_by": ["LOCAL_FLIPPCHILL_BOT_COMMAND"],
       "lock": {"owner": null, "claimed_at": null}
     },
@@ -86,7 +86,7 @@
       "required_checks": ["Verify BEST56 executable financial scenarios"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow": 561, "gate": "PASS"}
+      "result": {"workflow": 565, "gate": "PASS"}
     },
     {
       "id": "P1-16-CRM-SYNC-GUARD",
@@ -100,7 +100,7 @@
       "required_checks": ["Verify CRM sync current-state contract"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow": 561, "gate": "PASS"}
+      "result": {"workflow": 565, "gate": "PASS"}
     },
     {
       "id": "P1-17-SEARCH-BONUS-GUARD",
@@ -114,7 +114,7 @@
       "required_checks": ["Verify BEST56 executable financial scenarios"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow": 561, "gate": "PASS"}
+      "result": {"workflow": 565, "gate": "PASS"}
     },
     {
       "id": "P2-15-FINANCIAL-BACKLOG-SYNC",
@@ -128,7 +128,7 @@
       "required_checks": ["Verify BEST56 executable financial scenarios"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow": 561, "gate": "PASS"}
+      "result": {"workflow": 565, "gate": "PASS"}
     }
   ]
 }
