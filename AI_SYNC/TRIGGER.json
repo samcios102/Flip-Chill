@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-29T08:13:40+02:00",
+  "updated_at": "2026-08-29T09:12:18+02:00",
   "action": "RUN_FIX",
   "status": "READY",
-  "task_id": "P0-7A-CANONICAL-APP",
+  "task_id": "P0-19-VERSION-RECONCILIATION",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 90,
-  "reason": "Iteration 90 synchronizes handoff evidence to completed workflow #570 for tested develop head 3291c7045c0990e13ef33cea9097d148f7038cb6. P0-7A remains the highest safe READY task; Static application checks still fail because the canonical BEST56 repository payload is missing.",
+  "source_iteration": 91,
+  "reason": "Iteration 91 keeps this automation explicitly pinned to BEST56 while issue #19 reconciles the verified BEST73 evidence against the repository release target. P0-19 is the highest safe unblocked task; P0-7A is blocked behind reconciliation.",
   "safety": {
     "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
     "forbid_main_write": true,
@@ -20,19 +20,10 @@
     "require_fresh_handoff_before_dispatch": true,
     "required_read_order_source": "sync/CRM_SOURCE_OF_TRUTH.json#sync_contract.required_read_order",
     "runtime_handoff_guard": "scripts/handoff_runtime_guard.py",
-    "canonical_app_one_shot": "scripts/primary_p0_7a_one_shot.py",
-    "canonical_app_one_shot_command": "python scripts/primary_p0_7a_one_shot.py --auto --commit --push",
-    "canonical_app_packager": "scripts/package_best56_artifact.py",
-    "canonical_payload_transfer_policy": "direct local filesystem -> git commit only; do not reserialize large payload through chat/connector text",
-    "canonical_app_materializer": "scripts/materialize_canonical_app.py",
-    "canonical_app_materializer_source_dir": "artifacts/best56",
-    "canonical_app_materializer_part_set_policy": "strict contiguous best56.html.gz.b64.part001..NNN",
-    "canonical_app_ci_auto_materialization": true,
-    "canonical_app_expected_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
-    "iteration_90_ci_evidence": "WORKFLOW_570_PRE_APPLICATION_GATES_PASS_STATIC_APPLICATION_CHECKS_FAIL_P0_7A_ONLY; HANDOFF_COMMIT_CI_PENDING",
-    "schema_11_12_business_field_guard": "tests/check_schema_11_12_contract.py",
-    "financial_scenario_gate": "tests/check_financial_scenarios.py",
-    "crm_sync_current_state_gate": "tests/check_crm_sync_current_state.py",
-    "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; never increment automatically"
+    "audit_version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only for this automation; never increment automatically",
+    "version_reconciliation_issue": 19,
+    "highest_verified_standard_best": "BEST73 BAZA MIESZKAŃ",
+    "repo_release_target": "BEST56 BAZA MIESZKAŃ",
+    "audit_base": "BEST56 BAZA MIESZKAŃ"
   }
 }
