@@ -5,10 +5,10 @@
   "baseline": "BEST73 BAZA MIESZKAŃ",
   "artifact_name": "BEST73 BAZA MIESZKAŃ AUDYT",
   "iteration": 92,
-  "generated_at": "2026-08-29T09:34:00+02:00",
+  "generated_at": "2026-08-29T09:42:20+02:00",
   "branch": "develop",
-  "change_head": "707088b089e58a4f8b22f91003ff8cc9755cfa2c",
-  "tested_commit": null,
+  "change_head": "7e238bd17827914809209dbf58131bb9cc177cca",
+  "tested_commit": "6210a7ddae1303fd5138d0503c12bb46b1518720",
   "version_policy": "current audit follows reconciled BEST73 and never creates BEST74 by audit alone",
   "version_mission": {
     "highest_verified_standard_best": "BEST73 BAZA MIESZKAŃ",
@@ -17,47 +17,55 @@
     "highest_verified_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
     "repo_release_target": "BEST73 BAZA MIESZKAŃ",
     "audit_base": "BEST73 BAZA MIESZKAŃ",
-    "reconciliation": "RESOLVED_TO_BEST73",
-    "mission": "align repository, handoff and current-standard gates to the newest verified version; preserve BEST56/BEST40 as history"
+    "reconciliation": "RESOLVED_TO_BEST73_CI_CONFIRMED",
+    "mission": "canonicalize exact BEST73, generalize current-standard pipeline, then run runtime data/finance/UI verification"
   },
   "findings": [
-    {"priority": "P0", "area": "version/source integrity", "result": "Previous mismatch is resolved at metadata/handoff level: highest verified standard, repo release target and audit base now all point to BEST73."},
-    {"priority": "P0", "area": "canonical app", "result": "The exact BEST73 bytes are verified outside the repo but current app/pipeline is still BEST56-specific. New issue #20 / P0-20-BEST73-CANONICAL-APP is the highest READY implementation task."},
-    {"priority": "P0", "area": "data integrity", "result": "Runtime schema 11->12 verification is intentionally blocked until canonical BEST73 is materialized; historical fixture contract remains evidence only, not BEST73 runtime proof."},
-    {"priority": "P1", "area": "finance", "result": "Financial rules remain CIT 9%, VAT 23%, PIT 12%, search bonus 10%, 50k/100k thresholds with Slack/Marketing contribution; a new BEST73 runtime regression task is blocked on canonicalization."},
-    {"priority": "P1", "area": "UX", "result": "THIRD_UI remains blocked until canonical BEST73 exists in the repo."}
+    {"priority": "P0", "area": "version/source integrity", "result": "Resolved. Source of Truth, audit, queue and trigger are aligned to BEST73; issue #19 is closed completed and workflow #600 passes the current-standard metadata gates."},
+    {"priority": "P0", "area": "canonical app", "result": "Only real current release blocker remains: exact BEST73 is not yet canonical in repo. Workflow #600 fails precisely at Verify current-standard canonical app exact SHA."},
+    {"priority": "P0", "area": "data integrity", "result": "Schema 11->12 preservation contract passes, but real runtime migration remains blocked until canonical BEST73 exists."},
+    {"priority": "P1", "area": "finance", "result": "Core executable scenarios pass and business rules are unchanged; BEST73-specific runtime regression remains blocked until canonicalization."},
+    {"priority": "P1", "area": "UX", "result": "THIRD_UI remains correctly blocked until canonical BEST73 is available."}
   ],
   "business_decisions": [
-    "Explicit user instruction changes the current release/audit base from BEST56 to the highest verified BEST73.",
-    "BEST56 audit files remain historical and are not deleted or rewritten as BEST73.",
-    "Audit cycles never create BEST74 automatically.",
-    "All active current-standard tooling must become metadata-driven rather than BEST56-hardcoded."
+    "Current product/audit baseline is BEST73, not BEST56.",
+    "BEST56 and BEST40 remain historical evidence and are not deleted.",
+    "Audit alone never creates BEST74.",
+    "Current release tooling must be metadata-driven and must verify the exact SHA from Source of Truth."
   ],
   "p0_p1": {
     "active_p0": [20, 11],
     "active_p1": [12, 18],
     "source_of_truth_update_required": false,
-    "source_of_truth_update": "Applied in this iteration: Source of Truth now resolves to BEST73; current canonicalization remains a real implementation blocker rather than a metadata mismatch."
+    "source_of_truth_update": "Applied and CI-confirmed. Remaining failure is the intentional current canonical-app gate, not metadata drift."
   },
   "tests": {
-    "previous_workflow_run": 584,
-    "previous_result": "FAIL_SOURCE_OF_TRUTH_CONSISTENCY_ON_OLD_BEST56_PIN",
-    "current_standard_manifest": "CREATED_BEST73_PENDING_CI",
-    "source_of_truth_consistency": "UPDATED_TO_CURRENT_STANDARD_PENDING_CI",
-    "crm_sync_current_state_contract": "PENDING_UPDATE_AND_CI",
-    "financial_scenarios_best73": "BLOCKED_CANONICAL_BEST73",
-    "schema_11_12_best73_runtime": "BLOCKED_CANONICAL_BEST73",
-    "ai_sync_dispatch_protocol": "UPDATED_TO_CURRENT_STANDARD_PENDING_CI",
-    "queue_dependency_partition": "PENDING_UPDATE_AND_CI",
-    "static_application_checks": "BLOCKED_CANONICAL_BEST73",
-    "ci_overall": "PENDING_RECONCILIATION_PACKAGE"
+    "workflow_run": 600,
+    "workflow_run_id": 33241329984,
+    "workflow_commit": "6210a7ddae1303fd5138d0503c12bb46b1518720",
+    "historical_best56_manifest": "PASS_WORKFLOW_600",
+    "source_of_truth_consistency": "PASS_WORKFLOW_600",
+    "crm_sync_current_state_contract": "PASS_WORKFLOW_600",
+    "core_financial_scenarios": "PASS_WORKFLOW_600",
+    "schema_11_12_preservation_contract": "PASS_WORKFLOW_600",
+    "ai_sync_dispatch_protocol": "PASS_WORKFLOW_600",
+    "queue_dependency_partition": "PASS_WORKFLOW_600",
+    "handoff_freshness": "PASS_WORKFLOW_600",
+    "runtime_handoff_guard": "PASS_WORKFLOW_600",
+    "dispatcher_runtime_guard_integration": "PASS_WORKFLOW_600",
+    "dispatcher_claim_failure_mutex_dependency_contracts": "PASS_WORKFLOW_600",
+    "artifact_preflight": "PASS_WORKFLOW_600",
+    "current_standard_canonical_exact_sha": "FAIL_WORKFLOW_600_EXACT_BEST73_NOT_CANONICAL_IN_REPO",
+    "static_application_checks": "SKIPPED_DOWNSTREAM_WORKFLOW_600",
+    "best40_checks": "SKIPPED_DOWNSTREAM_WORKFLOW_600",
+    "ci_overall": "FAIL_EXPECTED_ONLY_AT_REAL_CURRENT_CANONICAL_BEST73_GATE"
   },
   "impact": {
-    "baza_mieszkan": "Current project metadata is now aligned to BEST73; application behavior has not yet changed because exact BEST73 is not canonicalized in repo.",
-    "finance": "No business rule changed; BEST73 runtime verification is queued after canonicalization.",
-    "data_integrity": "No migration logic changed; runtime verification is safely gated on canonical BEST73.",
-    "ux": "No UI change yet; THIRD_UI will audit the actual BEST73 after canonicalization.",
-    "automation": "Watcher now dispatches PRIMARY to the BEST73 canonicalization/generalization task instead of obsolete BEST56 canonical work."
+    "baza_mieszkan": "Version metadata is fully aligned to BEST73. No application behavior is promoted until the exact BEST73 bytes are canonicalized in repo.",
+    "finance": "No rule changed; metadata/core scenario gates pass, BEST73 runtime verification awaits canonical app.",
+    "data_integrity": "Preservation contract passes; real localStorage migration awaits canonical BEST73.",
+    "ux": "No UI claim is made yet; THIRD_UI starts after canonical BEST73.",
+    "automation": "Watcher is routed to PRIMARY task P0-20-BEST73-CANONICAL-APP. After DONE, SECOND_AUDIT and THIRD_UI tasks can unlock."
   },
   "summary": {
     "highest_priority": "P0-20-BEST73-CANONICAL-APP",
