@@ -1,30 +1,33 @@
 # BACKLOG — FlippChill
 
-Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status i zostać zweryfikowany testem przed oznaczeniem jako ukończony.
+Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status i zostać zweryfikowany testem przed oznaczeniem jako ukończony. Bieżący standard produktu jest odczytywany z `sync/CRM_SOURCE_OF_TRUTH.json`; historyczne BEST56/BEST40 pozostają w archiwum i historii Git.
 
 ## P0 — krytyczne błędy
 
-- [ ] P0 #19 — uzgodnić najwyższą zweryfikowaną standardową wersję BEST z repozytoryjnym release targetem. Znaleziony BEST73 jest dowodem do reconciliation, ale bieżący automat ma jawnie przypięty `AUDIT_BASE = BEST56 BAZA MIESZKAŃ` i pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`. PRIMARY ma ustalić lineage, sprawdzić BEST74+ w dostępnych źródłach i dopiero po dowodzie zaproponować zmianę wspólnego release targetu; bez automatycznej promocji i bez zmian `main`.
-- [ ] Przywrócić odtwarzalny build `app/FlippChill_Kalkulator.html` — śledzone w #7. Release gate ma dwa niezależne artefakty: 7A canonical BEST56 i 7B historyczny BEST40. Exact BEST56 SHA-256 `3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92` jest runtime-verified. Packager, strict materializer, CI auto-materialization oraz CI-guarded one-shot PRIMARY są gotowe. `P0-7A-CANONICAL-APP` pozostaje READY dla PRIMARY. Preferowana ścieżka lokalna to jedno polecenie: `python scripts/primary_p0_7a_one_shot.py --auto --commit --push`. Helper blokuje `main/master`, akceptuje wyłącznie exact BEST56, stage'uje tylko `artifacts/best56`, commit/push wykonuje wyłącznie z bezpiecznej gałęzi i nie reserializuje payloadu przez czat/konektor. Workflow #397 potwierdza kontrakt helpera, materializera i auto-materialization = PASS; `Static application checks` pozostaje FAIL do czasu lokalnego wykonania one-shot. `P0-7B-FROZEN-BEST40` pozostaje BLOCKED do exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`.
-- [x] Zweryfikować raport 28 zduplikowanych ID DOM — audyt wykazał false positive testu: regex liczył `id=` wewnątrz stringów JavaScript renderujących SVG. Parser realnych tagów HTML potwierdza 0 statycznych duplikatów; test sprawdza teraz również statyczne referencje `for`, `aria-labelledby`, `aria-describedby`, `aria-controls` i lokalne `href="#..."`. Lokalnie: BEST40 = 739 ID / 38 poprawnych referencji, BEST49 = 748 / 38. Issue #8 zamknięte.
-- [ ] P0 #11 — migracja schema 11→12 musi zachować ręczne `preliminaryDate`, `maxDealDate`, `paymentParts`, `id`, `startDate`, `finalDate` oraz pozostałe pola biznesowe rekordu (m.in. nieruchomość, klient, agent, prowizja, źródło, rozliczenie i notatki); status należy wyprowadzać z istniejących dat zamiast kasować dane. W iteracji 59 kontrakt `tests/check_schema_11_12_contract.py` został rozszerzony o reprezentatywne pola biznesowe i pełne asercje zachowania. Issue pozostaje otwarte do czasu testu na kanonicznym artefakcie repo i realnym `localStorage`. Zależność runtime jest wyłącznie od `P0-7A-CANONICAL-APP`; historyczny BEST40 NIE blokuje tego testu.
+- [x] P0 #19 — uzgodnić najwyższą zweryfikowaną standardową wersję BEST z repozytoryjnym release targetem. **ROZSTRZYGNIĘTE 2026-08-29:** jawna decyzja użytkownika wyrównała bieżący projekt do `BEST73 BAZA MIESZKAŃ`. Zweryfikowany artefakt: 986881 B, SHA-256 `492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4`. `release_target` i `audit_base` = BEST73; BEST56 pozostaje historyczny; sam audyt nie tworzy BEST74.
+- [ ] **P0 #20 — CURRENT / READY / PRIMARY:** zaimportować exact `BEST73 BAZA MIESZKAŃ` do repo jako odtwarzalny canonical app i uogólnić dotychczasowy BEST56-specific packager/materializer/stager/one-shot do konfiguracji `current standard` z Source of Truth. `app/FlippChill_Kalkulator.html` ma materializować dokładnie SHA-256 `492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4`. BEST56 i BEST40 zachować jako historię. Nie zmieniać `main`; nie tworzyć BEST74 przez audyt.
+- [ ] P0 #11 — migracja schema 11→12 musi zachować ręczne `preliminaryDate`, `maxDealDate`, `paymentParts`, `id`, `startDate`, `finalDate` oraz pozostałe pola biznesowe. Runtime test ma być wykonany na **canonical BEST73** i zależy wyłącznie od `P0-20-BEST73-CANONICAL-APP`; historyczny BEST40 go nie blokuje.
+- [ ] P0 #7B — historyczny frozen BEST40: importować wyłącznie exact SHA-256 `c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708`; zadanie historyczne i niezależne od current BEST73.
+- [x] P0 #7A — dawny canonical BEST56 jako bieżący release gate: **SUPERSEDED** przez P0 #20 po reconciliation do BEST73. Historycznych artefaktów/testów BEST56 nie usuwać.
+- [x] Zweryfikować raport 28 zduplikowanych ID DOM — false positive testu; parser realnych tagów HTML potwierdził 0 statycznych duplikatów.
 - [ ] Każda nowa regresja blokująca logowanie, zapis danych, otwieranie Bazy mieszkań, Rozliczenia lub Dat.
-- [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT, search bonus 10% oraz podział prowizji muszą być kontrolowane testami liczbowymi.
+- [ ] Rozbieżności finansowe: VAT 23%, CIT 9%, PIT 12%, search bonus 10% oraz podział prowizji muszą być kontrolowane testami liczbowymi.
 - [ ] Utrata danych lokalnych albo niezgodność danych między kolejnymi wersjami BEST.
 
 ## P1 — do naprawy / twarde testy
 
 - [ ] P1 #18 — ciągła praca wielobotowa: po każdym audycie i każdym handoffie przeliczaj kolejkę, uruchamiaj najwyższe bezpieczne READY zadanie, a przy blockerze wybieraj inne niezależne zadanie. PRIMARY / SECOND_AUDIT / THIRD_UI pracują równolegle tylko na rozłącznych scope i lockach; system przechodzi do IDLE dopiero gdy nie ma bezpiecznej pracy READY.
-- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → guard → claim → wykonanie → test → handoff`. Claim/lock, failure recovery, mutex READY→CLAIMED, bezpieczne odzyskanie starego osieroconego mutexa, dependency guard, świeżość handoffu oraz bezpośrednia integracja runtime guardu z dispatcherem są deterministycznie wymuszane przez CI. Root `OPENCODE.md` jest zsynchronizowany z kanonicznym `sync_contract.required_read_order`, w tym `AI_SYNC/PROTOCOL.md` jako krokiem 2. Pozostał pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
-- [x] P1 #13 — rozdzielenie zależności #7 na `P0-7A-CANONICAL-APP` i `P0-7B-FROZEN-BEST40` zweryfikowane przez CI; P0 #11 oraz THIRD_UI zależą tylko od canonical app 7A. `tests/check_queue_dependency_partition.py` = PASS w workflow #202; issue #13 zamknięte jako completed.
-- [x] P1 #14 — wykonywalny kontrakt finansowy BEST56: `tests/check_financial_scenarios.py` sprawdza VAT 23%, CIT 9% na dodatnim dochodzie i 0 przy stracie, PIT 12%, granice progów 49 999 / 50 000 / 99 999 / 100 000 / 125 000 oraz wkład Slack/Marketing do obrotu progowego. Gate `Verify BEST56 executable financial scenarios` = PASS w workflow #330; issue #14 zamknięte jako completed.
-- [x] P1 #17 — wykonywalny kontrakt finansowy sprawdza teraz również `search_bonus = 10%`; gate `Verify BEST56 executable financial scenarios` = PASS w workflow #352. Reguła biznesowa nie została zmieniona, tylko objęta ochroną regresyjną.
-- [ ] Zbudować test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage`.
+- [ ] P1 #12 — uruchomić lokalny `scripts/agent_dispatch.py --watch` z rzeczywistą komendą OpenCode/bota i potwierdzić pełny cykl `RUN_FIX → guard → claim → wykonanie → test → handoff`. Pozostał pełny lokalny runtime z rzeczywistym `FLIPPCHILL_BOT_COMMAND`.
+- [ ] P1 BEST73 — po canonicalizacji #20 wykonać finansowy regression audit bieżącego standardu: VAT 23%, CIT 9%, PIT 12%, search bonus 10%, progi 50k/100k i Slack/Marketing do progów.
+- [ ] Zbudować/uruchomić test migracji danych między kolejnymi wersjami HTML i stałymi kluczami `localStorage` na canonical BEST73.
 - [ ] Zbudować automatyczny test: logowanie → Baza mieszkań → filtr → Rozlicz → Daty → status → zapis → ponowne otwarcie.
 - [ ] Zweryfikować wszystkie przyciski HOME prowadzące dawniej do osobnych widoków Płatności/Rozliczeń po ich integracji z Bazą.
-- [ ] Sprawdzić responsywność Bazy mieszkań na iPhone 15 Pro i małych ekranach Android/Chrome.
+- [ ] Sprawdzić responsywność Bazy mieszkań na iPhone 15 Pro i małych ekranach Android/Chrome po canonicalizacji BEST73.
 - [ ] Zweryfikować, czy wszystkie 4 części płatności klienta i 4 stany wypłaty agentowi zachowują się spójnie po duplikowaniu rekordu.
-- [x] Transakcje ze źródła `Slack / Marketing` zasilają miesięczny obrót liczony do progów 50 000 PLN i 100 000 PLN tak samo jak pozostałe źródła; odrębna stawka wynagrodzenia Slack nie wyłącza ich z progu. Pokryte wykonywalnym kontraktem `tests/check_financial_scenarios.py`; #14 completed, gate finansowy PASS.
+- [x] P1 #13 — historyczne rozdzielenie zależności #7 na canonical app i BEST40 zweryfikowane przez CI; nowa bieżąca zależność jest chroniona przez current-standard `tests/check_queue_dependency_partition.py`.
+- [x] P1 #14 — historyczny wykonywalny kontrakt finansowy BEST56 zachowany jako regresyjne evidence; nie jest automatycznie uznawany za runtime PASS BEST73.
+- [x] P1 #17 — search bonus 10% jest objęty historycznym wykonywalnym kontraktem; dla BEST73 wymagany jest nowy runtime regression po #20.
+- [x] Transakcje ze źródła `Slack / Marketing` zasilają miesięczny obrót liczony do progów 50 000 PLN i 100 000 PLN; reguła pozostaje w Source of Truth.
 
 ## P1 — brakujące / niedokończone funkcje
 
@@ -45,16 +48,17 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [x] Daty w modalu: Start / Przedwstępna / Końcowa / Maks. termin.
 - [x] Spójne symbole statusu ↻ / ◆ / ✓.
 - [x] Mocno skompaktowane główne wiersze Bazy (~46 px w BEST40).
-- [x] Skorygować zbyt dużą kompresję desktopową — BEST41: ok. 60 px / rekord, większe statusy i przyciski przy zachowaniu zwartego układu.
-- [ ] Audyt gęstości i responsywności na iPhone 15 Pro oraz małym Androidzie.
-- [ ] Skróty klawiaturowe dla częstych operacji (wyszukaj, nowa transakcja, rozlicz, daty).
+- [x] Skorygować zbyt dużą kompresję desktopową — BEST41: ok. 60 px / rekord.
+- [ ] Audyt gęstości i responsywności na iPhone 15 Pro oraz małym Androidzie — po canonical BEST73.
+- [ ] Skróty klawiaturowe dla częstych operacji.
 - [ ] Szybki panel „wymaga uwagi”: po terminie, faktura bez wpłaty, klient zapłacił / agent niewypłacony.
 
 ## P2 — analityka i finanse
 
-- [x] Jednostkowe testy finansowe na kilku znanych scenariuszach prowizji i podatków — pokryte wykonywalnym kontraktem `tests/check_financial_scenarios.py`; PASS w workflow #352 obejmuje VAT, CIT, PIT, search bonus 10%, progi 50k/100k i Slack/Marketing.
+- [x] Historyczne jednostkowe testy finansowe BEST56 pokrywają VAT, CIT, PIT, search bonus 10%, progi 50k/100k i Slack/Marketing.
+- [ ] Potwierdzić te same reguły wykonywalnie na canonical BEST73 po #20.
 - [ ] Wskaźnik należności: klient → spółka oraz spółka → agent, rozdzielone liczbowo.
-- [ ] Prognoza cash-flow według faktycznych dat płatności, a nie tylko statusu transakcji.
+- [ ] Prognoza cash-flow według faktycznych dat płatności.
 - [ ] Dashboard miesięczny: 100% przedwstępnych + 80% w toku, łączna kwota i tempo / 5 mies.
 - [ ] Kontrola anomalii: nietypowy procent prowizji, suma części ≠ 100%, brak daty przy zamkniętej transakcji.
 
@@ -75,13 +79,14 @@ Jedno źródło prawdy dla dalszego rozwoju. Każdy punkt powinien mieć status 
 - [ ] Audit score wydania: testy, regresje, wydajność, integralność danych, responsywność.
 - [ ] Feature flags dla nowych modułów, aby rozwijać je bez destabilizacji stabilnej wersji.
 
-## Ukończone — punkt startowy repo
+## Ukończone — historyczne punkty startowe repo
 
-- [x] BEST40 jako stabilny punkt startowy.
+- [x] BEST40 jako historyczny stabilny punkt startowy repo.
+- [x] BEST56 jako historycznie audytowana baza z zachowanym SHA i audit manifestem.
 - [x] Wiersz Bazy zmniejszony z ok. 202 px do ok. 46 px.
 - [x] Rozliczenie skompaktowane z ok. 729 px do ok. 435 px.
-- [x] Pełna baza 28/28 mieszkań ładuje się w teście BEST40.
+- [x] Pełna baza 28/28 mieszkań ładowała się w historycznym teście BEST40.
 - [x] Multi-select płatności i podsumowania w Bazie.
 - [x] Rozdzielenie „klient zapłacił” od „agent wypłacony”.
 - [x] Oś czasu ze spójnymi symbolami statusu.
-- [x] BEST41: zbalansowana gęstość desktopowa, 60 px / rekord przy teście 1536×900, 28/28 rekordów, 0 błędów JS.
+- [x] BEST41: zbalansowana gęstość desktopowa, 60 px / rekord przy teście 1536×900.
