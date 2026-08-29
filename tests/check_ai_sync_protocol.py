@@ -3,9 +3,7 @@ import json
 import sys
 from pathlib import Path
 
-EXPECTED_BASELINE = "BEST56 BAZA MIESZKAŃ"
-EXPECTED_AUDIT = "BEST56 BAZA MIESZKAŃ AUDYT"
-REQUIRED_TASK_FIELDS = {"id", "priority", "owner", "status", "scope", "acceptance", "required_checks", "lock"}
+REQUIRED_TASK_FIELDS = {"id", "priority", "owner", "status", "scope", "acceptance", "required_checks", "blocked_by", "lock"}
 ACTIVE_LOCK_STATES = {"CLAIMED", "WORKING", "TESTING"}
 VALID_AGENTS = {"PRIMARY", "SECOND_AUDIT", "THIRD_UI"}
 TERMINAL_BLOCKER_STATES = {"DONE", "CLOSED", "RESOLVED", "COMPLETED", "SUPERSEDED", "REJECTED"}
@@ -51,19 +49,26 @@ def assert_read_order(path: str, label: str) -> None:
         fail(f"{label} read-order entries are not in canonical order")
 
 
+def is_terminal_source_state(state: str) -> bool:
+    upper = state.strip().upper()
+    return upper in TERMINAL_BLOCKER_STATES or upper.startswith("DONE_") or upper.startswith("SUPERSEDED_")
+
+
 def main() -> None:
     source = load("sync/CRM_SOURCE_OF_TRUTH.json")
     audit = load("AI_SYNC/LATEST_AUDIT.json")
     queue = load("AI_SYNC/BOT_QUEUE.json")
     trigger = load("AI_SYNC/TRIGGER.json")
 
+    expected_baseline = source.get("release_target")
+    expected_audit = source.get("audit_output_name")
+    if not expected_baseline or not expected_audit:
+        fail("Source of Truth must declare current release/audit names")
     for name, data in (("audit", audit), ("queue", queue)):
-        if data.get("baseline") != EXPECTED_BASELINE:
-            fail(f"{name} baseline must remain BEST56")
-    if audit.get("artifact_name") != EXPECTED_AUDIT or queue.get("audit_name") != EXPECTED_AUDIT:
-        fail("AI_SYNC audit naming drifted from BEST56 + AUDYT")
-    if "BEST57" in json.dumps({"audit": audit, "queue": queue, "trigger": trigger}, ensure_ascii=False):
-        fail("automatic AI_SYNC state must not promote to BEST57")
+        if data.get("baseline") != expected_baseline:
+            fail(f"{name} baseline must match Source of Truth: {expected_baseline}")
+    if audit.get("artifact_name") != expected_audit or queue.get("audit_name") != expected_audit:
+        fail("AI_SYNC audit naming must match current Source of Truth")
 
     tasks = queue.get("tasks")
     if not isinstance(tasks, list) or not tasks:
@@ -107,10 +112,10 @@ def main() -> None:
     for item in source.get("current_blockers", []):
         if item.get("priority") != "P0":
             continue
-        state = str(item.get("status", "")).strip().upper()
+        state = str(item.get("status", ""))
         if not state:
             fail(f"P0 blocker {item.get('id')} must have a status")
-        if state not in TERMINAL_BLOCKER_STATES:
+        if not is_terminal_source_state(state):
             source_p0.add(int(item["id"]))
     audit_p0 = {int(x) for x in audit.get("summary", {}).get("active_p0", [])}
     if source_p0 != audit_p0:
@@ -131,14 +136,17 @@ def main() -> None:
         if not Path(expected).is_file():
             fail(f"declared sync path missing: {expected}")
 
-    read_order = contract.get("required_read_order")
-    if read_order != REQUIRED_READ_ORDER:
-        fail(f"canonical read order drifted: {read_order!r}")
+    if contract.get("required_read_order") != REQUIRED_READ_ORDER:
+        fail("canonical read order drifted")
+
+    reconciliation = source.get("version_reconciliation", {})
+    if reconciliation.get("audit_base") != expected_baseline:
+        fail("AI_SYNC may not run against a baseline different from reconciled audit_base")
 
     assert_read_order("AI_SYNC/PROTOCOL.md", "AI_SYNC protocol")
     assert_read_order("OPENCODE.md", "OpenCode entrypoint")
 
-    print("PASS: AI_SYNC report, queue, trigger, canonical read order, OpenCode entrypoint, P0 state and dispatcher contract are consistent")
+    print("PASS: AI_SYNC report, queue, trigger, current standard, read order, P0 state and dispatcher contract are consistent")
 
 
 if __name__ == "__main__":
