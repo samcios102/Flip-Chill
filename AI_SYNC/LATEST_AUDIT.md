@@ -4,21 +4,21 @@
 
 - Baseline: `BEST56 BAZA MIESZKAŃ`
 - Automat: `BEST56 BAZA MIESZKAŃ AUDYT`
-- Iteracja: `84`
+- Iteracja: `85`
 - Branch roboczy: `develop`
 - Najwyższy priorytet: `P0-7A-CANONICAL-APP`
 - Automatyczne podbijanie numeru BEST: zabronione
 
 ## Nowa zmiana
 
-Naprawiono niespójność handoffu: poprzedni raport nadal wskazywał workflow #545 / commit `66b691121d6625a523650e1373ac65ac0271c65c` oraz CI pending, mimo że `develop` osiągnął `80f86185ddce2779d7e4cf3a3804058eef5fdd1b` i workflow #549 zakończył się failure.
+Iteracja 85 synchronizuje handoff z zakończonym workflow #553 dla `develop = 1f397adb8c737b9631907ae16570c31d138668f7`.
 
-Iteracja 84 synchronizuje wyłącznie dowody audytu i dispatchu. Nie zmieniono aplikacji, danych, finansów, UX, reguł biznesowych ani routingu blockerów.
+Nie wykryto nowej regresji aplikacji, danych, finansów ani UX. Routing blockerów pozostaje bez zmian: repo nadal nie zawiera canonical payloadu BEST56 wymaganego przez `P0-7A-CANONICAL-APP`.
 
 ## Testy / CI
 
-Workflow #549 dla `80f86185ddce2779d7e4cf3a3804058eef5fdd1b`:
-- gate'y przed aplikacją = PASS;
+Workflow #553 dla `1f397adb8c737b9631907ae16570c31d138668f7`:
+- kroki 4–24 = PASS;
 - BEST56 manifest / Source of Truth / CRM sync = PASS;
 - finanse = PASS;
 - schema 11→12 = PASS;
@@ -27,7 +27,7 @@ Workflow #549 dla `80f86185ddce2779d7e4cf3a3804058eef5fdd1b`:
 - `Static application checks` = FAIL przez brak repozytoryjnego payloadu canonical BEST56 dla P0-7A;
 - BEST40 = SKIPPED downstream.
 
-CI commitów handoffu iteracji 84 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu.
+CI commitów handoffu iteracji 85 jest sprawdzany osobno; pełnego PASS nie deklarujemy bez zakończonego runu.
 
 ## P0 / P1
 
@@ -53,6 +53,6 @@ Po DONE 7A wykonaj audyt 390px / 768px / 1366×768 / 1440×900, accessibility i 
 - `status = READY`
 - `task_id = P0-7A-CANONICAL-APP`
 - `target_agent = PRIMARY`
-- `source_iteration = 84`
+- `source_iteration = 85`
 
 Numer pozostaje `BEST56 BAZA MIESZKAŃ AUDYT`.
