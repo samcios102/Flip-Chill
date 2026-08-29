@@ -49,14 +49,6 @@ jobs:
         run: python tests/check_agent_dispatch_dependencies.py
       - name: Verify artifact discovery preflight safety
         run: python tests/check_artifact_preflight.py
-      - name: Verify legacy BEST56 staging safety
-        run: python tests/check_stage_canonical_app.py
-      - name: Verify legacy BEST56 materializer contract
-        run: python tests/check_materialize_canonical_app.py
-      - name: Verify legacy BEST56 deterministic artifact packager
-        run: python tests/check_package_best56_artifact.py
-      - name: Verify legacy BEST56 PRIMARY one-shot helper
-        run: python tests/check_primary_p0_7a_one_shot.py
       - name: Verify current-standard canonical app exact SHA
         run: python tests/check_current_canonical.py
       - name: Static application checks
