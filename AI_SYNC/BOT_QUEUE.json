@@ -3,7 +3,7 @@
   "project": "FlippChill CRM / Baza mieszkań",
   "baseline": "BEST73 BAZA MIESZKAŃ",
   "audit_name": "BEST73 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-29T09:33:27+02:00",
+  "updated_at": "2026-08-29T09:42:10+02:00",
   "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
   "tasks": [
     {
@@ -18,7 +18,7 @@
       "required_checks": ["Source of Truth consistency", "AI sync dispatch protocol", "version/mission evidence review"],
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null},
-      "result": {"reconciled_to": "BEST73 BAZA MIESZKAŃ", "sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4", "ci": "PENDING_CURRENT_COMMIT"}
+      "result": {"reconciled_to": "BEST73 BAZA MIESZKAŃ", "sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4", "ci": "PASS_WORKFLOW_600_CURRENT_STANDARD_METADATA_GATES", "issue_state": "CLOSED_COMPLETED"}
     },
     {
       "id": "P0-20-BEST73-CANONICAL-APP",
@@ -30,6 +30,7 @@
       "scope": ["app/FlippChill_Kalkulator.html", "artifacts/current", "scripts/package_best56_artifact.py", "scripts/materialize_canonical_app.py", "scripts/stage_canonical_app.py", "scripts/primary_p0_7a_one_shot.py", ".github/workflows/quality.yml", "tests/check_app.py"],
       "acceptance": ["canonical app accepts only SHA-256 492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4", "pipeline reads current release metadata instead of hardcoding BEST56", "repository payload is deterministic and round-trips to exact BEST73", "Static application checks run on canonical BEST73", "BEST56 and BEST40 history is preserved", "main is not modified"],
       "required_checks": ["current-standard audit manifest", "Source of Truth consistency", "CRM sync current-state contract", "AI sync dispatch protocol", "queue dependency partition", "artifact packager/materializer/stager contracts", "Static application checks"],
+      "runtime_evidence": {"workflow": 600, "pre_canonical_gates": "PASS", "canonical_exact_sha_gate": "FAIL_EXPECTED_MISSING_BEST73_REPO_APP"},
       "work_order": "Locate exact BEST73 artifact by SHA 492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4 using approved local artifact roots, generalize the BEST56-specific pipeline to current-standard metadata, persist a deterministic repo payload, materialize app/FlippChill_Kalkulator.html and run required checks. Do not touch main and do not create BEST74.",
       "blocked_by": [],
       "lock": {"owner": null, "claimed_at": null}
