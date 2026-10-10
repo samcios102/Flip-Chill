@@ -10,9 +10,9 @@ Ten plik jest ludzkim widokiem **aktualnego** wspólnego stanu projektu. Maszyno
 - **Bieżący audit:** `BEST73 BAZA MIESZKAŃ AUDYT`
 - Exact BEST73: `FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN(1).html`, 986881 B, SHA-256 `492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4`
 - P0 #19: reconciliation wersji wykonane — BEST56 przestał być bieżącym targetem i pozostaje historycznym baseline.
-- P0 #20: **READY / PRIMARY** — zaimportować exact BEST73 do canonical app i uogólnić pipeline z BEST56-specific na current-standard.
+- P0 #20: **READY / PRIMARY** — exact BEST73 jest w canonical app i przechodzi SHA/static checks; pozostało uogólnienie historycznego pipeline do current-standard.
 - P0 #11: runtime migracji schema 11→12 pozostaje BLOCKED wyłącznie do canonical BEST73.
-- P0 #7A: SUPERSEDED jako bieżący task; dotyczył canonical BEST56. P0 #7B / exact BEST40 pozostaje niezależną historią i nie blokuje BEST73.
+- P0 #7A: SUPERSEDED jako bieżący task; dotyczył canonical BEST56. P0 #7B / exact BEST40: DONE — historyczny plik zaimportowany i zweryfikowany sumą SHA oraz kontrolą statyczną.
 - P1 #12: lokalny pełny watcher/bot runtime nadal wymaga rzeczywistego `FLIPPCHILL_BOT_COMMAND`.
 - P1 #18: ciągła praca wielobotowa pozostaje regułą; po każdym handoffie system ma wybierać kolejne niezależne READY zadanie.
 - DOM IDs: release gate wymaga 0 duplikatów.
@@ -64,3 +64,9 @@ Po zmianie:
 - Utworzono issue #20 oraz task `P0-20-BEST73-CANONICAL-APP` dla PRIMARY.
 - BEST56 i BEST40 pozostają historyczne; niczego nie usuwamy z Git history / audit archive.
 - Runtime finanse, migracja 11→12 i THIRD_UI dla BEST73 pozostają zablokowane do czasu exact canonicalizacji BEST73.
+
+### 2026-10-10 — odzyskanie źródeł / iteracja 93
+
+- Scalono develop i zawartą w nim gałąź feat/crm-source-of-truth do main przez PR #21.
+- Przywrócono exact BEST73 i exact frozen BEST40; zachowano bajty oraz wymagane sumy SHA-256.
+- Poprawiono kontrolę statusu reconciliation i historyczny kontrakt BEST40; runtime danych, finansów i UI pozostaje do wykonania.

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import sys
+import hashlib
+import json
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
@@ -52,6 +54,8 @@ class StaticDomCollector(HTMLParser):
 if not APP.exists():
     fail(f"missing app file: {APP}")
 
+source = json.loads((Path(__file__).resolve().parents[1] / "sync/CRM_SOURCE_OF_TRUTH.json").read_text(encoding="utf-8"))
+historical_best40 = hashlib.sha256(APP.read_bytes()).hexdigest() == source["release_gates"]["frozen_best40_sha256"]
 text = APP.read_text(encoding="utf-8")
 if len(text) < 100_000:
     fail("app file looks unexpectedly small")
@@ -67,6 +71,10 @@ required = [
     'function openPortfolioDates(',
     'fac-timeline-status-dots',
 ]
+if historical_best40:
+    # Frozen BEST40 predates the selected-dates summary; retain all other checks.
+    required.remove('id="fac-portfolio-dates-selected"')
+    ok("exact frozen BEST40 checksum; applying historical feature contract")
 for token in required:
     if token not in text:
         fail(f"required feature marker missing: {token}")

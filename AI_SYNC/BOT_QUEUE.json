@@ -3,8 +3,12 @@
   "project": "FlippChill CRM / Baza mieszkań",
   "baseline": "BEST73 BAZA MIESZKAŃ",
   "audit_name": "BEST73 BAZA MIESZKAŃ AUDYT",
-  "updated_at": "2026-08-29T09:42:10+02:00",
-  "agents": ["PRIMARY", "SECOND_AUDIT", "THIRD_UI"],
+  "updated_at": "2026-10-10T17:54:25.484436+00:00",
+  "agents": [
+    "PRIMARY",
+    "SECOND_AUDIT",
+    "THIRD_UI"
+  ],
   "tasks": [
     {
       "id": "P0-19-VERSION-RECONCILIATION",
@@ -13,12 +17,34 @@
       "title": "Reconcile highest verified BEST with repository release target",
       "status": "DONE",
       "owner": "PRIMARY",
-      "scope": ["version discovery", "sync/CRM_SOURCE_OF_TRUTH.json", "AI_SYNC", "BACKLOG.md", "sync/CRM_SYNC.md"],
-      "acceptance": ["highest verified standard, repo release target and audit base agree on BEST73", "BEST56 retained as history", "audit does not invent BEST74"],
-      "required_checks": ["Source of Truth consistency", "AI sync dispatch protocol", "version/mission evidence review"],
+      "scope": [
+        "version discovery",
+        "sync/CRM_SOURCE_OF_TRUTH.json",
+        "AI_SYNC",
+        "BACKLOG.md",
+        "sync/CRM_SYNC.md"
+      ],
+      "acceptance": [
+        "highest verified standard, repo release target and audit base agree on BEST73",
+        "BEST56 retained as history",
+        "audit does not invent BEST74"
+      ],
+      "required_checks": [
+        "Source of Truth consistency",
+        "AI sync dispatch protocol",
+        "version/mission evidence review"
+      ],
       "blocked_by": [],
-      "lock": {"owner": null, "claimed_at": null},
-      "result": {"reconciled_to": "BEST73 BAZA MIESZKAŃ", "sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4", "ci": "PASS_WORKFLOW_600_CURRENT_STANDARD_METADATA_GATES", "issue_state": "CLOSED_COMPLETED"}
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      },
+      "result": {
+        "reconciled_to": "BEST73 BAZA MIESZKAŃ",
+        "sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
+        "ci": "PASS_WORKFLOW_600_CURRENT_STANDARD_METADATA_GATES",
+        "issue_state": "CLOSED_COMPLETED"
+      }
     },
     {
       "id": "P0-20-BEST73-CANONICAL-APP",
@@ -27,13 +53,44 @@
       "title": "Import canonical BEST73 and generalize current-standard pipeline",
       "status": "READY",
       "owner": "PRIMARY",
-      "scope": ["app/FlippChill_Kalkulator.html", "artifacts/current", "scripts/package_best56_artifact.py", "scripts/materialize_canonical_app.py", "scripts/stage_canonical_app.py", "scripts/primary_p0_7a_one_shot.py", ".github/workflows/quality.yml", "tests/check_app.py"],
-      "acceptance": ["canonical app accepts only SHA-256 492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4", "pipeline reads current release metadata instead of hardcoding BEST56", "repository payload is deterministic and round-trips to exact BEST73", "Static application checks run on canonical BEST73", "BEST56 and BEST40 history is preserved", "main is not modified"],
-      "required_checks": ["current-standard audit manifest", "Source of Truth consistency", "CRM sync current-state contract", "AI sync dispatch protocol", "queue dependency partition", "artifact packager/materializer/stager contracts", "Static application checks"],
-      "runtime_evidence": {"workflow": 600, "pre_canonical_gates": "PASS", "canonical_exact_sha_gate": "FAIL_EXPECTED_MISSING_BEST73_REPO_APP"},
-      "work_order": "Locate exact BEST73 artifact by SHA 492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4 using approved local artifact roots, generalize the BEST56-specific pipeline to current-standard metadata, persist a deterministic repo payload, materialize app/FlippChill_Kalkulator.html and run required checks. Do not touch main and do not create BEST74.",
+      "scope": [
+        "app/FlippChill_Kalkulator.html",
+        "artifacts/current",
+        "scripts/package_best56_artifact.py",
+        "scripts/materialize_canonical_app.py",
+        "scripts/stage_canonical_app.py",
+        "scripts/primary_p0_7a_one_shot.py",
+        ".github/workflows/quality.yml",
+        "tests/check_app.py"
+      ],
+      "acceptance": [
+        "canonical app accepts only SHA-256 492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
+        "pipeline reads current release metadata instead of hardcoding BEST56",
+        "repository payload is deterministic and round-trips to exact BEST73",
+        "Static application checks run on canonical BEST73",
+        "BEST56 and BEST40 history is preserved",
+        "main is not modified"
+      ],
+      "required_checks": [
+        "current-standard audit manifest",
+        "Source of Truth consistency",
+        "CRM sync current-state contract",
+        "AI sync dispatch protocol",
+        "queue dependency partition",
+        "artifact packager/materializer/stager contracts",
+        "Static application checks"
+      ],
+      "runtime_evidence": {
+        "canonical_exact_sha_gate": "PASS_LOCAL_20261010",
+        "static_application_checks": "PASS_LOCAL_20261010",
+        "pipeline_generalization": "PENDING"
+      },
+      "work_order": "Exact BEST73 is now committed directly at app/FlippChill_Kalkulator.html and passes SHA and static gates. Remaining work: generalize legacy BEST56-specific packager/materializer/stager/one-shot to current-standard metadata and verify deterministic round-trip. Preserve exact app bytes and frozen BEST40; do not create BEST74.",
       "blocked_by": [],
-      "lock": {"owner": null, "claimed_at": null}
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P0-7A-CANONICAL-APP",
@@ -42,25 +99,53 @@
       "title": "Historical BEST56 canonical-app task",
       "status": "SUPERSEDED",
       "owner": "PRIMARY",
-      "scope": ["historical BEST56 canonicalization"],
-      "acceptance": ["historical state retained without being dispatched as current work"],
-      "required_checks": ["historical BEST56 audit manifest"],
+      "scope": [
+        "historical BEST56 canonicalization"
+      ],
+      "acceptance": [
+        "historical state retained without being dispatched as current work"
+      ],
+      "required_checks": [
+        "historical BEST56 audit manifest"
+      ],
       "blocked_by": [],
-      "lock": {"owner": null, "claimed_at": null},
-      "result": {"superseded_by": "P0-20-BEST73-CANONICAL-APP"}
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      },
+      "result": {
+        "superseded_by": "P0-20-BEST73-CANONICAL-APP"
+      }
     },
     {
       "id": "P0-7B-FROZEN-BEST40",
       "issue": 7,
       "priority": "P0",
       "title": "Import and verify frozen historical BEST40",
-      "status": "BLOCKED",
+      "status": "DONE",
       "owner": "PRIMARY",
-      "scope": ["versions/FlippChill_Kalkulator_BEST40.html", "tests/check_release_baseline.py"],
-      "acceptance": ["accept only SHA-256 c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708", "history only; does not block current BEST73 runtime migration", "main is not modified"],
-      "required_checks": ["BEST40 checksum", "frozen stable version"],
-      "blocked_by": ["EXACT_BEST40_LOCAL_ARTIFACT"],
-      "lock": {"owner": null, "claimed_at": null}
+      "scope": [
+        "versions/FlippChill_Kalkulator_BEST40.html",
+        "tests/check_release_baseline.py"
+      ],
+      "acceptance": [
+        "accept only SHA-256 c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
+        "history only; does not block current BEST73 runtime migration",
+        "main is not modified"
+      ],
+      "required_checks": [
+        "BEST40 checksum",
+        "frozen stable version"
+      ],
+      "blocked_by": [],
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      },
+      "result": {
+        "sha256": "c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
+        "checks": "exact checksum and historical static feature contract PASS"
+      }
     },
     {
       "id": "P0-11-RUNTIME-MIGRATION",
@@ -69,11 +154,29 @@
       "title": "Run real schema 11->12 localStorage migration against current canonical app",
       "status": "BLOCKED",
       "owner": "SECOND_AUDIT",
-      "scope": ["localStorage migration", "paymentParts", "transaction dates", "status derivation", "business field preservation"],
-      "acceptance": ["id/startDate/preliminaryDate/finalDate/maxDealDate preserved", "paymentParts and business fields preserved", "status derived consistently from dates"],
-      "required_checks": ["schema 11->12 fixture contract", "runtime localStorage migration on canonical BEST73"],
-      "blocked_by": ["P0-20-BEST73-CANONICAL-APP"],
-      "lock": {"owner": null, "claimed_at": null}
+      "scope": [
+        "localStorage migration",
+        "paymentParts",
+        "transaction dates",
+        "status derivation",
+        "business field preservation"
+      ],
+      "acceptance": [
+        "id/startDate/preliminaryDate/finalDate/maxDealDate preserved",
+        "paymentParts and business fields preserved",
+        "status derived consistently from dates"
+      ],
+      "required_checks": [
+        "schema 11->12 fixture contract",
+        "runtime localStorage migration on canonical BEST73"
+      ],
+      "blocked_by": [
+        "P0-20-BEST73-CANONICAL-APP"
+      ],
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P1-12-LOCAL-DISPATCH-RUNTIME",
@@ -82,11 +185,30 @@
       "title": "Verify full local dispatcher RUN_FIX cycle",
       "status": "BLOCKED",
       "owner": "PRIMARY",
-      "scope": ["AI_SYNC", "scripts/agent_dispatch.py", "scripts/handoff_runtime_guard.py", "local OpenCode/bot command"],
-      "acceptance": ["watcher claims exactly one current READY task", "real configured bot command runs", "result returns to queue/audit without touching main"],
-      "required_checks": ["AI sync dispatch protocol", "handoff freshness", "runtime guard", "local dispatcher smoke"],
-      "blocked_by": ["LOCAL_FLIPPCHILL_BOT_COMMAND"],
-      "lock": {"owner": null, "claimed_at": null}
+      "scope": [
+        "AI_SYNC",
+        "scripts/agent_dispatch.py",
+        "scripts/handoff_runtime_guard.py",
+        "local OpenCode/bot command"
+      ],
+      "acceptance": [
+        "watcher claims exactly one current READY task",
+        "real configured bot command runs",
+        "result returns to queue/audit without touching main"
+      ],
+      "required_checks": [
+        "AI sync dispatch protocol",
+        "handoff freshness",
+        "runtime guard",
+        "local dispatcher smoke"
+      ],
+      "blocked_by": [
+        "LOCAL_FLIPPCHILL_BOT_COMMAND"
+      ],
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P1-18-CONTINUOUS-MULTIBOT",
@@ -95,11 +217,31 @@
       "title": "Continuous multi-bot queue continuation",
       "status": "BLOCKED",
       "owner": "PRIMARY",
-      "scope": ["AI_SYNC/PROTOCOL.md", "AI_SYNC/BOT_QUEUE.json", "AI_SYNC/TRIGGER.json", "scripts/agent_dispatch.py", "local watcher/supervisor"],
-      "acceptance": ["recompute READY tasks after every handoff", "continue independent safe work", "respect roles and locks", "IDLE only with no safe READY work"],
-      "required_checks": ["AI sync dispatch protocol", "local dispatcher runtime smoke", "queue/trigger handoff"],
-      "blocked_by": ["P1-12-LOCAL-DISPATCH-RUNTIME"],
-      "lock": {"owner": null, "claimed_at": null}
+      "scope": [
+        "AI_SYNC/PROTOCOL.md",
+        "AI_SYNC/BOT_QUEUE.json",
+        "AI_SYNC/TRIGGER.json",
+        "scripts/agent_dispatch.py",
+        "local watcher/supervisor"
+      ],
+      "acceptance": [
+        "recompute READY tasks after every handoff",
+        "continue independent safe work",
+        "respect roles and locks",
+        "IDLE only with no safe READY work"
+      ],
+      "required_checks": [
+        "AI sync dispatch protocol",
+        "local dispatcher runtime smoke",
+        "queue/trigger handoff"
+      ],
+      "blocked_by": [
+        "P1-12-LOCAL-DISPATCH-RUNTIME"
+      ],
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P1-73-FINANCIAL-REGRESSION",
@@ -108,11 +250,32 @@
       "title": "Verify BEST73 financial semantics against Source of Truth",
       "status": "BLOCKED",
       "owner": "SECOND_AUDIT",
-      "scope": ["VAT", "CIT", "PIT", "search bonus", "monthly bonus thresholds", "Slack/Marketing threshold contribution"],
-      "acceptance": ["VAT 23%", "CIT 9%", "PIT 12% default", "search bonus 10%", "50k/100k thresholds unchanged", "Slack/Marketing counts toward thresholds"],
-      "required_checks": ["executable financial scenarios against canonical BEST73"],
-      "blocked_by": ["P0-20-BEST73-CANONICAL-APP"],
-      "lock": {"owner": null, "claimed_at": null}
+      "scope": [
+        "VAT",
+        "CIT",
+        "PIT",
+        "search bonus",
+        "monthly bonus thresholds",
+        "Slack/Marketing threshold contribution"
+      ],
+      "acceptance": [
+        "VAT 23%",
+        "CIT 9%",
+        "PIT 12% default",
+        "search bonus 10%",
+        "50k/100k thresholds unchanged",
+        "Slack/Marketing counts toward thresholds"
+      ],
+      "required_checks": [
+        "executable financial scenarios against canonical BEST73"
+      ],
+      "blocked_by": [
+        "P0-20-BEST73-CANONICAL-APP"
+      ],
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P1-UI-RESPONSIVE-AUDIT",
@@ -120,11 +283,32 @@
       "title": "Responsive and interaction audit for current Baza mieszkań",
       "status": "BLOCKED",
       "owner": "THIRD_UI",
-      "scope": ["Baza mieszkań", "mobile", "responsive", "accessibility", "visual regression"],
-      "acceptance": ["no critical overflow", "status/payment controls usable", "desktop layout preserved", "keyboard/focus issues documented"],
-      "required_checks": ["390px", "768px", "1366x768", "1440x900"],
-      "blocked_by": ["P0-20-BEST73-CANONICAL-APP"],
-      "lock": {"owner": null, "claimed_at": null}
+      "scope": [
+        "Baza mieszkań",
+        "mobile",
+        "responsive",
+        "accessibility",
+        "visual regression"
+      ],
+      "acceptance": [
+        "no critical overflow",
+        "status/payment controls usable",
+        "desktop layout preserved",
+        "keyboard/focus issues documented"
+      ],
+      "required_checks": [
+        "390px",
+        "768px",
+        "1366x768",
+        "1440x900"
+      ],
+      "blocked_by": [
+        "P0-20-BEST73-CANONICAL-APP"
+      ],
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P1-14-FINANCIAL-SCENARIOS",
@@ -133,12 +317,24 @@
       "title": "Historical BEST56 executable financial scenario contract",
       "status": "DONE",
       "owner": "SECOND_AUDIT",
-      "scope": ["tests/check_financial_scenarios.py"],
-      "acceptance": ["historical BEST56 financial scenarios guarded"],
-      "required_checks": ["historical BEST56 financial scenarios"],
+      "scope": [
+        "tests/check_financial_scenarios.py"
+      ],
+      "acceptance": [
+        "historical BEST56 financial scenarios guarded"
+      ],
+      "required_checks": [
+        "historical BEST56 financial scenarios"
+      ],
       "blocked_by": [],
-      "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow": 577, "gate": "PASS"}
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      },
+      "result": {
+        "workflow": 577,
+        "gate": "PASS"
+      }
     },
     {
       "id": "P1-16-CRM-SYNC-GUARD",
@@ -147,11 +343,21 @@
       "title": "Guard CRM_SYNC current-state semantics against Source of Truth drift",
       "status": "DONE",
       "owner": "SECOND_AUDIT",
-      "scope": ["sync/CRM_SYNC.md", "tests/check_crm_sync_current_state.py"],
-      "acceptance": ["current state guarded"],
-      "required_checks": ["CRM sync current-state contract"],
+      "scope": [
+        "sync/CRM_SYNC.md",
+        "tests/check_crm_sync_current_state.py"
+      ],
+      "acceptance": [
+        "current state guarded"
+      ],
+      "required_checks": [
+        "CRM sync current-state contract"
+      ],
       "blocked_by": [],
-      "lock": {"owner": null, "claimed_at": null}
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      }
     },
     {
       "id": "P1-17-SEARCH-BONUS-GUARD",
@@ -160,12 +366,24 @@
       "title": "Historical search bonus 10% executable guard",
       "status": "DONE",
       "owner": "SECOND_AUDIT",
-      "scope": ["tests/check_financial_scenarios.py"],
-      "acceptance": ["search_bonus remains 0.10"],
-      "required_checks": ["historical financial scenarios"],
+      "scope": [
+        "tests/check_financial_scenarios.py"
+      ],
+      "acceptance": [
+        "search_bonus remains 0.10"
+      ],
+      "required_checks": [
+        "historical financial scenarios"
+      ],
       "blocked_by": [],
-      "lock": {"owner": null, "claimed_at": null},
-      "result": {"workflow": 577, "gate": "PASS"}
+      "lock": {
+        "owner": null,
+        "claimed_at": null
+      },
+      "result": {
+        "workflow": 577,
+        "gate": "PASS"
+      }
     }
   ]
 }

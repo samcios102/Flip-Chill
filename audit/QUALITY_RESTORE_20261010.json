@@ -1,0 +1,130 @@
+{
+  "base_commit": "1d1316ccb7acea4c2926f8dcad409c09e3affafe",
+  "quality_workflow_checks": [
+    {
+      "command": "python tests/check_best56_audit_manifest.py audit/BEST56_BAZA_MIESZKAN_AUDYT.json",
+      "exit_code": 0,
+      "output": "PASS: BEST56 BAZA MIESZKAŃ AUDYT manifest and schema 11→12 preservation contract are consistent\n"
+    },
+    {
+      "command": "python tests/check_source_of_truth_consistency.py",
+      "exit_code": 0,
+      "output": "PASS: BEST73 BAZA MIESZKAŃ Source of Truth, current audit manifest, release gates and finance rules are consistent\n"
+    },
+    {
+      "command": "python tests/check_crm_sync_current_state.py",
+      "exit_code": 0,
+      "output": "CRM_SYNC current-state semantic contract: PASS\n"
+    },
+    {
+      "command": "python tests/check_financial_scenarios.py",
+      "exit_code": 0,
+      "output": "PASS: executable BEST56 financial scenarios — VAT, CIT, PIT, search bonus, threshold boundaries and Slack/Marketing turnover\n"
+    },
+    {
+      "command": "python tests/check_schema_11_12_contract.py",
+      "exit_code": 0,
+      "output": "PASS: BEST56 schema 11→12 executable contract preserves dates, payment parts and representative business fields across 3 status/date fixtures\n"
+    },
+    {
+      "command": "python tests/check_ai_sync_protocol.py",
+      "exit_code": 0,
+      "output": "PASS: AI_SYNC report, queue, trigger, current standard, read order, P0 state and dispatcher contract are consistent\n"
+    },
+    {
+      "command": "python tests/check_queue_dependency_partition.py",
+      "exit_code": 0,
+      "output": "PASS: current BEST73 canonical app and historical BEST40 dependencies are partitioned safely\n"
+    },
+    {
+      "command": "python tests/check_ai_sync_freshness.py",
+      "exit_code": 0,
+      "output": "AI_SYNC freshness PASS: shared=2026-10-10T17:54:25.484436+00:00 audit=2026-10-10T17:54:25.484436+00:00 trigger=2026-10-10T17:54:25.484436+00:00 iteration=93\n"
+    },
+    {
+      "command": "python tests/check_handoff_runtime_guard.py",
+      "exit_code": 0,
+      "output": "handoff runtime guard contract PASS\n"
+    },
+    {
+      "command": "python tests/check_agent_dispatch_runtime_guard_integration.py",
+      "exit_code": 0,
+      "output": "PASS: dispatcher invokes runtime handoff guard before claim/subprocess\n"
+    },
+    {
+      "command": "python tests/check_agent_dispatch_claim.py",
+      "exit_code": 0,
+      "output": "dispatched\nPrepared AI_SYNC/BOT_INBOX.md for PRIMARY / TEST-TASK\nDispatching agent PRIMARY task TEST-TASK\nClaimed TEST-TASK for PRIMARY at 2026-10-10T17:54:25.780607Z\nPASS: dispatcher claims and locks READY task before local bot execution\n"
+    },
+    {
+      "command": "python tests/check_agent_dispatch_failure_recovery.py",
+      "exit_code": 0,
+      "output": "Prepared AI_SYNC/BOT_INBOX.md for PRIMARY / FAIL-TASK\nDispatching agent PRIMARY task FAIL-TASK\nClaimed FAIL-TASK for PRIMARY at 2026-10-10T17:54:25.813561Z\nPASS: failed local bot subprocess releases claim and records BLOCKED state\nBot failed with exit 7; task FAIL-TASK moved to BLOCKED and claim released\n"
+    },
+    {
+      "command": "python tests/check_agent_dispatch_mutex.py",
+      "exit_code": 0,
+      "output": "PASS dispatcher READY-to-CLAIMED mutex contract\n"
+    },
+    {
+      "command": "python tests/check_agent_dispatch_stale_mutex.py",
+      "exit_code": 0,
+      "output": "Recovered orphaned dispatcher mutex from dead pid=999999999 age=120.0s\nPASS: stale dispatcher mutex recovery contract\n"
+    },
+    {
+      "command": "python tests/check_agent_dispatch_dependencies.py",
+      "exit_code": 0,
+      "output": "PASS dispatcher dependency guard\n"
+    },
+    {
+      "command": "python tests/check_artifact_preflight.py",
+      "exit_code": 0,
+      "output": "artifact preflight safety: PASS\n"
+    },
+    {
+      "command": "python tests/check_current_canonical.py",
+      "exit_code": 0,
+      "output": "PASS: current canonical app is exact BEST73 BAZA MIESZKAŃ / 492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4\n"
+    },
+    {
+      "command": "python tests/check_app.py app/FlippChill_Kalkulator.html",
+      "exit_code": 0,
+      "output": "OK: app size 982,918 chars\nOK: critical portfolio/payment/date/timeline markers present\nOK: obsolete Payments/Settlement top-level tabs absent\nOK: static DOM ids unique (803 ids)\nOK: static DOM references resolve (38 references)\nOK: tax labels VAT 23% and CIT 9% present\nOK: script/style tag counts balanced\nPASS: FlippChill static quality gate\n"
+    },
+    {
+      "command": "python tests/check_release_baseline.py versions/FlippChill_Kalkulator_BEST40.html c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708",
+      "exit_code": 0,
+      "output": "PASS: frozen release artifact checksum matches c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708\n"
+    },
+    {
+      "command": "python tests/check_app.py versions/FlippChill_Kalkulator_BEST40.html",
+      "exit_code": 0,
+      "output": "OK: app size 775,212 chars\nOK: exact frozen BEST40 checksum; applying historical feature contract\nOK: critical portfolio/payment/date/timeline markers present\nOK: obsolete Payments/Settlement top-level tabs absent\nOK: static DOM ids unique (739 ids)\nOK: static DOM references resolve (38 references)\nOK: tax labels VAT 23% and CIT 9% present\nOK: script/style tag counts balanced\nPASS: FlippChill static quality gate\n"
+    }
+  ],
+  "legacy_tooling_checks": [
+    {
+      "name": "check_materialize_canonical_app",
+      "exit_code": 1,
+      "output": "Traceback (most recent call last):\n  File \"/workspace/scratch/7dca19174d39/flip-chill/tests/check_materialize_canonical_app.py\", line 89, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/workspace/scratch/7dca19174d39/flip-chill/tests/check_materialize_canonical_app.py\", line 41, in main\n    assert materialize_step in workflow, \"CI must declare canonical materialization step\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: CI must declare canonical materialization step\n"
+    },
+    {
+      "name": "check_package_best56_artifact",
+      "exit_code": 0,
+      "output": "BEST56 artifact packager contract PASS\n"
+    },
+    {
+      "name": "check_primary_p0_7a_one_shot",
+      "exit_code": 0,
+      "output": "PASS: PRIMARY P0-7A one-shot helper contract\n"
+    },
+    {
+      "name": "check_stage_canonical_app",
+      "exit_code": 0,
+      "output": "canonical app staging + auto-discovery contract: PASS\n"
+    }
+  ],
+  "runtime_ui_verified": false,
+  "runtime_migration_verified": false,
+  "version_incremented": false
+}

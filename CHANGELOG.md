@@ -154,3 +154,10 @@ Wszystkie istotne zmiany projektu FlippChill są zapisywane tutaj wersja po wers
 ## BEST39 i wcześniejsze
 
 Historia wcześniejszych iteracji powstała przed uruchomieniem repozytorium jako głównego systemu wersjonowania. BEST40 jest oficjalnym punktem startowym dalszej historii Git.
+
+## 2026-10-10 — przywrócenie źródeł i kontroli jakości
+
+- Zebrana historia develop została scalona do main przez PR #21.
+- Dodano exact BEST73 do app/FlippChill_Kalkulator.html i exact BEST40 do versions/FlippChill_Kalkulator_BEST40.html, bez zmian bajtów aplikacji.
+- Kontrola synchronizacji rozpoznaje oba potwierdzone statusy BEST73. Historyczny kontrakt BEST40 jest dostępny wyłącznie po zgodności sumy SHA-256.
+- Nie podniesiono numeru BEST; runtime migracji/finansów/UI i uogólnienie historycznego pipeline pozostają odrębną pracą.

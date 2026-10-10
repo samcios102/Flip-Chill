@@ -1,16 +1,21 @@
 {
   "schema_version": 2,
   "project": "FlippChill CRM / Baza mieszkań",
-  "updated_at": "2026-08-29T09:42:30+02:00",
+  "updated_at": "2026-10-10T17:54:25.484436+00:00",
   "action": "RUN_FIX",
   "status": "READY",
   "task_id": "P0-20-BEST73-CANONICAL-APP",
   "target_agent": "PRIMARY",
   "source_report": "AI_SYNC/LATEST_AUDIT.json",
-  "source_iteration": 92,
-  "reason": "BEST73 reconciliation is CI-confirmed. Workflow #600 passes all current-standard metadata/automation gates and fails exactly at the canonical BEST73 SHA gate, so P0-20 is the highest safe unblocked implementation task.",
+  "source_iteration": 93,
+  "reason": "Exact BEST73 and BEST40 were imported and static/hash gates pass. PRIMARY issue #20 remains READY for metadata-driven legacy tooling generalization; no watcher execution was started.",
   "safety": {
-    "allowed_branches": ["develop", "feature/*", "fix/*", "audit/*"],
+    "allowed_branches": [
+      "develop",
+      "feature/*",
+      "fix/*",
+      "audit/*"
+    ],
     "forbid_main_write": true,
     "require_tests_before_done": true,
     "require_ci_before_release": true,
@@ -28,6 +33,6 @@
     "repo_release_target": "BEST73 BAZA MIESZKAŃ",
     "audit_base": "BEST73 BAZA MIESZKAŃ",
     "expected_sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
-    "ci_evidence": "WORKFLOW_600_PRE_CANONICAL_GATES_PASS_CANONICAL_SHA_FAIL"
+    "ci_evidence": "LOCAL_CANONICAL_SHA_AND_STATIC_PASS_REMOTE_CI_PENDING"
   }
 }
