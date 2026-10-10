@@ -41,7 +41,9 @@ def main() -> int:
         raise AssertionError(f"Expected reconciled BEST73 release target, got {release!r}")
     if audit != f"{release} AUDYT":
         raise AssertionError("Source of Truth audit name must follow current release target")
-    if sot.get("version_reconciliation", {}).get("status") != "RESOLVED_TO_BEST73":
+    if sot.get("version_reconciliation", {}).get("status") not in {
+        "RESOLVED_TO_BEST73", "RESOLVED_TO_BEST73_CI_CONFIRMED"
+    }:
         raise AssertionError("Version reconciliation must be resolved to BEST73")
 
     require(section, "Źródło pracy: `develop`", "develop source branch")
