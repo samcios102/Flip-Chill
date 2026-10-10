@@ -1,0 +1,32 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 29,
+  "timestamp": "2026-08-26T19:22:00+02:00",
+  "branch": "develop",
+  "change": "Split issue #7 queue work into canonical BEST56 app and historical BEST40 release-gate subtasks.",
+  "findings": [
+    "P0 #11 runtime migration was unnecessarily blocked by historical BEST40 because issue #7 was represented as one queue task.",
+    "Canonical app and BEST40 are independent technical prerequisites and should not serialize unrelated audit work."
+  ],
+  "implemented": [
+    "P0-7A-CANONICAL-APP READY for PRIMARY",
+    "P0-7B-FROZEN-BEST40 BLOCKED pending exact artifact",
+    "P0-11-RUNTIME-MIGRATION depends only on P0-7A-CANONICAL-APP",
+    "P1-UI-RESPONSIVE-AUDIT depends only on P0-7A-CANONICAL-APP",
+    "tests/check_queue_dependency_partition.py added",
+    "CI gate Verify BEST56 queue dependency partition added"
+  ],
+  "business_rules_changed": false,
+  "financial_rules_changed": false,
+  "version_policy": "BEST56 + AUDYT only; never auto-increment",
+  "previous_ci_evidence": {
+    "workflow": 188,
+    "commit": "30c94c1ab94a251e8b69583d1fea58cd319fab91",
+    "gates_through_canonical_staging": "PASS",
+    "static_application_checks": "FAIL_ACTIVE_P0_7"
+  },
+  "new_ci_evidence": "PENDING",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY"
+}

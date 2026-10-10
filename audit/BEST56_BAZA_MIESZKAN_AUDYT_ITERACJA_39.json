@@ -1,0 +1,27 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 39,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "branch": "develop",
+  "tested_commit": "676d78bb8a59a637f3b7f97ef84d0ab711b93465",
+  "workflow": 303,
+  "change": "Canonical materializer now requires strict contiguous best56.html.gz.b64.part001..NNN and rejects non-canonical names/gaps before decode.",
+  "tests": {
+    "canonical_materializer_contract": "PASS",
+    "canonical_part_set_guard": "PASS",
+    "deterministic_packager": "PASS",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_EXPECTED_P0_7_CANONICAL_APP_NOT_YET_PERSISTED",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "business_rules_changed": false,
+  "finance_changed": false,
+  "application_behavior_changed": false,
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}

@@ -1,0 +1,36 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 40,
+  "branch": "develop",
+  "tested_commit": "3c0b1f7cbfada7f0f7a107a0dcd6ffa3f5df85d9",
+  "workflow_run": 313,
+  "exact_best56": {
+    "bytes": 857840,
+    "sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+    "local_roundtrip": "PASS",
+    "simulated_parts": 16,
+    "static_gate_equivalent": {
+      "ids": 763,
+      "duplicate_ids": 0,
+      "references": 38,
+      "broken_references": 0,
+      "vat_23_marker": true,
+      "cit_9_marker": true,
+      "critical_markers": "PASS",
+      "script_style_balance": "PASS"
+    }
+  },
+  "change": "CI now automatically invokes scripts/materialize_canonical_app.py before Static application checks whenever the canonical artifacts/best56 part set exists. tests/check_materialize_canonical_app.py guards this ordering.",
+  "ci": {
+    "materializer_contract": "PASS",
+    "packager_contract": "PASS",
+    "ci_auto_materialization_step": "PASS",
+    "static_application_checks": "FAIL_P0_7_REPOSITORY_PAYLOAD_PENDING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "active_blockers": [7, 11, 12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT only; never increment automatically"
+}

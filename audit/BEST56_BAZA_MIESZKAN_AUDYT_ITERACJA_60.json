@@ -1,0 +1,25 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 60,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "finding": "Shared-state CI evidence metadata drifted behind the latest completed verified workflow.",
+  "change": "Refreshed machine-authoritative Source of Truth and AI_SYNC evidence references to workflow #442; no business logic, financial rules, data semantics, UX behavior or blocker routing changed.",
+  "source_of_truth_update_required": true,
+  "source_of_truth_update": "completed for evidence metadata",
+  "tests_before_change": {
+    "workflow": 442,
+    "pre_application_steps": "PASS 4-24",
+    "static_application_checks": "FAIL P0-7A canonical app missing",
+    "best40": "SKIPPED downstream"
+  },
+  "active_blockers": [
+    {"id":7,"priority":"P0","status":"ONE_SHOT_HELPER_CI_PASS_LOCAL_EXECUTION_PENDING"},
+    {"id":11,"priority":"P0","status":"OPEN"},
+    {"id":12,"priority":"P1","status":"OPENCODE_ENTRYPOINT_READ_ORDER_CI_PASS_PENDING_LOCAL_RUNTIME"}
+  ],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY",
+  "version_policy": "BEST56 + AUDYT only; never BEST57 automatically"
+}

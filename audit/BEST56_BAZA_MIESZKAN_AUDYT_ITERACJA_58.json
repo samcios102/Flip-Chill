@@ -1,0 +1,34 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 58,
+  "branch": "develop",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "input_head": "ba107201117d9f0b7bc66b1f0cd8c900e978f867",
+  "ci_evidence": {
+    "workflow": 430,
+    "workflow_run_id": 33117633193,
+    "tested_commit": "ba107201117d9f0b7bc66b1f0cd8c900e978f867",
+    "steps_4_24": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM"
+  },
+  "findings": [
+    "No new finance, schema 11->12, dispatcher or UX regression was found.",
+    "P0-7A remains isolated to persistence of the exact BEST56 repository payload.",
+    "Workflow #430 is the newest completed deterministic evidence and replaces workflow #425 in the 3-bot handoff only."
+  ],
+  "business_decisions": [],
+  "blockers": {
+    "P0": [7, 11],
+    "P1": [12]
+  },
+  "changes": [
+    "Refreshed AI_SYNC/BOT_QUEUE.json evidence to workflow #430.",
+    "Prepared iteration 58 machine and human handoff without changing shared business rules or blocker states."
+  ],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY",
+  "version_policy": "BEST56 + AUDYT only; never increment automatically"
+}

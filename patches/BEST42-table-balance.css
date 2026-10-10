@@ -1,0 +1,28 @@
+/* BEST42 — readable density + better horizontal allocation. */
+#fc-agent-center .fac-portfolio-table-v2{min-width:1180px!important;table-layout:fixed!important;font-size:11.5px!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(1){width:16%!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(2){width:7%!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(3){width:7%!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(4){width:15%!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(5){width:30%!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(6){width:9%!important}
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(7){width:16%!important}
+#fc-agent-center .fac-portfolio-table-v2 th{height:42px!important;padding:5px 6px!important;vertical-align:middle!important;line-height:1.05!important}
+#fc-agent-center .fac-portfolio-table-v2 .fac-th-main{display:block;font-size:10.5px!important;line-height:1.1!important;color:var(--foreground)!important;font-weight:800!important;white-space:nowrap}
+#fc-agent-center .fac-portfolio-table-v2 .fac-th-sub{display:block;margin-top:2px;font-size:7.4px!important;line-height:1!important;color:var(--muted-foreground)!important;font-weight:500!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fc-agent-center .fac-portfolio-table-v2 .fac-pf-main-row>td{height:66px!important;padding:6px 6px!important}
+#fc-agent-center .fac-pf-main-row .form-control,#fc-agent-center .fac-pf-main-row .form-select{min-height:32px!important;height:32px!important;padding:0 7px!important;font-size:11.2px!important}
+#fc-agent-center .fac-pf-property-line .fac-pf-inline-name{font-size:11px!important;font-weight:780!important}
+#fc-agent-center .fac-status-dot{width:24px!important;height:24px!important;min-width:24px!important;font-size:11px!important}
+#fc-agent-center .fac-pf-inline-price,#fc-agent-center .fac-pf-inline-agent{min-width:0!important;width:100%!important;font-size:10.8px!important;padding-inline:5px!important}
+#fc-agent-center .fac-pf-finance-inline span{font-size:8.8px!important;line-height:1.18!important}
+#fc-agent-center .fac-pf-finance-inline strong{font-size:10.2px!important}
+#fc-agent-center .fac-pf-payment-inner{grid-template-columns:minmax(170px,1fr) minmax(86px,.48fr)!important;gap:8px!important}
+#fc-agent-center .fac-pay-mini{min-height:27px!important;height:27px!important;padding:0 4px!important;border-radius:7px!important}
+#fc-agent-center .fac-pay-mini span{font-size:7.7px!important}
+#fc-agent-center .fac-pay-mini strong{font-size:8.7px!important}
+#fc-agent-center .fac-agent-pay-mini{height:14px!important;min-height:14px!important;font-size:7.2px!important;line-height:13px!important}
+#fc-agent-center .fac-pf-forecast-compact strong{font-size:12.5px!important}
+#fc-agent-center .fac-pf-row-actions .btn{min-height:29px!important;height:29px!important;padding:0 6px!important;font-size:8.8px!important;border-radius:8px!important}
+#fc-agent-center .fac-pf-row-actions .fac-icon-only{width:29px!important;min-width:29px!important}
+@media(max-width:1250px){#fc-agent-center .fac-portfolio-table-v2{min-width:1120px!important}#fc-agent-center .fac-portfolio-table-v2 th:nth-child(2),#fc-agent-center .fac-portfolio-table-v2 th:nth-child(3){width:7.5%!important}#fc-agent-center .fac-portfolio-table-v2 th:nth-child(4){width:14%!important}#fc-agent-center .fac-portfolio-table-v2 th:nth-child(5){width:29%!important}#fc-agent-center .fac-portfolio-table-v2 th:nth-child(7){width:17%!important}}

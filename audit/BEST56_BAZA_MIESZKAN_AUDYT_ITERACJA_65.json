@@ -1,0 +1,26 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 65,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "tested_commit": "04f895f1703aa68a0abced4faba1e713eefc8f10",
+  "verified_workflow": 472,
+  "verified_workflow_id": 33141312646,
+  "result": {
+    "steps_4_24": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM",
+    "overall": "FAIL_EXPECTED_P0_7A_ONLY"
+  },
+  "findings": {
+    "data_integrity": "schema 11->12 executable preservation contract PASS; runtime localStorage check remains blocked by P0-7A",
+    "finance": "BEST56 executable financial scenarios PASS; no rule regression",
+    "ux": "runtime UX audit remains blocked by P0-7A canonical app payload",
+    "automation": "handoff evidence advanced to workflow #472; routing unchanged"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX/READY",
+  "source_of_truth_update_required": false,
+  "version_policy": "BEST56 + AUDYT only; never BEST57"
+}

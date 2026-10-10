@@ -1,0 +1,19 @@
+{
+  "artifact": "FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN.html",
+  "source_artifact_name": "FlippChill_Kalkulator_BEST73_BAZA_MIESZKAN(1).html",
+  "audit_name": "BEST73 BAZA MIESZKAŃ AUDYT",
+  "version_policy": "audit-only; use current reconciled BEST73; do not create BEST74 automatically",
+  "sha256": "492a321a07729c480947e12a0afb6678f135717e8a66cd0f12d2cae40f1f89c4",
+  "size_bytes": 986881,
+  "source": "ChatGPT Library verified artifact",
+  "status": "VERIFIED_SOURCE_ARTIFACT_PENDING_REPOSITORY_CANONICALIZATION",
+  "reconciliation_issue": 19,
+  "canonicalization_issue": 20,
+  "historical_parent_audit": "audit/BEST56_BAZA_MIESZKAN_AUDYT.json",
+  "runtime_checks": {
+    "static_application": "PENDING_CANONICAL_BEST73",
+    "financial_scenarios": "PENDING_CANONICAL_BEST73",
+    "schema_11_12": "PENDING_CANONICAL_BEST73",
+    "responsive_ui": "PENDING_CANONICAL_BEST73"
+  }
+}

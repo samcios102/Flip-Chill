@@ -1,0 +1,24 @@
+{
+  "report_type": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 54,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "finding": "BACKLOG contained an already-satisfied open Slack/Marketing threshold test requirement although completed issue #14 and the executable financial scenario gate already cover it.",
+  "change": "Reconciled only that BACKLOG item to DONE and linked it to the existing executable financial contract; no application or business-rule change.",
+  "business_decisions_changed": false,
+  "blocker_state_changed": false,
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "tested_evidence": {
+    "workflow": 409,
+    "commit": "e0354ed55c87064c4aa8fa8f577d820430829b4f",
+    "financial_scenarios": "PASS",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT only; never increment automatically"
+}

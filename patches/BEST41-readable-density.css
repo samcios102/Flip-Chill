@@ -1,0 +1,33 @@
+/* BEST41 — balanced density.
+   Applied after BEST40 compact-density rules.
+   Goal: preserve compact layout while restoring comfortable readability. */
+#fc-agent-center .fac-portfolio-table-v2 .fac-pf-main-row>td{height:60px!important;padding:5px 6px!important}
+#fc-agent-center .fac-pf-main-row .form-control,#fc-agent-center .fac-pf-main-row .form-select{min-height:29px!important;height:29px!important;padding:0 7px!important;font-size:10.5px!important}
+#fc-agent-center .fac-pf-property-line{gap:5px!important}
+#fc-agent-center .fac-status-dots{gap:3px!important}
+#fc-agent-center .fac-status-dot{width:22px!important;height:22px!important;min-width:22px!important;font-size:10.5px!important}
+#fc-agent-center .fac-pf-finance-inline{gap:2px 7px!important}
+#fc-agent-center .fac-pf-finance-inline span{font-size:8.2px!important;line-height:1.15!important}
+#fc-agent-center .fac-pf-finance-inline strong{font-size:9.5px!important}
+#fc-agent-center .fac-pf-payment-inner{grid-template-columns:minmax(130px,1fr) minmax(80px,.58fr)!important;gap:6px!important}
+#fc-agent-center .fac-payment-stack{gap:2px!important}
+#fc-agent-center .fac-pay-mini-grid,#fc-agent-center .fac-agent-pay-mini-grid{gap:3px!important}
+#fc-agent-center .fac-pay-mini{min-height:24px!important;height:24px!important;padding:0 3px!important;border-radius:6px!important}
+#fc-agent-center .fac-pay-mini span{font-size:7px!important}
+#fc-agent-center .fac-pay-mini strong{font-size:7.8px!important}
+#fc-agent-center .fac-agent-pay-mini{height:12px!important;min-height:12px!important;border-radius:4px!important;font-size:6.7px!important;line-height:11px!important}
+#fc-agent-center .fac-payment-quick .fac-pay-summary{min-height:18px!important;height:18px!important;font-size:7.5px!important;line-height:17px!important}
+#fc-agent-center .fac-payment-quick .fac-due-now small{font-size:6.8px!important}
+#fc-agent-center .fac-payment-quick .fac-due-now strong{font-size:9.5px!important}
+#fc-agent-center .fac-pf-forecast-compact strong{font-size:11.5px!important}
+#fc-agent-center .fac-pf-forecast-compact small{font-size:7.5px!important;line-height:1.1!important}
+#fc-agent-center .fac-pf-row-actions{gap:3px!important}
+#fc-agent-center .fac-pf-row-actions .btn{min-height:27px!important;height:27px!important;padding:0 7px!important;font-size:8.4px!important;border-radius:8px!important}
+#fc-agent-center .fac-pf-row-actions .fac-icon-only{width:27px!important;min-width:27px!important}
+#fc-agent-center .fac-portfolio-table-v2 th{padding:7px 6px!important;font-size:9px!important}
+#fc-agent-center .fac-timeline-status-dots{height:25px!important;gap:3px!important}
+#fc-agent-center .fac-timeline-actions{height:29px!important;gap:4px!important}
+#fc-agent-center .fac-timeline-actions .btn{min-height:26px!important;height:26px!important;padding:0 7px!important;font-size:8px!important}
+#fc-agent-center .fac-timeline-name{font-size:10.5px!important}
+#fc-agent-center .fac-timeline-agent{font-size:7.8px!important}
+@media(max-width:1100px){#fc-agent-center .fac-pf-main-row>td{height:64px!important}}

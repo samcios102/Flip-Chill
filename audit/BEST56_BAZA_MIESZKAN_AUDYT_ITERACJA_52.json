@@ -1,0 +1,26 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 52,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "recorded_at": "2026-08-27T18:20:30+02:00",
+  "finding": "Operational drift between Source of Truth/BACKLOG and AI_SYNC queue/trigger: older manual packager path vs CI-guarded PRIMARY one-shot helper.",
+  "change": "Made scripts/primary_p0_7a_one_shot.py --auto --commit --push authoritative for P0-7A in Source of Truth and BACKLOG; refreshed AI_SYNC handoff to iteration 52.",
+  "business_rules_changed": false,
+  "application_changed": false,
+  "main_changed": false,
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "tested_evidence": {
+    "workflow": 397,
+    "commit": "706a0a891d94e8454b8671d4df5616963fd245ee",
+    "pre_application_gates": "PASS",
+    "primary_one_shot_helper": "PASS",
+    "static_application_checks": "FAIL_P0_7A_PAYLOAD_MISSING",
+    "best40": "SKIPPED_DOWNSTREAM"
+  },
+  "final_iteration_52_ci": "PENDING",
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY"
+}

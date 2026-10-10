@@ -17,7 +17,43 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Verify historical BEST56 audit manifest
+        run: python tests/check_best56_audit_manifest.py audit/BEST56_BAZA_MIESZKAN_AUDYT.json
+      - name: Verify current-standard Source of Truth consistency
+        run: python tests/check_source_of_truth_consistency.py
+      - name: Verify CRM sync current-state contract
+        run: python tests/check_crm_sync_current_state.py
+      - name: Verify core executable financial scenarios
+        run: python tests/check_financial_scenarios.py
+      - name: Verify schema 11 to 12 preservation contract
+        run: python tests/check_schema_11_12_contract.py
+      - name: Verify AI sync dispatch protocol
+        run: python tests/check_ai_sync_protocol.py
+      - name: Verify current-standard queue dependency partition
+        run: python tests/check_queue_dependency_partition.py
+      - name: Verify AI sync handoff freshness
+        run: python tests/check_ai_sync_freshness.py
+      - name: Verify runtime handoff guard contract
+        run: python tests/check_handoff_runtime_guard.py
+      - name: Verify dispatcher runtime guard integration
+        run: python tests/check_agent_dispatch_runtime_guard_integration.py
+      - name: Verify local dispatcher claim contract
+        run: python tests/check_agent_dispatch_claim.py
+      - name: Verify local dispatcher failure recovery
+        run: python tests/check_agent_dispatch_failure_recovery.py
+      - name: Verify local dispatcher mutex contract
+        run: python tests/check_agent_dispatch_mutex.py
+      - name: Verify stale dispatcher mutex recovery
+        run: python tests/check_agent_dispatch_stale_mutex.py
+      - name: Verify dispatcher dependency guard
+        run: python tests/check_agent_dispatch_dependencies.py
+      - name: Verify artifact discovery preflight safety
+        run: python tests/check_artifact_preflight.py
+      - name: Verify current-standard canonical app exact SHA
+        run: python tests/check_current_canonical.py
       - name: Static application checks
         run: python tests/check_app.py app/FlippChill_Kalkulator.html
+      - name: Verify frozen BEST40 checksum
+        run: python tests/check_release_baseline.py versions/FlippChill_Kalkulator_BEST40.html c04106fe884d32dc257d852b320f2e145a93f80e5615409dc5fac17f5b171708
       - name: Verify frozen stable version
         run: python tests/check_app.py versions/FlippChill_Kalkulator_BEST40.html

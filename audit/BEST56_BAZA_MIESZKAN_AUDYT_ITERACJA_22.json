@@ -1,0 +1,25 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 22,
+  "date": "2026-08-26",
+  "scope": "AI_SYNC local dispatcher concurrency",
+  "finding": "two watchers could observe READY before either persisted CLAIMED",
+  "fix": "cross-platform O_CREAT|O_EXCL mutex + reload trigger/queue before claim",
+  "test": "tests/check_agent_dispatch_mutex.py",
+  "ci_evidence": {
+    "workflow_run": 125,
+    "tested_commit": "5bbe358ad344b6ea98e43a0f1b059c3875f37bb8",
+    "dispatcher_mutex_contract": "PASS",
+    "previous_dispatch_gates": "PASS",
+    "static_application_checks": "FAIL_BLOCKED_BY_P0_7"
+  },
+  "blockers": {
+    "P0_7": "PREFLIGHT_CI_PASS_AWAITING_EXACT_ARTIFACT_IMPORT",
+    "P0_11": "OPEN",
+    "P1_12": "MUTEX_CI_PASS_PENDING_LOCAL_BOT_RUNTIME"
+  },
+  "next_ready_task": "P0-7-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger": "RUN_FIX/READY",
+  "version_policy": "BEST56 BAZA MIESZKAŃ AUDYT only; no automatic BEST increment"
+}

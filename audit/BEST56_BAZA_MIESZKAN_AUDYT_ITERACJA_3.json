@@ -1,0 +1,46 @@
+{
+  "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 3,
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "candidate_input_filename": "FlippChill_Kalkulator_BEST57_BAZA_MIESZKAN.html",
+  "candidate_policy_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "candidate_sha256": "d9c19b868cfd3301f72fb6b160b0a7ef5296802021e948d81d287c562fd561f5",
+  "candidate_size_bytes": 860974,
+  "delta_bytes": 3134,
+  "static_checks": {
+    "script_blocks": 9,
+    "script_blocks_node_check_passed": 9,
+    "static_dom_ids": 766,
+    "unique_static_dom_ids": 766,
+    "duplicate_static_dom_ids": 0,
+    "missing_static_references": 0,
+    "style_blocks": 40
+  },
+  "finance_regression_check": {
+    "vat_23_constant_unchanged": true,
+    "cit_9_constant_unchanged": true,
+    "threshold_50000_logic_occurrences_unchanged": true,
+    "threshold_100000_logic_occurrences_unchanged": true
+  },
+  "candidate_delta": [
+    "schema version 11 -> 12",
+    "timeline forecast model v2 with weighted preliminary/sale date ranges",
+    "repair of missing/duplicate portfolio IDs",
+    "selected-row helper and clearer selected state",
+    "compact preliminary/final timeline dates in Baza mieszkań",
+    "forecast hints in Daty modal"
+  ],
+  "blocking_finding": {
+    "priority": "P0",
+    "issue": 11,
+    "area": "data integrity / localStorage migration",
+    "problem": "schema 11->12 migration clears preliminaryDate when status is ongoing, which can erase a manually stored business date",
+    "unsafe_code": "if(item.status===\"ongoing\")item.preliminaryDate=\"\";",
+    "required_fix": "Preserve preliminaryDate. If normalization is required, derive status from existing dates instead of deleting the date.",
+    "promotion": "BLOCKED"
+  },
+  "source_of_truth_update_required": true,
+  "source_of_truth_reason": "develop still does not contain sync/CRM_SOURCE_OF_TRUTH.json; PR #9 remains open and currently non-mergeable",
+  "result": "STATIC PASS / DATA MIGRATION BLOCKED",
+  "version_policy": "keep BEST56; never increment automatically"
+}

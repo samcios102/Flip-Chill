@@ -1,0 +1,16 @@
+/* BEST43 — finance labels and forecast hierarchy. */
+#fc-agent-center .fac-portfolio-table-v2 th:nth-child(4){text-align:left!important}
+#fc-agent-center .fac-finance-pretty{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:3px 8px!important;text-align:left!important;align-items:center!important}
+#fc-agent-center .fac-finance-pretty .fac-fin-item{display:grid!important;grid-template-columns:auto 1fr!important;gap:4px!important;align-items:baseline!important;min-width:0!important;line-height:1.05!important}
+#fc-agent-center .fac-finance-pretty .fac-fin-item small{font-size:7.4px!important;line-height:1!important;color:var(--muted-foreground)!important;font-weight:600!important;white-space:nowrap!important}
+#fc-agent-center .fac-finance-pretty .fac-fin-item strong{font-size:10px!important;line-height:1.05!important;color:var(--foreground)!important;font-weight:800!important;text-align:right!important;white-space:nowrap!important;font-variant-numeric:tabular-nums!important}
+#fc-agent-center .fac-finance-pretty .fac-fin-item.is-postcit strong{color:var(--fc-mint)!important}
+#fc-agent-center .fac-finance-pretty .fac-fin-item.is-agent strong{color:var(--fc-gold)!important}
+#fc-agent-center .fac-forecast-pretty{display:grid!important;justify-items:end!important;gap:3px!important}
+#fc-agent-center .fac-forecast-pretty>strong{font-size:13px!important;line-height:1!important;font-weight:900!important;font-variant-numeric:tabular-nums!important}
+#fc-agent-center .fac-forecast-pretty>small{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:4px!important;white-space:nowrap!important}
+#fc-agent-center .fac-forecast-pretty>small b{display:inline-flex!important;align-items:center!important;min-height:16px!important;padding:0 5px!important;border:1px solid var(--border)!important;border-radius:999px!important;font-size:7.4px!important;line-height:14px!important;font-weight:800!important;background:color-mix(in srgb,var(--card) 82%,transparent)!important}
+#fc-agent-center .fac-forecast-pretty>small b.is-pre{color:var(--fc-gold)!important}
+#fc-agent-center .fac-forecast-pretty>small b.is-open{color:var(--fc-blue)!important}
+#fc-agent-center .fac-forecast-pretty>small b.is-done{color:var(--fc-mint)!important}
+#fc-agent-center .fac-forecast-pretty>small em{font-size:7.2px!important;line-height:1!important;color:var(--muted-foreground)!important;font-style:normal!important;font-weight:600!important}

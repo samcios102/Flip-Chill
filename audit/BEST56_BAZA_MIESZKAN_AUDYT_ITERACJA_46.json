@@ -1,0 +1,25 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 46,
+  "created_at": "2026-08-27T12:18:30+02:00",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "source_head_before_iteration": "45a1929484ac6d63de66ea42df6ceae27d32f080",
+  "evidence": {
+    "workflow_run": 360,
+    "workflow_commit": "45a1929484ac6d63de66ea42df6ceae27d32f080",
+    "pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM"
+  },
+  "findings": [
+    "No new finance or data-integrity regression detected.",
+    "P0-7A remains the only READY task and still requires local exact-hash payload packaging plus direct git commit.",
+    "Machine and human handoff evidence refreshed to workflow #360."
+  ],
+  "business_decisions": [],
+  "active_blockers": [7, 11, 12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}

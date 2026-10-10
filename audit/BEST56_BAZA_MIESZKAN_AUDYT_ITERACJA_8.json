@@ -1,0 +1,36 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "iteration": 8,
+  "source_candidate_filename": "FlippChill_Kalkulator_BEST57_BAZA_MIESZKAN.html",
+  "source_candidate_sha256": "d9c19b868cfd3301f72fb6b160b0a7ef5296802021e948d81d287c562fd561f5",
+  "source_candidate_size_bytes": 860974,
+  "source_candidate_lines": 5813,
+  "release_state": "AUDIT CANDIDATE ONLY",
+  "release_policy": "keep version 56 for automation audit artifacts; no BEST57 promotion",
+  "finding": {
+    "priority": "P0",
+    "issue": 11,
+    "status": "CONFIRMED_IN_NEW_INPUT_CANDIDATE",
+    "source_candidate_contains_unsafe_clear": true,
+    "unsafe_expression": "if(oldSchema<12){...if(item.status===\"ongoing\")item.preliminaryDate=\"\";...}",
+    "impact": "schema 11→12 can erase a manually stored preliminaryDate when the persisted status is ongoing",
+    "required_fix": "preserve existing preliminaryDate and derive status from finalDate/preliminaryDate instead of deleting dates during migration"
+  },
+  "static_checks": {
+    "script_blocks": 9,
+    "script_blocks_node_check_passed": 9,
+    "static_dom_ids": 766,
+    "unique_static_dom_ids": 766,
+    "duplicate_static_dom_ids": 0,
+    "static_references": 38,
+    "missing_static_references": 0,
+    "result": "PASS"
+  },
+  "decision": "DO NOT PROMOTE INPUT CANDIDATE; keep as BEST56 BAZA MIESZKAŃ AUDYT until P0 #11 is fixed in the actual candidate artifact and runtime migration is validated",
+  "next_priorities": [
+    "Patch the actual schema 11→12 migration in the current candidate so manual preliminaryDate is never cleared",
+    "Run a real localStorage migration test preserving id/startDate/preliminaryDate/finalDate/maxDealDate/paymentParts",
+    "Resolve canonical app/FlippChill_Kalkulator.html blocker #7 so full CI can execute beyond Static application checks"
+  ]
+}

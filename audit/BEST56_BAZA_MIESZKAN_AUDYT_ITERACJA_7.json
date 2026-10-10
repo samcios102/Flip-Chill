@@ -1,0 +1,34 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 7,
+  "date": "2026-08-25",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "scope": "P0 #11 migration integrity gate completion",
+  "finding": {
+    "priority": "P0",
+    "issue": 11,
+    "gap": "BACKLOG and issue #11 require finalDate preservation, while the previous automated migration contract did not assert finalDate_preserved",
+    "risk": "a future migration regression affecting finalDate could pass the BEST56 audit gate unnoticed"
+  },
+  "changes": [
+    "audit iteration 5 contract now records finalDate_preserved=true",
+    "tests/check_best56_audit_manifest.py now requires finalDate_preserved together with the other P0 preservation fields"
+  ],
+  "validation": {
+    "best56_audit_manifest_gate": "PASS",
+    "full_ci": "FAIL",
+    "full_ci_blocker": "Static application checks / P0 #7 canonical app file missing"
+  },
+  "commits": [
+    "5597489648e7ba6d94fa2e0f9ecb40d57b479c95",
+    "64e8ac35c00021ab6a48ba3dc475d6aeedbc8efe"
+  ],
+  "source_of_truth_update_required": false,
+  "release_state": "AUDIT ONLY",
+  "release_policy": "keep BEST56 BAZA MIESZKAŃ and append AUDYT; never create BEST57 from automation",
+  "next_priorities": [
+    "P0 #7 canonical app/FlippChill_Kalkulator.html",
+    "P0 #11 real localStorage migration against canonical artifact",
+    "P1 four-part payment and agent payout preservation test"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 45,
+  "date": "2026-08-27",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "finding": "search_bonus=0.10 existed in Source of Truth but was not asserted by the executable financial scenario contract",
+  "change": "tests/check_financial_scenarios.py now asserts search bonus 10% without changing the business rule or application logic",
+  "evidence": {
+    "workflow": 352,
+    "tested_commit": "9673f3958e1ffb6af17f1e03aa81718b4c89a4c8",
+    "financial_scenarios": "PASS_INCLUDING_SEARCH_BONUS_10_PERCENT",
+    "all_pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_EXISTING_P0_7A_CANONICAL_APP_MISSING"
+  },
+  "issue": {"number": 17, "status": "CLOSED_COMPLETED"},
+  "business_rules_changed": false,
+  "main_modified": false,
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY"
+}

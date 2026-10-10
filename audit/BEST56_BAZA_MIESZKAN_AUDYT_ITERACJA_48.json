@@ -1,0 +1,25 @@
+{
+  "artifact_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 48,
+  "created_at": "2026-08-27T14:20:25+02:00",
+  "branch": "develop",
+  "baseline_sha256": "3bb0756f6d3e55a0f5eeb35baec1489be4862ddddabb93c9df97acd9f4044e92",
+  "baseline_size_bytes": 857840,
+  "findings": {
+    "exact_best56_runtime": "PASS",
+    "latest_completed_ci": "WORKFLOW_372",
+    "pre_application_gates": "PASS",
+    "static_application_checks": "FAIL_P0_7A_CANONICAL_APP_MISSING",
+    "best40_checks": "SKIPPED_DOWNSTREAM",
+    "runtime_git_transport": "BLOCKED_DNS_GITHUB_COM",
+    "safe_payload_policy": "DIRECT_LOCAL_FILESYSTEM_TO_GIT_ONLY"
+  },
+  "business_rules_changed": false,
+  "source_of_truth_update_required": false,
+  "active_p0": [7, 11],
+  "active_p1": [12],
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "note": "No application, finance or data model change was made. Handoff was refreshed with current CI and runtime capability evidence; main remains untouched."
+}

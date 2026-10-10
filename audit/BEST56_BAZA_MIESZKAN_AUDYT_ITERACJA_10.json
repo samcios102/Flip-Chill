@@ -1,0 +1,32 @@
+{
+  "name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 10,
+  "date": "2026-08-26",
+  "version_policy": "BEST56 + AUDYT; automation never increments to BEST57",
+  "changes": [
+    "Merged PR #9 into develop: OPENCODE.md and sync/CRM_* are now directly available on the working branch",
+    "Updated CRM_SYNC.md to remove operational dependency on feat/crm-source-of-truth"
+  ],
+  "business_decisions_changed": false,
+  "source_of_truth": {
+    "location": "develop/sync/CRM_SOURCE_OF_TRUTH.json",
+    "integrated": true
+  },
+  "active_blockers": [
+    {"issue": 7, "priority": "P0", "status": "OPEN", "reason": "canonical app/FlippChill_Kalkulator.html missing"},
+    {"issue": 11, "priority": "P0", "status": "OPEN", "reason": "schema 11->12 migration still requires canonical localStorage validation"}
+  ],
+  "ci": {
+    "merge_commit": "7c99d9dec59145e4504fa2b275e2025e419d87c4",
+    "merge_run": 48,
+    "merge_run_conclusion": "failure",
+    "latest_sync_commit": "ec3b506f652eff39f855452ad7205b12c020df20",
+    "latest_sync_run": 49,
+    "latest_sync_run_status_at_audit": "queued"
+  },
+  "next_priorities": [
+    "Restore canonical app/FlippChill_Kalkulator.html without changing BEST56 audit version policy",
+    "Run real schema 11->12 localStorage migration test on the canonical artifact",
+    "Close P0 #11 only after data-preservation test passes"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "audit_name": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "iteration": 42,
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "branch": "develop",
+  "created_at": "2026-08-27T08:18:40+02:00",
+  "scope": "financial regression contract + repository handoff",
+  "finding": "Financial Source of Truth checks previously compared constants but did not execute numeric scenarios.",
+  "changes": [
+    "created tests/check_financial_scenarios.py",
+    "added Verify BEST56 executable financial scenarios to CI",
+    "closed issue #14 after CI evidence",
+    "updated Source of Truth, BACKLOG, BOT_QUEUE, LATEST_AUDIT and TRIGGER"
+  ],
+  "financial_rules_changed": false,
+  "evidence": {
+    "workflow": 330,
+    "tested_commit": "8d0510cef2f4c56f7cd3687fe928cc690abf61e8",
+    "financial_scenarios": "PASS",
+    "vat": "PASS_23_PERCENT_GROSS_TO_NET",
+    "cit": "PASS_9_PERCENT_POSITIVE_PROFIT_ZERO_ON_LOSS",
+    "pit": "PASS_12_PERCENT_DEFAULT",
+    "threshold_boundaries": "PASS_49999_50000_99999_100000_125000",
+    "slack_marketing_threshold_contribution": "PASS",
+    "static_application_checks": "FAIL_EXISTING_P0_7A_CANONICAL_APP_MISSING"
+  },
+  "next_ready_task": "P0-7A-CANONICAL-APP",
+  "target_agent": "PRIMARY",
+  "trigger_status": "RUN_FIX_READY",
+  "version_policy": "BEST56 + AUDYT; never increment automatically"
+}

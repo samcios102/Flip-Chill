@@ -1,0 +1,42 @@
+{
+  "artifact": "BEST56 BAZA MIESZKAŃ AUDYT",
+  "baseline": "BEST56 BAZA MIESZKAŃ",
+  "iteration": 14,
+  "date": "2026-08-26",
+  "version_policy": "keep BEST56; audit automation never promotes to BEST57",
+  "changes": [
+    "added executable schema 11→12 business-contract fixtures",
+    "added CI gate before canonical application static checks",
+    "synced CRM_SYNC.md"
+  ],
+  "migration_contract": {
+    "schema_from": 11,
+    "schema_to": 12,
+    "fixtures": 3,
+    "required_preservation": [
+      "id",
+      "startDate",
+      "preliminaryDate",
+      "finalDate",
+      "maxDealDate",
+      "paymentParts"
+    ],
+    "status_rules": [
+      "finalDate -> closed",
+      "preliminaryDate -> preliminary",
+      "no dates -> keep ongoing"
+    ],
+    "ci_result": "PASS"
+  },
+  "quality": {
+    "best56_audit_manifest_gate": "PASS",
+    "schema_11_12_contract_gate": "PASS",
+    "canonical_app_static_gate": "FAIL_P0_7_MISSING_APP",
+    "frozen_best40_gate": "SKIPPED_AFTER_P0_7"
+  },
+  "blockers": [
+    {"issue": 7, "priority": "P0", "status": "OPEN"},
+    {"issue": 11, "priority": "P0", "status": "OPEN_RUNTIME_LOCALSTORAGE_VALIDATION_REQUIRED"}
+  ],
+  "source_of_truth_update_required": false
+}
